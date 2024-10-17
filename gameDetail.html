@@ -89,7 +89,7 @@
     </div>
     <footer>
       <div class="footer-content">
-        <p>&copy; 대진대학교 베처 주로 주혁프로젝트.</p>
+        <p>&copy; 대진대학교 벤처 졸업프로젝트.</p>
       </div>
     </footer>
     <script src="gameDetail.js"></script>
@@ -210,4 +210,5 @@
                 "gamePrice"
               ).innerHTML = `정상가: ₩ ${game.originalPrice}<br>판매가: ₩ ${game.discountPrice}`;
             } else {
-              document.getElement
+              document.getElementById("gamePrice").innerText =
+                game.discountPrice === 0
