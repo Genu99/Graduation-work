@@ -93,8 +93,10 @@
               <div class="existing-review">
                 <p>리뷰 내용: ${review.content}</p>
                 <p>평점: ${review.rating}</p>
+                ${review.status === 1 ? `
                 <button onclick="editReview('${review.reviewId}', '${orderDetailId}')">리뷰 수정</button>
                 <button onclick="deleteReview('${review.reviewId}', '${orderDetailId}')">리뷰 삭제</button>
+                ` : ''}
               </div>
             `).join('');
           } else {
