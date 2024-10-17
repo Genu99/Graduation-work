@@ -168,6 +168,7 @@
                       </div>
                       <div class="review-section" id="review-section-${orderDetailId}">
                         <!-- 리뷰가 있으면 여기에 표시됩니다 -->
+                        ${reviewStatus === 1 ? `<p>리뷰 내용: ${item.reviewContent}</p>` : ''}
                       </div>
                       ${(order.orderStatus === 'PURCHASE_CONFIRMED' && !reviewStatus) ? `
                         <div class="review-form-container" style="display: flex; align-items: center;">
