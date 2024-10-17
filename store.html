@@ -132,15 +132,15 @@
           `;
         }
 
-        // 카테고리 정보 추가 - 버튼 형태로 표시
-        const categoryButtons = game.gameCategoryList.map(category => `<button class="category-btn">${category}</button>`).join(' ');
+        // 카테고리 정보 추가 - 네모 칸 형태로 표시
+        const categoryBoxes = game.gameCategoryList.map(category => `<span class="category-box">${category}</span>`).join(' ');
         const gameCard = `
           <div class="product-card">
             <a href="gameDetail.html?gameId=${game.gameId}" class="game-title-link" onclick="addRecentGame('${game.gameId}', '${game.gameName}', '${game.discountPrice}', '${game.gameImageUrl || 'https://via.placeholder.com/150'}')">
               <img src="${game.gameImageUrl || 'https://via.placeholder.com/150'}" alt="${game.gameName || '게임 이미지'}" />
               <p class="product-title">${game.gameName || '제목 없음'}</p>
               <div class="product-category">
-                ${categoryButtons}
+                ${categoryBoxes}
               </div>
             </a>
             ${priceInfo}
