@@ -213,7 +213,7 @@
             document.getElementById("gameName").innerText =
               game.gameName || "제목 없음";
             document.getElementById("categoryName").innerText = `카테고리: ${
-              game.categoryName || "알 수 없음"
+              game.gameCategoryList ? game.gameCategoryList.join(', ') : "알 수 없음"
             }`;
             document.getElementById("gameDescription").innerHTML =
               game.gameDc || "게임 설명 없음";
