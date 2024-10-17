@@ -106,6 +106,8 @@
           }
           const result = await response.json();
 
+          console.log("게임 후기를 불러온 결과:", result); // 서버에서 받은 데이터 출력
+
           if (result && result.data && result.data.responseDtoList) {
             const reviews = result.data.responseDtoList;
             const reviewsContainer = document.getElementById("reviewsContainer");
@@ -130,12 +132,19 @@
                 </div>
                 <div class="review-footer">
                   <p class="review-date">${review.createdDate}</p>
-                  ${review.nickname.trim() === (window.currentUserNickname ? window.currentUserNickname.trim() : '') ? `
+                  ${
+                    review.nickname.trim() ===
+                    (window.currentUserNickname
+                      ? window.currentUserNickname.trim()
+                      : "")
+                      ? `
                   <div class="review-actions">
                     <button class="edit-btn" onclick="editReview(${review.reviewId}, '${review.content}')">수정</button>
                     <button class="delete-btn" onclick="deleteReview(${review.reviewId})">삭제</button>
                   </div>
-                  ` : ''}
+                  `
+                      : ""
+                  }
                 </div>
               `;
               reviewsContainer.appendChild(reviewDiv);
@@ -195,6 +204,8 @@
             throw new Error("네트워크 응답에 문제가 있습니다.");
           }
           const result = await response.json();
+
+          console.log("게임 상세 정보를 불러온 결과:", result); // 서버에서 받은 데이터 출력
 
           if (result && result.data) {
             const game = result.data;
