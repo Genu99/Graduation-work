@@ -133,7 +133,7 @@
         }
 
         // 카테고리 정보 추가 - 클릭링크가 아니라 그냥 텍스트 형태로 표시
-        const categoryText = game.gameCategoryList.join(' ');
+        const categoryText = game.gameCategoryList.map(category => `<span class="category-text">${category}</span>`).join(' ');
         const gameCard = `
           <div class="product-card">
             <a href="gameDetail.html?gameId=${game.gameId}" class="game-title-link" onclick="addRecentGame('${game.gameId}', '${game.gameName}', '${game.discountPrice}', '${game.gameImageUrl || 'https://via.placeholder.com/150'}')">
@@ -141,7 +141,7 @@
               <p class="product-title">${game.gameName || '제목 없음'}</p>
             </a>
             <div class="product-category">
-              <p class="category-text">${categoryText}</p>
+              ${categoryText}
             </div>
             ${priceInfo}
             <div class="rating">
