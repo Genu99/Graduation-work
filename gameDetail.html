@@ -100,6 +100,7 @@
       // 게임 후기 불러오기
       async function fetchReviews(gameId) {
         try {
+          console.log("조회할 gameId:", gameId); // gameId 값을 확인하기 위해 추가
           const response = await fetch(`${serverUrl}/api/user/review/${gameId}`);
           if (!response.ok) {
             throw new Error("후기 불러오기 실패");
@@ -154,6 +155,7 @@
           }
         } catch (error) {
           console.error("게임 후기를 불러오는 중 오류 발생:", error);
+          console.error("응답 상태 코드:", response ? response.status : "N/A"); // 상태 코드 출력 추가
         }
       }
 
