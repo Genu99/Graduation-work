@@ -132,17 +132,17 @@
           `;
         }
 
-        // 카테고리 정보 추가 - 네모 칸 형태로 표시
-        const categoryBoxes = game.gameCategoryList.map(category => `<span class="category-box">${category}</span>`).join(' ');
+        // 카테고리 정보 추가 - 클릭링크가 아니라 그냥 텍스트 형태로 표시
+        const categoryText = game.gameCategoryList.join(' ');
         const gameCard = `
           <div class="product-card">
             <a href="gameDetail.html?gameId=${game.gameId}" class="game-title-link" onclick="addRecentGame('${game.gameId}', '${game.gameName}', '${game.discountPrice}', '${game.gameImageUrl || 'https://via.placeholder.com/150'}')">
               <img src="${game.gameImageUrl || 'https://via.placeholder.com/150'}" alt="${game.gameName || '게임 이미지'}" />
               <p class="product-title">${game.gameName || '제목 없음'}</p>
-              <div class="product-category">
-                ${categoryBoxes}
-              </div>
             </a>
+            <div class="product-category">
+              <p class="category-text">${categoryText}</p>
+            </div>
             ${priceInfo}
             <div class="rating">
               <i class="material-icons">star</i><span>${game.rating || 0}</span>
