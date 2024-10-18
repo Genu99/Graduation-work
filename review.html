@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game foege - 게임 후기</title>
+    <script src="auth.js"></script> <!-- 인증 스크립트 불러오기 -->
+</head>
+<body>
+    <!-- 헤더 로드 -->
+    <div id="header"></div>
+    
+    <!-- 후기 섹션 -->
+    <h1>내가 작성한 게임 후기</h1>
+    <div>
+        <label for="gameId">게임 ID 입력: </label>
+        <input type="number" id="gameId" placeholder="게임 ID">
+        <button onclick="fetchGameReviews()">조회</button>
+    </div>
+    <div id="review-list">
+        <!-- 게임 후기가 여기에 동적으로 추가될 예정 -->
+    </div>
+
+    <script>
+        // 헤더 불러오기
+        document.getElementById('header').innerHTML = '<object type="text/html" data="header.html" ></object>';
+
+        // auth.js에서 토큰 가져오기
+        const token = getToken();  // auth.js에 getToken() 함수가 있다고 가정
+
+        // 특정 게임의 후기를 불러오는 함수
+        async function fetchGameReviews() {
+            const gameId = document.getElementById('gameId').value;
+
+            if (!gameId) {
+                alert('게임 ID를 입력해주세요.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/user/review/${gameId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log(data); // 서버 응답을 콘솔에 출력
+                    displayReviews(data);  // 리뷰를 화면에 표시하는 함수 호출
+                } else if (response.status === 404) {
+                    alert('해당 게임을 찾을 수 없습니다.');
+                } else {
+                    console.error('후기 조회 실패:', response.status);
+                }
+            } catch (error) {
+                console.error('후기 조회 중 오류 발생:', error);
+            }
+        }
+
+        // 페이지에 후기를 표시하는 함수
+        function displayReviews(reviews) {
+            const reviewList = document.getElementById('review-list');
+            reviewList.innerHTML = ''; // 이전 후기를 초기화
+            reviews.forEach(review => {
+                const reviewDiv = document.createElement('div');
+                reviewDiv.classList.add('review-item');
+                reviewDiv.innerHTML = `
+                    <h3>${review.gameTitle}</h3>
+                    <p>${review.content}</p>
+                    <small>평점: ${review.rating}</small>
+                `;
+                reviewList.appendChild(reviewDiv);
+            });
+        }
+    </script>
+</body>
+</html>
