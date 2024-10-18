@@ -50,7 +50,7 @@
 
         const data = await response.json();
         console.log('주문 목록 데이터:', data);
-        const orderList = data.data;
+        const orderList = data.orders || data.data;
 
         // 모든 주문 상태 출력 (필터링을 제거하여 테스트)
         displayOrders(orderList);
