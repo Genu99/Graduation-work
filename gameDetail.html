@@ -171,37 +171,65 @@
         }
       }
 
+      // 게임 후기 불러오기
       async function fetchReviews(gameId) {
         try {
+          console.log("조회할 gameId:", gameId); // gameId 값을 확인하기 위해 추가
           const response = await fetch(`${serverUrl}/api/user/review/${gameId}`);
           if (!response.ok) {
-            throw new Error("리뷰 데이터를 불러오는 데 실패했습니다.");
+            throw new Error("후기 불러오기 실패");
           }
           const result = await response.json();
 
-          console.log("리뷰 데이터를 불러온 결과:", result);
+          console.log("게임 후기를 불러온 결과:", result); // 서버에서 받은 데이터 출력
 
-          if (result && result.data && Array.isArray(result.data.responseDtoList)) {
+          if (result && result.data && result.data.responseDtoList) {
+            const reviews = result.data.responseDtoList;
             const reviewsContainer = document.getElementById("reviewsContainer");
+            const averageRating = document.getElementById("averageRating");
+            const reviewCount = document.getElementById("reviewCount");
+
             reviewsContainer.innerHTML = "";
+            averageRating.innerText = result.data.avgRating;
+            reviewCount.innerText = `(${reviews.length})`;
 
-            result.data.responseDtoList.forEach((review) => {
-              const reviewElement = document.createElement("div");
-              reviewElement.className = "review";
-              reviewElement.innerHTML = `
-                <p><strong>${review.nickname || "익명 사용자"}</strong> - ${review.rating || 0} / 5</p>
-                <p>${review.content || "코멘트가 없습니다."}</p>
+            reviews.forEach((review) => {
+              const reviewDiv = document.createElement("div");
+              reviewDiv.className = "review-item";
+              reviewDiv.innerHTML = `
+                <img src="image-placeholder.png" alt="User" class="review-image" />
+                <div class="review-content">
+                  <p class="review-rating">⭐ ${review.rating}</p>
+                  <div class="review-text-container">
+                    <p class="review-name">${review.nickname}</p>
+                    <p class="review-text">${review.content}</p>
+                  </div>
+                </div>
+                <div class="review-footer">
+                  <p class="review-date">${review.createdDate}</p>
+                  ${
+                    review.nickname.trim() ===
+                    (window.currentUserNickname
+                      ? window.currentUserNickname.trim()
+                      : "")
+                      ? `
+                  <div class="review-actions">
+                    <button class="edit-btn" onclick="editReview(${review.reviewId}, '${review.content}')">수정</button>
+                    <button class="delete-btn" onclick="deleteReview(${review.reviewId})">삭제</button>
+                  </div>
+                  `
+                      : ""
+                  }
+                </div>
               `;
-              reviewsContainer.appendChild(reviewElement);
+              reviewsContainer.appendChild(reviewDiv);
             });
-
-            document.getElementById("averageRating").innerText = result.data.avgRating || "0";
-            document.getElementById("reviewCount").innerText = `(${result.data.responseDtoList.length})`;
           } else {
-            console.error("리뷰 데이터가 비어 있거나 형식이 올바르지 않습니다.", result);
+            console.error("Error: 응답의 data 필드가 올바른 형태가 아닙니다.", result);
           }
         } catch (error) {
-          console.error("리뷰 데이터를 불러오는 중 오류 발생:", error);
+          console.error("게임 후기를 불러오는 중 오류 발생:", error);
+          console.error("응답 상태 코드:", response ? response.status : "N/A"); // 상태 코드 출력 추가
         }
       }
 
