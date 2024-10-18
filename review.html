@@ -1,69 +1,101 @@
-document.addEventListener("DOMContentLoaded", function() {
-    // 헤더를 동적으로 로드
-    fetch("header.html")
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById("header-placeholder").innerHTML = data;
-            checkLoginStatus(); // 로그인 상태 확인
-        })
-        .catch(error => console.error("헤더 로드 중 오류 발생:", error));
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Forge - 내 게임 후기</title>
+    <link rel="stylesheet" href="review.css">
+</head>
+<body>
+    <!-- 헤더 자리 표시자 -->
+    <div id="header-placeholder"></div>
 
-    // 사용자 리뷰 정보를 가져오기 위한 함수 호출
-    fetchUserReviews();
-});
+    <main>
+        <section class="review-section">
+            <h1>내가 작성한 게임 후기</h1>
+            <div id="review-list">
+                <!-- 게임 후기가 여기에 동적으로 추가될 예정 -->
+            </div>
+        </section>
+    </main>
 
-// auth.js에서 토큰 가져오기
-let token;
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 대진대학교 벤처 졸업작품.</p>
+        </div>
+    </footer>
 
-try {
-    token = getToken();  // auth.js에 getToken() 함수가 있다고 가정
-    if (!token) {
-        console.error("토큰을 가져올 수 없습니다. 로그인이 필요합니다.");
-    }
-} catch (error) {
-    console.error("토큰 초기화 중 오류 발생:", error);
-}
+    <script src="auth.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 헤더를 동적으로 로드
+            fetch("header.html")
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("header-placeholder").innerHTML = data;
+                    checkLoginStatus(); // 로그인 상태 확인
+                })
+                .catch(error => console.error("헤더 로드 중 오류 발생:", error));
 
-// 서버에서 사용자 리뷰를 가져오는 함수
-async function fetchUserReviews() {
-    if (!token) {
-        console.error("토큰이 없으므로 리뷰 정보를 가져올 수 없습니다.");
-        return;
-    }
-
-    try {
-        // 서버에서 리뷰 정보를 가져옴
-        const response = await fetch('/api/user/review', {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
+            // 사용자 리뷰 정보를 가져오기 위한 함수 호출
+            fetchUserReviews();
         });
 
-        if (response.ok) {
-            const reviews = await response.json();
-            console.log(reviews); // 서버 응답을 콘솔에 출력
-            displayReviews(reviews);  // 리뷰를 화면에 표시하는 함수 호출
-        } else {
-            console.error('리뷰 정보를 가져오는 데 실패했습니다:', response.status);
-        }
-    } catch (error) {
-        console.error('리뷰 정보 조회 중 오류 발생:', error);
-    }
-}
+        // auth.js에서 토큰 가져오기
+        let token;
 
-// 페이지에 후기를 표시하는 함수
-function displayReviews(reviews) {
-    const reviewList = document.getElementById('review-list');
-    reviewList.innerHTML = ''; // 이전 후기를 초기화
-    reviews.forEach(review => {
-        const reviewDiv = document.createElement('div');
-        reviewDiv.classList.add('review-item');
-        reviewDiv.innerHTML = `
-            <h3>${review.gameTitle}</h3>
-            <p>${review.content}</p>
-            <small>평점: ${review.rating}</small>
-        `;
-        reviewList.appendChild(reviewDiv);
-    });
-}
+        try {
+            token = getToken();  // auth.js에 getToken() 함수가 있다고 가정
+            if (!token) {
+                console.error("토큰을 가져올 수 없습니다. 로그인이 필요합니다.");
+            }
+        } catch (error) {
+            console.error("토큰 초기화 중 오류 발생:", error);
+        }
+
+        // 서버에서 사용자 리뷰를 가져오는 함수
+        async function fetchUserReviews() {
+            if (!token) {
+                console.error("토큰이 없으므로 리뷰 정보를 가져올 수 없습니다.");
+                return;
+            }
+
+            try {
+                // 서버에서 리뷰 정보를 가져옴
+                const response = await fetch('/api/user/review', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const reviews = await response.json();
+                    console.log(reviews); // 서버 응답을 콘솔에 출력
+                    displayReviews(reviews);  // 리뷰를 화면에 표시하는 함수 호출
+                } else {
+                    console.error('리뷰 정보를 가져오는 데 실패했습니다:', response.status);
+                }
+            } catch (error) {
+                console.error('리뷰 정보 조회 중 오류 발생:', error);
+            }
+        }
+
+        // 페이지에 후기를 표시하는 함수
+        function displayReviews(reviews) {
+            const reviewList = document.getElementById('review-list');
+            reviewList.innerHTML = ''; // 이전 후기를 초기화
+            reviews.forEach(review => {
+                const reviewDiv = document.createElement('div');
+                reviewDiv.classList.add('review-item');
+                reviewDiv.innerHTML = `
+                    <h3>${review.gameTitle}</h3>
+                    <p>${review.content}</p>
+                    <small>평점: ${review.rating}</small>
+                `;
+                reviewList.appendChild(reviewDiv);
+            });
+        }
+    </script>
+</body>
+</html>
