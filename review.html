@@ -105,11 +105,20 @@
                 reviewDiv.classList.add('review-item');
                 reviewDiv.innerHTML = `
                     <h3>${review.gameName}</h3>
-                    <p>${review.content}</p>
-                    <small>평점: ${review.rating}</small><br>
-                    <small>작성일: ${review.updatedDate}</small><br>
+                    <div class="review-content" id="review-content-${review.reviewId}">
+                        <p>${review.content}</p>
+                        <small>평점: ${review.rating}</small><br>
+                        <small>작성일: ${review.updatedDate}</small><br>
+                    </div>
                     <button onclick="deleteReview(${review.reviewId})">삭제</button>
-                    <button onclick="editReview(${review.reviewId}, '${review.content}', ${review.rating})">수정</button>
+                    <button onclick="toggleEditMode(${review.reviewId}, '${review.content}', ${review.rating})">수정</button>
+                    <div id="edit-section-${review.reviewId}" class="edit-section" style="display: none;">
+                        <textarea id="edit-content-${review.reviewId}">${review.content}</textarea><br>
+                        <label for="edit-rating-${review.reviewId}">평점: </label>
+                        <input type="number" id="edit-rating-${review.reviewId}" value="${review.rating}" min="1" max="5"><br>
+                        <button onclick="updateReview(${review.reviewId})">저장</button>
+                        <button onclick="toggleEditMode(${review.reviewId})">취소</button>
+                    </div>
                 `;
                 reviewList.appendChild(reviewDiv);
             });
@@ -140,23 +149,30 @@
             }
         }
 
-        // 리뷰 수정 함수
-        function editReview(reviewId, currentContent, currentRating) {
-            const newContent = prompt('수정할 리뷰 내용을 입력하세요:', currentContent);
-            const newRating = prompt('수정할 평점을 입력하세요 (1-5):', currentRating);
-
-            if (newContent !== null && newRating !== null) {
-                updateReview(reviewId, newContent, newRating);
+        // 리뷰 수정 모드 토글 함수
+        function toggleEditMode(reviewId, currentContent, currentRating) {
+            const reviewContentDiv = document.getElementById(`review-content-${reviewId}`);
+            const editSectionDiv = document.getElementById(`edit-section-${reviewId}`);
+            if (editSectionDiv.style.display === 'none') {
+                editSectionDiv.style.display = 'block';
+                reviewContentDiv.style.display = 'none';
+            } else {
+                editSectionDiv.style.display = 'none';
+                reviewContentDiv.style.display = 'block';
             }
         }
 
         // 서버에 리뷰 수정 요청 보내는 함수
-        async function updateReview(reviewId, content, rating) {
+        async function updateReview(reviewId) {
             const token = localStorage.getItem('token');
             if (!token) {
                 console.error("토큰이 없습니다. 로그인이 필요합니다.");
                 return;
             }
+
+            const newContent = document.getElementById(`edit-content-${reviewId}`).value;
+            const newRating = document.getElementById(`edit-rating-${reviewId}`).value;
+
             try {
                 const response = await fetch(`https://ludorium.store/api/user/review/${reviewId}`, {
                     method: 'PATCH',
@@ -164,7 +180,7 @@
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify({ content, rating })
+                    body: JSON.stringify({ content: newContent, rating: newRating })
                 });
                 if (response.ok) {
                     alert('리뷰가 수정되었습니다.');
