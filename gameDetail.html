@@ -18,7 +18,7 @@
       <div class="game-detail">
         <div class="game-header">
           <h1 id="gameName">undefined</h1>
-          <p id="categoryName">카테고리: undefined</p>
+          <div id="categories"></div>
         </div>
         <div class="game-content">
           <div class="game-left">
@@ -97,108 +97,6 @@
     <script>
       const serverUrl = "https://ludorium.store";
 
-      // 게임 후기 불러오기
-      async function fetchReviews(gameId) {
-        try {
-          console.log("조회할 gameId:", gameId); // gameId 값을 확인하기 위해 추가
-          const response = await fetch(`${serverUrl}/api/user/review/${gameId}`);
-          if (!response.ok) {
-            throw new Error("후기 불러오기 실패");
-          }
-          const result = await response.json();
-
-          console.log("게임 후기를 불러온 결과:", result); // 서버에서 받은 데이터 출력
-
-          if (result && result.data && result.data.responseDtoList) {
-            const reviews = result.data.responseDtoList;
-            const reviewsContainer = document.getElementById("reviewsContainer");
-            const averageRating = document.getElementById("averageRating");
-            const reviewCount = document.getElementById("reviewCount");
-
-            reviewsContainer.innerHTML = "";
-            averageRating.innerText = result.data.avgRating;
-            reviewCount.innerText = `(${reviews.length})`;
-
-            reviews.forEach((review) => {
-              const reviewDiv = document.createElement("div");
-              reviewDiv.className = "review-item";
-              reviewDiv.innerHTML = `
-                <img src="image-placeholder.png" alt="User" class="review-image" />
-                <div class="review-content">
-                  <p class="review-rating">⭐ ${review.rating}</p>
-                  <div class="review-text-container">
-                    <p class="review-name">${review.nickname}</p>
-                    <p class="review-text">${review.content}</p>
-                  </div>
-                </div>
-                <div class="review-footer">
-                  <p class="review-date">${review.createdDate}</p>
-                  ${
-                    review.nickname.trim() ===
-                    (window.currentUserNickname
-                      ? window.currentUserNickname.trim()
-                      : "")
-                      ? `
-                  <div class="review-actions">
-                    <button class="edit-btn" onclick="editReview(${review.reviewId}, '${review.content}')">수정</button>
-                    <button class="delete-btn" onclick="deleteReview(${review.reviewId})">삭제</button>
-                  </div>
-                  `
-                      : ""
-                  }
-                </div>
-              `;
-              reviewsContainer.appendChild(reviewDiv);
-            });
-          } else {
-            console.error("Error: 응답의 data 필드가 올바른 형태가 아닙니다.", result);
-          }
-        } catch (error) {
-          console.error("게임 후기를 불러오는 중 오류 발생:", error);
-          console.error("응답 상태 코드:", response ? response.status : "N/A"); // 상태 코드 출력 추가
-        }
-      }
-
-      // 게임 후기 삭제
-      async function deleteReview(reviewId) {
-        try {
-          const response = await fetch(`${serverUrl}/api/user/review/${reviewId}`, {
-            method: "DELETE",
-          });
-          if (!response.ok) {
-            throw new Error("후기 삭제 실패");
-          }
-          alert("후기가 삭제되었습니다.");
-          fetchReviews(window.currentGame.gameId);
-        } catch (error) {
-          console.error("게임 후기를 삭제하는 중 오류 발생:", error);
-        }
-      }
-
-      // 게임 후기 수정
-      async function editReview(reviewId, currentContent) {
-        const newContent = prompt("후기 내용을 수정하세요:", currentContent);
-        if (!newContent) return;
-
-        try {
-          const response = await fetch(`${serverUrl}/api/user/review/${reviewId}`, {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ content: newContent }),
-          });
-          if (!response.ok) {
-            throw new Error("후기 수정 실패");
-          }
-          alert("후기가 수정되었습니다.");
-          fetchReviews(window.currentGame.gameId);
-        } catch (error) {
-          console.error("게임 후기를 수정하는 중 오류 발생:", error);
-        }
-      }
-
-      // 게임 상세 정보 불러오기
       async function fetchGameDetails(gameId) {
         try {
           const response = await fetch(`${serverUrl}/api/user/game/${gameId}`);
@@ -207,16 +105,27 @@
           }
           const result = await response.json();
 
-          console.log("게임 상세 정보를 불러온 결과:", result); // 서버에서 받은 데이터 출력
+          console.log("게임 상세 정보를 불러온 결과:", result);
 
           if (result && result.data) {
             const game = result.data;
 
             document.getElementById("gameName").innerText =
               game.gameName || "제목 없음";
-            document.getElementById("categoryName").innerText = `카테고리: ${
-              game.gameCategoryList ? game.gameCategoryList.join(', ') : "알 수 없음"
-            }`;
+
+            if (game.gameCategoryList && game.gameCategoryList.length > 0) {
+              const categoriesElement = document.getElementById("categories");
+              categoriesElement.innerHTML = "";
+              game.gameCategoryList.forEach((category) => {
+                const categorySpan = document.createElement("span");
+                categorySpan.className = "category-box";
+                categorySpan.innerText = category;
+                categoriesElement.appendChild(categorySpan);
+              });
+            } else {
+              document.getElementById("categories").innerText = "카테고리: 알 수 없음";
+            }
+
             document.getElementById("gameDescription").innerHTML =
               game.gameDc || "게임 설명 없음";
 
@@ -240,7 +149,7 @@
 
                 videoElement.style.display = "block";
                 videoSourceElement.src = game.gameImageList[1];
-                videoElement.load(); // 비디오 요소에 새 소스를 로드하여 적용
+                videoElement.load();
               }
             }
 
@@ -256,53 +165,12 @@
               game.discountPrice,
               game.gameImageList[0] || ""
             );
-            fetchReviews(gameId); // 게임 상세 정보를 불러온 후, 리뷰를 불러옴
+            fetchReviews(gameId);
           } else {
             console.error("Error: 응답의 data 필드가 비어 있습니다.", result);
           }
         } catch (error) {
           console.error("게임 데이터를 불러오는 중 오류 발생:", error);
-        }
-      }
-
-      function addToCart() {
-        if (!window.currentGame) {
-          console.error("Error: 게임 정보가 없습니다.");
-          return;
-        }
-
-        const { gameId, gameName, gamePrice } = window.currentGame;
-        let cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-
-        if (!cartItems.find((item) => item.gameId === gameId)) {
-          cartItems.push({
-            gameId,
-            gameName,
-            gamePrice,
-          });
-        }
-
-        localStorage.setItem("cartItems", JSON.stringify(cartItems));
-        alert("장바구니에 추가되었습니다.");
-      }
-
-      function addRecentGame(gameId, gameName, gamePrice, gameImageUrl) {
-        let recentGames = JSON.parse(localStorage.getItem("recentGames")) || [];
-
-        if (!recentGames.find((game) => game.gameId === gameId)) {
-          recentGames.push({
-            gameId,
-            gameName,
-            gamePrice,
-            gameImageUrl,
-          });
-
-          if (recentGames.length > 5) {
-            recentGames.shift();
-          }
-
-          localStorage.setItem("recentGames", JSON.stringify(recentGames));
-          console.log("로컬 스토리지에 저장된 recentGames:", recentGames);
         }
       }
 
