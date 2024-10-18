@@ -52,28 +52,26 @@
               Linux
             </button>
           </div>
-          <ul class="requirements" id="windows">
-            <li>운영 체제: Windows Vista or greater</li>
-            <li>프로세서: 2 Ghz</li>
-            <li>메모리: 2 GB RAM</li>
-            <li>그래픽: 256 mb video memory, shader model 3.0+</li>
-            <li>DirectX: 버전 10</li>
-            <li>저장공간: 500 MB 사용 가능 공간</li>
-          </ul>
-          <ul class="requirements" id="mac" style="display: none">
-            <li>운영 체제: macOS 10.10 or greater</li>
-            <li>프로세서: 2.5 Ghz Intel Core i3</li>
-            <li>메모리: 4 GB RAM</li>
-            <li>그래픽: OpenGL 2.0 compatible</li>
-            <li>저장공간: 500 MB 사용 가능 공간</li>
-          </ul>
-          <ul class="requirements" id="linux" style="display: none">
-            <li>운영 체제: Ubuntu 16.04 or greater</li>
-            <li>프로세서: 2 Ghz</li>
-            <li>메모리: 2 GB RAM</li>
-            <li>그래픽: OpenGL 2.0 compatible</li>
-            <li>저장공간: 500 MB 사용 가능 공간</li>
-          </ul>
+          <div id="windows" class="requirements-section">
+            <div class="specs-container">
+              <div class="specs-min" id="windowsMin"></div>
+              <div class="specs-max" id="windowsMax"></div>
+            </div>
+          </div>
+
+          <div id="mac" class="requirements-section" style="display: none">
+            <div class="specs-container">
+              <div class="specs-min" id="macMin"></div>
+              <div class="specs-max" id="macMax"></div>
+            </div>
+          </div>
+
+          <div id="linux" class="requirements-section" style="display: none">
+            <div class="specs-container">
+              <div class="specs-min" id="linuxMin"></div>
+              <div class="specs-max" id="linuxMax"></div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -166,11 +164,67 @@
               game.gameImageList[0] || ""
             );
             fetchReviews(gameId);
+
+            // 시스템 요구사항 처리
+            handleSystemRequirements(game);
           } else {
             console.error("Error: 응답의 data 필드가 비어 있습니다.", result);
           }
         } catch (error) {
           console.error("게임 데이터를 불러오는 중 오류 발생:", error);
+        }
+      }
+
+      function showRequirements(os) {
+        // 모든 섹션을 숨김
+        document.querySelectorAll('.requirements-section').forEach(section => {
+          section.style.display = 'none';
+        });
+
+        // 모든 버튼에서 active 클래스 제거
+        document.querySelectorAll('.tabs button').forEach(button => {
+          button.classList.remove('active');
+        });
+
+        // 선택한 OS의 섹션을 보여줌
+        const selectedSection = document.getElementById(os);
+        if (selectedSection) {
+          selectedSection.style.display = 'block';
+        }
+
+        // 선택한 버튼에 active 클래스 추가
+        document.querySelector(`.tabs button[onclick="showRequirements('${os}')"]`).classList.add('active');
+      }
+
+      // 시스템 요구 사항 처리 함수
+      function handleSystemRequirements(game) {
+        const tabsContainer = document.querySelector('.tabs');
+
+        // Windows 사양
+        if (game.windowsMinSpecifications || game.windowsMaxSpecifications) {
+          document.getElementById('windowsMin').innerHTML = game.windowsMinSpecifications || '';
+          document.getElementById('windowsMax').innerHTML = game.windowsMaxSpecifications || '';
+        } else {
+          tabsContainer.querySelector('button[onclick="showRequirements(\'windows\')"]').style.display = 'none';
+          document.getElementById('windows').style.display = 'none';
+        }
+
+        // macOS 사양
+        if (game.macMinSpecifications || game.macMaxSpecifications) {
+          document.getElementById('macMin').innerHTML = game.macMinSpecifications || '';
+          document.getElementById('macMax').innerHTML = game.macMaxSpecifications || '';
+        } else {
+          tabsContainer.querySelector('button[onclick="showRequirements(\'mac\')"]').style.display = 'none';
+          document.getElementById('mac').style.display = 'none';
+        }
+
+        // Linux 사양
+        if (game.linuxMinSpecifications || game.linuxMaxSpecifications) {
+          document.getElementById('linuxMin').innerHTML = game.linuxMinSpecifications || '';
+          document.getElementById('linuxMax').innerHTML = game.linuxMaxSpecifications || '';
+        } else {
+          tabsContainer.querySelector('button[onclick="showRequirements(\'linux\')"]').style.display = 'none';
+          document.getElementById('linux').style.display = 'none';
         }
       }
 
