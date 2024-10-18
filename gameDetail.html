@@ -183,22 +183,22 @@
 
           console.log("리뷰 데이터를 불러온 결과:", result);
 
-          if (result && result.data && Array.isArray(result.data.responseDetail)) {
+          if (result && result.data && Array.isArray(result.data.responseDetailList)) {
             const reviewsContainer = document.getElementById("reviewsContainer");
             reviewsContainer.innerHTML = "";
 
-            result.data.responseDetail.forEach((review) => {
+            result.data.responseDetailList.forEach((review) => {
               const reviewElement = document.createElement("div");
               reviewElement.className = "review";
               reviewElement.innerHTML = `
-                <p><strong>${review.userName || "익명 사용자"}</strong> - ${review.rating || 0} / 5</p>
-                <p>${review.comment || "코멘트가 없습니다."}</p>
+                <p><strong>${review.nickname || "익명 사용자"}</strong> - ${review.rating || 0} / 5</p>
+                <p>${review.content || "코멘트가 없습니다."}</p>
               `;
               reviewsContainer.appendChild(reviewElement);
             });
 
-            document.getElementById("averageRating").innerText = result.avgRating || "0";
-            document.getElementById("reviewCount").innerText = `(${result.data.responseDetail.length})`;
+            document.getElementById("averageRating").innerText = result.data.avgRating || "0";
+            document.getElementById("reviewCount").innerText = `(${result.data.responseDetailList.length})`;
           } else {
             console.error("리뷰 데이터가 비어 있거나 형식이 올바르지 않습니다.", result);
           }
