@@ -28,6 +28,9 @@
     <script src="auth.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // OAuth 토큰 추출 및 저장
+            getTokenFromUrl();
+
             // 헤더를 동적으로 로드
             fetch("header.html")
                 .then(response => {
@@ -43,36 +46,31 @@
                     } else {
                         console.error("checkLoginStatus 함수가 정의되지 않았습니다.");
                     }
+
+                    // 로그아웃 버튼에 이벤트 리스너 추가
+                    const logoutButton = document.getElementById("logout-btn");
+                    if (logoutButton) {
+                        logoutButton.addEventListener("click", logout);
+                    }
                 })
                 .catch(error => console.error("헤더 로드 중 오류 발생:", error));
 
-            // 사용자 리뷰 정보를 가져오기 위한 함수 호출
-            fetchUserReviews();
-        });
-
-        // auth.js에서 토큰 가져오기
-        let token;
-
-        try {
-            if (typeof getToken === "function") {
-                token = getToken();  // auth.js에 getToken() 함수가 있다고 가정
+            // auth.js에서 토큰 가져오기 및 사용자 리뷰 정보 가져오기
+            try {
+                const token = localStorage.getItem('token');
                 if (!token) {
                     console.error("토큰을 가져올 수 없습니다. 로그인이 필요합니다.");
+                } else {
+                    // 사용자 리뷰 정보를 가져오기 위한 함수 호출
+                    fetchUserReviews(token);
                 }
-            } else {
-                console.error("getToken 함수가 정의되지 않았습니다.");
+            } catch (error) {
+                console.error("토큰 초기화 중 오류 발생:", error);
             }
-        } catch (error) {
-            console.error("토큰 초기화 중 오류 발생:", error);
-        }
+        });
 
         // 서버에서 사용자 리뷰를 가져오는 함수
-        async function fetchUserReviews() {
-            if (!token) {
-                console.error("토큰이 없으므로 리뷰 정보를 가져올 수 없습니다.");
-                return;
-            }
-
+        async function fetchUserReviews(token) {
             try {
                 // 서버에서 리뷰 정보를 가져옴
                 const response = await fetch('/api/user/review', {
@@ -97,6 +95,10 @@
         // 페이지에 후기를 표시하는 함수
         function displayReviews(reviews) {
             const reviewList = document.getElementById('review-list');
+            if (!reviewList) {
+                console.error("리뷰 목록을 표시할 요소를 찾을 수 없습니다.");
+                return;
+            }
             reviewList.innerHTML = ''; // 이전 후기를 초기화
             reviews.forEach(review => {
                 const reviewDiv = document.createElement('div');
