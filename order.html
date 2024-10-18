@@ -42,7 +42,12 @@
       }
 
       try {
-        const response = await fetch('https://ludorium.store/api/user/order/list', { method: 'GET', headers: { 'Authorization': `Bearer ${token}` } });
+        const response = await fetch('https://ludorium.store/api/user/order/list', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
 
         if (!response.ok) {
           throw new Error('주문 목록을 불러오는 중 오류 발생');
@@ -50,7 +55,7 @@
 
         const data = await response.json();
         console.log('주문 목록 데이터:', data);
-        const orderList = data.orders || data.data;
+        const orderList = data.data;
 
         // 모든 주문 상태 출력 (필터링을 제거하여 테스트)
         displayOrders(orderList);
@@ -171,8 +176,6 @@
           buttonContainer.classList.add('button-container');
           if (order.orderStatus === 'CANCEL_COMPLETED') {
             buttonContainer.innerHTML = '<p>취소된 주문입니다.</p>';
-            orderItem.appendChild(buttonContainer);
-            orderContainer.appendChild(orderItem);
           } else if (order.orderStatus !== 'PURCHASE_CONFIRMED') {
             buttonContainer.innerHTML = `
               <button class="confirm-btn" onclick="confirmOrder('${order.orderId}')">구매확정</button>
@@ -186,10 +189,7 @@
           // 주문 아이템을 추가한 후 리뷰를 불러옵니다
           if (order.orderStatus === 'PURCHASE_CONFIRMED') {
             order.items.forEach(item => {
-                loadReviews(item.gameId, item.orderDetailId);
-              });
-              });
-              }
+              loadReviews(item.gameId, item.orderDetailId);
             });
           }
         });
