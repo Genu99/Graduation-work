@@ -127,15 +127,19 @@
             document.getElementById("gameDescription").innerHTML =
               game.gameDc || "게임 설명 없음";
 
-            if (game.originalPrice !== game.discountPrice) {
-              document.getElementById(
-                "gamePrice"
-              ).innerHTML = `정상가: ₩ ${game.originalPrice}<br>판매가: ₩ ${game.discountPrice}`;
+            if (game.originalPrice !== undefined && game.discountPrice !== undefined) {
+              if (game.originalPrice !== game.discountPrice) {
+                document.getElementById(
+                  "gamePrice"
+                ).innerHTML = `정상가: ₩ ${game.originalPrice}<br>판매가: ₩ ${game.discountPrice}`;
+              } else {
+                document.getElementById("gamePrice").innerText =
+                  game.discountPrice === 0
+                    ? "무료"
+                    : `가격: ₩ ${game.discountPrice}`;
+              }
             } else {
-              document.getElementById("gamePrice").innerText =
-                game.discountPrice === 0
-                  ? "무료"
-                  : `가격: ₩ ${game.discountPrice}`;
+              document.getElementById("gamePrice").innerText = "가격 정보를 사용할 수 없습니다.";
             }
 
             if (game.gameImageList && game.gameImageList.length > 0) {
@@ -157,12 +161,13 @@
               gamePrice: game.discountPrice,
             };
 
-            addRecentGame(
-              gameId,
-              game.gameName,
-              game.discountPrice,
-              game.gameImageList[0] || ""
-            );
+            // addRecentGame 함수 참조 오류 수정 (주석 처리 또는 함수 정의 필요)
+            // addRecentGame(
+            //   gameId,
+            //   game.gameName,
+            //   game.discountPrice,
+            //   game.gameImageList[0] || ""
+            // );
             fetchReviews(gameId);
 
             // 시스템 요구사항 처리
