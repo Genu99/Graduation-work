@@ -107,10 +107,74 @@
                     <h3>${review.gameName}</h3>
                     <p>${review.content}</p>
                     <small>평점: ${review.rating}</small><br>
-                    <small>작성일: ${review.updatedDate}</small>
+                    <small>작성일: ${review.updatedDate}</small><br>
+                    <button onclick="deleteReview(${review.reviewId})">삭제</button>
+                    <button onclick="editReview(${review.reviewId}, '${review.content}', ${review.rating})">수정</button>
                 `;
                 reviewList.appendChild(reviewDiv);
             });
+        }
+
+        // 리뷰 삭제 함수
+        async function deleteReview(reviewId) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.error("토큰이 없습니다. 로그인이 필요합니다.");
+                return;
+            }
+            try {
+                const response = await fetch(`https://ludorium.store/api/user/review/${reviewId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (response.ok) {
+                    alert('리뷰가 삭제되었습니다.');
+                    fetchUserReviews(token); // 리뷰 목록 갱신
+                } else {
+                    console.error('리뷰 삭제 실패. 상태 코드:', response.status);
+                }
+            } catch (error) {
+                console.error('리뷰 삭제 중 오류 발생:', error);
+            }
+        }
+
+        // 리뷰 수정 함수
+        function editReview(reviewId, currentContent, currentRating) {
+            const newContent = prompt('수정할 리뷰 내용을 입력하세요:', currentContent);
+            const newRating = prompt('수정할 평점을 입력하세요 (1-5):', currentRating);
+
+            if (newContent !== null && newRating !== null) {
+                updateReview(reviewId, newContent, newRating);
+            }
+        }
+
+        // 서버에 리뷰 수정 요청 보내는 함수
+        async function updateReview(reviewId, content, rating) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.error("토큰이 없습니다. 로그인이 필요합니다.");
+                return;
+            }
+            try {
+                const response = await fetch(`https://ludorium.store/api/user/review/${reviewId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ content, rating })
+                });
+                if (response.ok) {
+                    alert('리뷰가 수정되었습니다.');
+                    fetchUserReviews(token); // 리뷰 목록 갱신
+                } else {
+                    console.error('리뷰 수정 실패. 상태 코드:', response.status);
+                }
+            } catch (error) {
+                console.error('리뷰 수정 중 오류 발생:', error);
+            }
         }
     </script>
 </body>
