@@ -72,7 +72,7 @@
         // 서버에서 사용자 리뷰를 가져오는 함수
         async function fetchUserReviews(token) {
             try {
-                // 서버에서 리뷰 정보를 가져옴
+                // 서버에서 사용자가 작성한 모든 리뷰 정보를 가져옴
                 const response = await fetch('/api/user/review', {
                     method: 'GET',
                     headers: {
@@ -81,9 +81,9 @@
                 });
 
                 if (response.ok) {
-                    const reviews = await response.json();
-                    console.log(reviews); // 서버 응답을 콘솔에 출력
-                    displayReviews(reviews);  // 리뷰를 화면에 표시하는 함수 호출
+                    const reviewsData = await response.json();
+                    console.log(reviewsData); // 서버 응답을 콘솔에 출력
+                    displayReviews(reviewsData.data);  // 리뷰를 화면에 표시하는 함수 호출
                 } else {
                     console.error('리뷰 정보를 가져오는 데 실패했습니다:', response.status);
                 }
@@ -104,9 +104,10 @@
                 const reviewDiv = document.createElement('div');
                 reviewDiv.classList.add('review-item');
                 reviewDiv.innerHTML = `
-                    <h3>${review.gameTitle}</h3>
+                    <h3>${review.gameName}</h3>
                     <p>${review.content}</p>
-                    <small>평점: ${review.rating}</small>
+                    <small>평점: ${review.rating}</small><br>
+                    <small>작성일: ${review.updatedDate}</small>
                 `;
                 reviewList.appendChild(reviewDiv);
             });
