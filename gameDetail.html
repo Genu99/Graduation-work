@@ -162,8 +162,6 @@
             };
 
             fetchReviews(gameId);
-
-            // 시스템 요구사항 처리
             handleSystemRequirements(game);
           } else {
             console.error("Error: 응답의 data 필드가 비어 있습니다.", result);
@@ -228,7 +226,6 @@
         document.querySelector(`.tabs button[onclick="showRequirements('${os}')"]`).classList.add('active');
       }
 
-      // 시스템 요구 사항 처리 함수
       function handleSystemRequirements(game) {
         const tabsContainer = document.querySelector('.tabs');
 
