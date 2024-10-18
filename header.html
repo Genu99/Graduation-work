@@ -18,6 +18,20 @@
   </head>
   <body>
     <header>
+      <div class="head">
+        <a href="cart.html" class="cart-btn">
+          <span class="material-symbols-outlined"> shopping_cart </span>
+        </a>
+        <span id="welcome-message"></span>
+
+        <div class="auth-buttons">
+          <button id="logout-btn" style="display: none" onclick="logout()">
+            로그아웃
+          </button>
+
+          <a href="login.html" class="login-btn" id="login-btn">로그인</a>
+        </div>
+      </div>
       <div class="top-nav">
         <div class="logo">
           <a href="main.html"><img src="logo.jpg" alt="Game Forge Logo" /></a>
@@ -27,19 +41,12 @@
           <ul class="main-menu">
             <li><a href="store.html">상점</a></li>
             <li><a href="mypage.html">마이페이지</a></li>
-            <li><a href="community.html">자유게시판</a></li>
+            <li><a href="community.html">게시판</a></li>
           </ul>
         </nav>
-        <div class="auth-buttons">
-          <span id="welcome-message"></span>
-          <button id="logout-btn" style="display:none;" onclick="logout()">로그아웃</button>
-          <a href="cart.html" class="cart-btn">
-            <span class="material-symbols-outlined"> shopping_cart </span>
-          </a>
-          <a href="login.html" class="login-btn" id="login-btn">로그인</a>
-        </div>
       </div>
     </header>
-    <script src="auth.js"></script> <!-- 로그인 상태 관리를 위한 스크립트 추가 -->
+    <script src="auth.js"></script>
+    <!-- 로그인 상태 관리를 위한 스크립트 추가 -->
   </body>
 </html>
