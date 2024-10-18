@@ -110,8 +110,8 @@
                         <small>평점: ${review.rating}</small><br>
                         <small>작성일: ${review.updatedDate}</small><br>
                     </div>
-                    <button onclick="deleteReview(${review.reviewId})">삭제</button>
-                    <button onclick="toggleEditMode(${review.reviewId}, '${review.content}', ${review.rating})">수정</button>
+                    <button onclick="toggleEditMode($1)">수정</button>
+<button onclick="deleteReview($1)">삭제</button>
                     <div id="edit-section-${review.reviewId}" class="edit-section" style="display: none;">
                         <textarea id="edit-content-${review.reviewId}">${review.content}</textarea><br>
                         <label for="edit-rating-${review.reviewId}">평점: </label>
