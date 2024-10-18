@@ -183,11 +183,11 @@
 
           console.log("리뷰 데이터를 불러온 결과:", result);
 
-          if (result && result.data) {
+          if (result && result.data && result.data.responseDetail) {
             const reviewsContainer = document.getElementById("reviewsContainer");
             reviewsContainer.innerHTML = "";
 
-            result.data.forEach((review) => {
+            result.data.responseDetail.forEach((review) => {
               const reviewElement = document.createElement("div");
               reviewElement.className = "review";
               reviewElement.innerHTML = `
@@ -197,8 +197,8 @@
               reviewsContainer.appendChild(reviewElement);
             });
 
-            document.getElementById("averageRating").innerText = result.averageRating;
-            document.getElementById("reviewCount").innerText = `(${result.data.length})`;
+            document.getElementById("averageRating").innerText = result.avgRating;
+            document.getElementById("reviewCount").innerText = `(${result.data.responseDetail.length})`;
           } else {
             console.error("리뷰 데이터가 비어 있습니다.", result);
           }
