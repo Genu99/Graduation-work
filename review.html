@@ -30,10 +30,19 @@
         document.addEventListener("DOMContentLoaded", function() {
             // 헤더를 동적으로 로드
             fetch("header.html")
-                .then(response => response.text())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("헤더 파일을 찾을 수 없습니다.");
+                    }
+                    return response.text();
+                })
                 .then(data => {
                     document.getElementById("header-placeholder").innerHTML = data;
-                    checkLoginStatus(); // 로그인 상태 확인
+                    if (typeof checkLoginStatus === "function") {
+                        checkLoginStatus(); // 로그인 상태 확인
+                    } else {
+                        console.error("checkLoginStatus 함수가 정의되지 않았습니다.");
+                    }
                 })
                 .catch(error => console.error("헤더 로드 중 오류 발생:", error));
 
@@ -45,9 +54,13 @@
         let token;
 
         try {
-            token = getToken();  // auth.js에 getToken() 함수가 있다고 가정
-            if (!token) {
-                console.error("토큰을 가져올 수 없습니다. 로그인이 필요합니다.");
+            if (typeof getToken === "function") {
+                token = getToken();  // auth.js에 getToken() 함수가 있다고 가정
+                if (!token) {
+                    console.error("토큰을 가져올 수 없습니다. 로그인이 필요합니다.");
+                }
+            } else {
+                console.error("getToken 함수가 정의되지 않았습니다.");
             }
         } catch (error) {
             console.error("토큰 초기화 중 오류 발생:", error);
