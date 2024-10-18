@@ -187,7 +187,7 @@
           orderContainer.appendChild(orderItem);
 
           // 주문 아이템을 추가한 후 리뷰를 불러옵니다
-          if (order.orderStatus === 'PURCHASE_CONFIRMED') {
+          if (order.orderStatus === 'PURCHASE_CONFIRMED' || order.orderStatus === 'ORDER_COMPLETED') {
             order.items.forEach(item => {
               loadReviews(item.gameId, item.orderDetailId);
             });
