@@ -176,7 +176,11 @@
           buttonContainer.classList.add('button-container');
           if (order.orderStatus === 'CANCEL_COMPLETED') {
             buttonContainer.innerHTML = '<p>취소된 주문입니다.</p>';
-          } else if (order.orderStatus !== 'PURCHASE_CONFIRMED' && order.orderStatus !== 'CANCEL_COMPLETED') {
+          } else if (order.orderStatus === 'ORDER_COMPLETED') {
+            buttonContainer.innerHTML = '<p>주문이 완료되었습니다.</p>';
+          } else if (order.orderStatus === 'PURCHASE_CONFIRMED') {
+            buttonContainer.innerHTML = '<p>구매가 확정되었습니다.</p>';
+          } else {
             buttonContainer.innerHTML = `
               <button class="confirm-btn" onclick="confirmOrder('${order.orderId}')">구매확정</button>
               <button class="cancel-btn" onclick="cancelOrder('${order.orderId}')">주문취소</button>
