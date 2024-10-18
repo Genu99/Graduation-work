@@ -4,15 +4,29 @@ header {
     font-style: normal;
     color: #333;
 }
+.head {
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 60px; /* 요소들 사이의 간격을 60px로 설정 */
+    margin-right: 110px;
+}
 
 .top-nav {
     display: flex;
-    justify-content: space-between;
+    
     align-items: center;
-    padding: 15px 50px;
+    padding-right: 0;
+    padding-left: 15px;
+    
+    padding-bottom: 50px;
+    
     color: #333;
     width: 100%;
     box-sizing: border-box;
+    border-bottom: 1px solid #333;
+    
 }
 
 .logo img {
@@ -24,10 +38,10 @@ header {
 
 .main-menu {
     list-style-type: none;
-    margin: 0;
+    margin: 0 350px;
     padding: 0;
     display: flex;
-    gap: 30px;
+    gap: 65px;
     justify-content: center;
     flex: 1;
 }
@@ -47,7 +61,7 @@ header {
 }
 
 .auth-buttons {
-    display: flex;
+    display: inline-block;
     gap: 10px;
     margin-right: 50px;
     align-items: center;
@@ -67,12 +81,20 @@ header {
     transform: scale(1.05);
 }
 
-.auth-buttons .cart-btn {
+.auth-buttons  {
     font-size: 20px;
     padding: 10px;
     color: #333;
     background-color: transparent;
     cursor: pointer;
+}
+.material-symbols-outlined{
+    color: #333;
+
+    
+}
+.material-symbols-outlined:visited{
+    color: #333;
 }
 
 .auth-buttons .cart-btn:hover {
@@ -81,7 +103,9 @@ header {
 
 #welcome-message {
     font-size: 16px;
+
     font-weight: 500;
+
     margin-left: 10px;
     color: #333;
 }
