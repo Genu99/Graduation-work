@@ -11,14 +11,19 @@ body {
     margin: 0;
 }
 
-#categoryName {
+#categories {
+    margin: 10px 0;
+}
+
+.category-box {
     color: #666;
-    margin: 5px 0;
     padding: 8px 12px;
     background-color: #f0f0f0;
     border-radius: 8px;
     border: 1px solid #ccc;
     display: inline-block;
+    margin-right: 10px;
+    font-size: 0.9em;
 }
 
 .game-content {
