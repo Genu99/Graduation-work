@@ -42,19 +42,14 @@
       }
 
       try {
-        const response = await fetch('https://ludorium.store/api/user/order/list', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
+        const response = await fetch('https://ludorium.store/api/user/order/list', { method: 'GET', headers: { 'Authorization': `Bearer ${token}` } });
 
         if (!response.ok) {
           throw new Error('주문 목록을 불러오는 중 오류 발생');
         }
 
         const data = await response.json();
-        console.log('주문 목록 데이터:', data); // 서버에서 받은 주문 목록 데이터 콘솔에 출력
+        console.log('주문 목록 데이터:', data);
         const orderList = data.data;
 
         // 모든 주문 상태 출력 (필터링을 제거하여 테스트)
@@ -105,6 +100,7 @@
     // 주문 내역을 화면에 표시하기
     function displayOrders(orderList) {
       const orderContainer = document.getElementById('order-container');
+      console.clear();
       orderContainer.innerHTML = ''; // 기존 내용을 지움
 
       if (!orderList || orderList.length === 0) {
