@@ -181,11 +181,11 @@
 
           console.log("리뷰 데이터를 불러온 결과:", result);
 
-          if (result && result.data && Array.isArray(result.data.responseDetailList)) {
+          if (result && result.data && Array.isArray(result.data.responseDtoList)) {
             const reviewsContainer = document.getElementById("reviewsContainer");
             reviewsContainer.innerHTML = "";
 
-            result.data.responseDetailList.forEach((review) => {
+            result.data.responseDtoList.forEach((review) => {
               const reviewElement = document.createElement("div");
               reviewElement.className = "review";
               reviewElement.innerHTML = `
@@ -196,7 +196,7 @@
             });
 
             document.getElementById("averageRating").innerText = result.data.avgRating || "0";
-            document.getElementById("reviewCount").innerText = `(${result.data.responseDetailList.length})`;
+            document.getElementById("reviewCount").innerText = `(${result.data.responseDtoList.length})`;
           } else {
             console.error("리뷰 데이터가 비어 있거나 형식이 올바르지 않습니다.", result);
           }
