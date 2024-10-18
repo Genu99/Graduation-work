@@ -187,11 +187,9 @@
           orderContainer.appendChild(orderItem);
 
           // 주문 아이템을 추가한 후 리뷰를 불러옵니다
-          if (order.orderStatus === 'PURCHASE_CONFIRMED' || order.orderStatus === 'ORDER_COMPLETED' || order.orderStatus === 'CANCEL_COMPLETED') {
-            order.items.forEach(item => {
-              loadReviews(item.gameId, item.orderDetailId);
-            });
-          }
+          order.items.forEach(item => {
+            loadReviews(item.gameId, item.orderDetailId);
+          });
         });
       });
     }
