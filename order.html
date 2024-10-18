@@ -175,6 +175,7 @@
           buttonContainer.classList.add('button-container');
           if (order.orderStatus === 'CANCEL_COMPLETED') {
             buttonContainer.innerHTML = '<p>취소된 주문입니다.</p>';
+            orderItem.appendChild(buttonContainer);
             orderContainer.appendChild(orderItem);
           } else if (order.orderStatus !== 'PURCHASE_CONFIRMED') {
             buttonContainer.innerHTML = `
