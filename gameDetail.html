@@ -160,6 +160,7 @@
               gameName: game.gameName,
               gamePrice: game.discountPrice,
             };
+
             fetchReviews(gameId);
 
             // 시스템 요구사항 처리
@@ -169,6 +170,40 @@
           }
         } catch (error) {
           console.error("게임 데이터를 불러오는 중 오류 발생:", error);
+        }
+      }
+
+      async function fetchReviews(gameId) {
+        try {
+          const response = await fetch(`${serverUrl}/api/user/review/${gameId}`);
+          if (!response.ok) {
+            throw new Error("리뷰 데이터를 불러오는 데 실패했습니다.");
+          }
+          const result = await response.json();
+
+          console.log("리뷰 데이터를 불러온 결과:", result);
+
+          if (result && result.data) {
+            const reviewsContainer = document.getElementById("reviewsContainer");
+            reviewsContainer.innerHTML = "";
+
+            result.data.forEach((review) => {
+              const reviewElement = document.createElement("div");
+              reviewElement.className = "review";
+              reviewElement.innerHTML = `
+                <p><strong>${review.userName}</strong> - ${review.rating} / 5</p>
+                <p>${review.comment}</p>
+              `;
+              reviewsContainer.appendChild(reviewElement);
+            });
+
+            document.getElementById("averageRating").innerText = result.averageRating;
+            document.getElementById("reviewCount").innerText = `(${result.data.length})`;
+          } else {
+            console.error("리뷰 데이터가 비어 있습니다.", result);
+          }
+        } catch (error) {
+          console.error("리뷰 데이터를 불러오는 중 오류 발생:", error);
         }
       }
 
