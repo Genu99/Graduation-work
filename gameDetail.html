@@ -18,14 +18,15 @@
       <div class="game-detail">
         <div class="game-header">
           <h1 id="gameName">undefined</h1>
-          <div id="categories"></div>
+          <p id="categoryName">카테고리: undefined</p>
         </div>
         <div class="game-content">
           <div class="game-left">
-            <video id="gameVideo" controls>
+            <video id="gameVideo" controls autoplay muted>
               <source id="videoSource" src="" type="video/webm" />
               동영상을 재생할 수 없습니다.
             </video>
+            <p id="gameDescription"></p>
           </div>
           <div class="game-right">
             <img
@@ -33,44 +34,45 @@
               src="https://via.placeholder.com/150"
               alt="게임 이미지"
             />
+            <p id="release-date">출시일:</p>
+            <p id="distributor">배급사:</p>
             <p id="gamePrice">가격: ₩ undefined</p>
             <button class="cart-btn" onclick="addToCart()">
               장바구니에 담기
             </button>
           </div>
         </div>
-        <p id="gameDescription">undefined</p>
+      </div>
 
-        <h2>시스템 요구사항</h2>
-        <div class="system-requirements">
-          <div class="tabs">
-            <button class="tab active" onclick="showRequirements('windows')">
-              Windows
-            </button>
-            <button class="tab" onclick="showRequirements('mac')">macOS</button>
-            <button class="tab" onclick="showRequirements('linux')">
-              Linux
-            </button>
+      <h2>시스템 요구사항</h2>
+      <div class="system-requirements">
+        <div class="tabs">
+          <button class="tab active" onclick="showRequirements('windows')">
+            Windows
+          </button>
+          <button class="tab" onclick="showRequirements('mac')">macOS</button>
+          <button class="tab" onclick="showRequirements('linux')">
+            Linux
+          </button>
+        </div>
+        <div id="windows" class="requirements-section">
+          <div class="specs-container">
+            <div class="specs-min" id="windowsMin"></div>
+            <div class="specs-max" id="windowsMax"></div>
           </div>
-          <div id="windows" class="requirements-section">
-            <div class="specs-container">
-              <div class="specs-min" id="windowsMin"></div>
-              <div class="specs-max" id="windowsMax"></div>
-            </div>
-          </div>
+        </div>
 
-          <div id="mac" class="requirements-section" style="display: none">
-            <div class="specs-container">
-              <div class="specs-min" id="macMin"></div>
-              <div class="specs-max" id="macMax"></div>
-            </div>
+        <div id="mac" class="requirements-section" style="display: none">
+          <div class="specs-container">
+            <div class="specs-min" id="macMin"></div>
+            <div class="specs-max" id="macMax"></div>
           </div>
+        </div>
 
-          <div id="linux" class="requirements-section" style="display: none">
-            <div class="specs-container">
-              <div class="specs-min" id="linuxMin"></div>
-              <div class="specs-max" id="linuxMax"></div>
-            </div>
+        <div id="linux" class="requirements-section" style="display: none">
+          <div class="specs-container">
+            <div class="specs-min" id="linuxMin"></div>
+            <div class="specs-max" id="linuxMax"></div>
           </div>
         </div>
       </div>
@@ -112,16 +114,10 @@
               game.gameName || "제목 없음";
 
             if (game.gameCategoryList && game.gameCategoryList.length > 0) {
-              const categoriesElement = document.getElementById("categories");
-              categoriesElement.innerHTML = "";
-              game.gameCategoryList.forEach((category) => {
-                const categorySpan = document.createElement("span");
-                categorySpan.className = "category-box";
-                categorySpan.innerText = category;
-                categoriesElement.appendChild(categorySpan);
-              });
+              const categoriesElement = document.getElementById("categoryName");
+              categoriesElement.innerText = `카테고리: ${game.gameCategoryList.join(", ")}`;
             } else {
-              document.getElementById("categories").innerText = "카테고리: 알 수 없음";
+              document.getElementById("categoryName").innerText = "카테고리: 알 수 없음";
             }
 
             document.getElementById("gameDescription").innerHTML =
@@ -134,9 +130,7 @@
                 ).innerHTML = `정상가: ₩ ${game.originalPrice}<br>판매가: ₩ ${game.discountPrice}`;
               } else {
                 document.getElementById("gamePrice").innerText =
-                  game.discountPrice === 0
-                    ? "무료"
-                    : `가격: ₩ ${game.discountPrice}`;
+                  game.discountPrice === 0 ? "무료" : `가격: ₩ ${game.discountPrice}`;
               }
             } else {
               document.getElementById("gamePrice").innerText = "가격 정보를 사용할 수 없습니다.";
@@ -146,14 +140,19 @@
               document.getElementById("gameImage").src = game.gameImageList[0];
               if (game.gameImageList.length > 1) {
                 const videoElement = document.getElementById("gameVideo");
-                const videoSourceElement =
-                  document.getElementById("videoSource");
+                const videoSourceElement = document.getElementById("videoSource");
 
                 videoElement.style.display = "block";
                 videoSourceElement.src = game.gameImageList[1];
                 videoElement.load();
               }
             }
+
+            // 출시일 및 배급사 정보 업데이트
+            document.getElementById("release-date").innerText =
+              `출시일: ${game.releaseDate || "알 수 없음"}`;
+            document.getElementById("distributor").innerText =
+              `배급사: ${game.publisher || "알 수 없음"}`;
 
             window.currentGame = {
               gameId: gameId,
@@ -229,7 +228,6 @@
           }
         } catch (error) {
           console.error("게임 후기를 불러오는 중 오류 발생:", error);
-          console.error("응답 상태 코드:", response ? response.status : "N/A"); // 상태 코드 출력 추가
         }
       }
 
