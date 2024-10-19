@@ -20,7 +20,7 @@
       <!-- 주문 내역이 여기에 표시됩니다 -->
     </div>
 
-    <script src="auth.js">
+    <script src="auth.js" defer>
       // 주문 확정 처리 함수
       async function confirmOrder(orderId) {
         const token = localStorage.getItem('token');
@@ -78,7 +78,7 @@
       }
 
     </script>
-    <script>
+    <script defer>
       document.addEventListener('DOMContentLoaded', () => {
         // 헤더를 동적으로 로드
         fetch("header.html")
