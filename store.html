@@ -199,7 +199,7 @@
         }
 
         // 무료 게임 구매 요청
-        const response = await fetch(`${serverUrl}/api/user/purchase-now/${gameId}`, {
+        const response = await fetch(`${serverUrl}/api/user/order/purchase-now/${gameId}`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
