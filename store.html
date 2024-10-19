@@ -255,6 +255,21 @@
       fetchGamesByCategory(0); // 페이지 로드 시 전체 카테고리로 초기 게임 목록 가져오기
       showRecentGameIcon(); // 최근 본 게임 아이콘 표시
     });
+
+    // 장르 필터 변경 시 게임 목록을 다시 가져오는 함수
+    document.querySelectorAll('input[name="genre"]').forEach(radio => {
+      radio.addEventListener('change', function() {
+        const categoryId = this.value;
+        fetchGamesByCategory(categoryId);
+      });
+    });
+
+    // 정렬 기준 변경 시 게임 목록을 다시 가져오는 함수
+    document.getElementById('sortOrder').addEventListener('change', function() {
+      const sortOrder = this.value;
+      const selectedGenre = document.querySelector('input[name="genre"]:checked').value;
+      fetchGamesByCategory(selectedGenre, currentPage, sortOrder);
+    });
   </script>
 </body>
 </html>
