@@ -85,7 +85,7 @@
 
           if (response.status === 404) {
             console.warn('주문 상세 정보를 찾을 수 없습니다 (404):', orderId);
-            return []; // 404 오류 발생 시 빈 배열 반환
+            return null; // 404 오류 발생 시 null 반환
           }
 
           if (!response.ok) {
@@ -104,7 +104,7 @@
           return data.data.orderList;
         } catch (error) {
           console.error('주문 상세 정보 불러오기 실패:', error);
-          return [];
+          return null;
         }
       }
 
@@ -148,25 +148,29 @@
 
             // 주문 상세 정보를 가져와서 각 게임 정보를 표시합니다
             const orderDetails = await loadOrderDetails(order.orderId);
-            for (const item of orderDetails) {
-              const name = item.gameName ? item.gameName : '알 수 없는 게임';
-              const price = item.price && item.price !== 0 ? `${item.price} ₩` : '무료';
-              const imageUrl = item.gameImage && item.gameImage !== 'undefined' ? item.gameImage : './images/default-image.png';
-              const orderDetailId = item.orderDetailId;
-              const reviewStatus = item.reviewStatus;
+            if (orderDetails === null) {
+              productsContainer.innerHTML = '<p>주문 상세 정보를 불러올 수 없습니다.</p>';
+            } else {
+              for (const item of orderDetails) {
+                const name = item.gameName ? item.gameName : '알 수 없는 게임';
+                const price = item.price && item.price !== 0 ? `${item.price} ₩` : '무료';
+                const imageUrl = item.gameImage && item.gameImage !== 'undefined' ? item.gameImage : './images/default-image.png';
+                const orderDetailId = item.orderDetailId;
+                const reviewStatus = item.reviewStatus;
 
-              const productItem = document.createElement('div');
-              productItem.classList.add('product-item');
-              productItem.innerHTML = 
-                `<img src="${imageUrl}" alt="${name}" />
-                <div class="product-info">
-                  <p class="product-name">${name}</p>
-                  <p class="product-price">${price}</p>
-                </div>
-                <div class="review-section" id="review-section-${orderDetailId}">
-                  ${reviewStatus ? `<p>리뷰 내용: ${item.reviewContent}</p>` : ''}
-                </div>`;
-              productsContainer.appendChild(productItem);
+                const productItem = document.createElement('div');
+                productItem.classList.add('product-item');
+                productItem.innerHTML = 
+                  `<img src="${imageUrl}" alt="${name}" />
+                  <div class="product-info">
+                    <p class="product-name">${name}</p>
+                    <p class="product-price">${price}</p>
+                  </div>
+                  <div class="review-section" id="review-section-${orderDetailId}">
+                    ${reviewStatus ? `<p>리뷰 내용: ${item.reviewContent}</p>` : ''}
+                  </div>`;
+                productsContainer.appendChild(productItem);
+              }
             }
 
             orderItem.appendChild(productsContainer);
