@@ -1,223 +1,228 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Forge - Main</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100&display=swap" rel="stylesheet">
-    <style>
-        /* 팝업 버튼 스타일링 */
-        #open-popup-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            font-size: 24px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s, transform 0.3s;
-        }
+/* 기본 */
+body {
+    font-family: "Poppins", "Noto Sans KR", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    color: #333;
+}
 
-        #open-popup-btn:hover {
-            background-color: #0056b3;
-            transform: scale(1.1);
-        }
+/* 서브메뉴 */
+.sub-nav {
+    background-color: #889491;
+    margin: 0 50px;
+    padding: 10px 30px;
+    border-radius: 15px;
+}
 
-        .banner-slider {
-            position: relative;
-            width: 100%;
-            max-width: 1000px;
-            margin: 20px auto;
-            overflow: hidden;
-        }
+.submenu {
+    list-style-type: none;
+    margin: 0 5px;
+    padding: 0;
+    display: flex;
+    gap: 15px;
+}
 
-        .slides {
-            display: flex;
-            transition: transform 0.5s ease-in-out;
-        }
+.submenu li {
+    color: white;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 10px;
+    transition: background-color 0.3s, color 0.3s;
+}
 
-        .slide {
-            min-width: 100%;
-            box-sizing: border-box;
-        }
+.submenu li:hover {
+    background-color: #777;
+    color: #fff;
+}
 
-        .slide img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
+/* 배너 슬라이더 */
+.banner-slider {
+    position: relative;
+    width: 100%;
+    height: 50vh;
+    margin: 0 auto;
+    overflow: hidden;
+}
 
-        .controls {
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: space-between;
-            transform: translateY(-50%);
-            padding: 0 20px;
-        }
+.slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100%;
+    height: 100%;
+}
 
-        .material-symbols-outlined {
-            background: rgba(0, 0, 0, 0.5);
-            color: white;
-            padding: 10px;
-            border-radius: 50%;
-            cursor: pointer;
-        }
+.slide {
+    min-width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
 
-    </style>
-</head>
-<body>
-    <!-- 헤더 자리 표시자 -->
-    <div id="header-placeholder"></div>
+.slide img {
+    width: 80%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 20px;
+}
 
-    <div class="banner-slider">
-        <div class="slides">
-            <div class="slide">
-                <img src="./images/core_keeper.jpg" alt="core keeper" onerror="this.src='./images/placeholder.jpg';" />
-            </div>
-            <div class="slide">
-                <img src="./images/eternal_return.jpg" alt="eternal return" onerror="this.src='./images/placeholder.jpg';" />
-            </div>
-            <div class="slide">
-                <img src="./images/once_human.jpg" alt="once human" onerror="this.src='./images/placeholder.jpg';" />
-            </div>
-            <div class="slide">
-                <img src="./images/60_seconds.jpg" alt="60 seconds" onerror="this.src='./images/placeholder.jpg';" />
-            </div>
-        </div>
-        <div class="controls">
-            <span class="material-symbols-outlined prev">arrow_back_ios</span>
-            <span class="material-symbols-outlined next">arrow_forward_ios</span>
-        </div>
-    </div>
+/* 배너 슬라이더 제어 */
+.controls {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+    padding: 0 20px;
+    box-sizing: border-box;
+}
 
-    <main>
-        <section class="content">
-            <div class="search-bar">
-                <input type="text" placeholder="스타듀밸리의 최근 업데이트를 확인하세요!" class="search-input">
-                <button class="search-btn">검색</button>
-            </div>
+.material-symbols-outlined {
+    cursor: pointer;
+    padding: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 36px;
+    margin: 10px;
+    border-radius: 50%;
+    user-select: none;
+}
 
-            <!-- 이달의 추천 게임 -->
-            <section class="featured-games">
-                <h2>이달의 탑4 인기게임</h2>
-                <div class="game-grid" id="top-popular-games">
-                    <!-- 게임 카드가 여기에 동적으로 추가됩니다 -->
-                </div>
-            </section>
+.material-symbols-outlined:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
 
-            <!-- 이달의 신작 게임 -->
-            <section class="discounted-games">
-                <h2>이달의 탑4 신작게임</h2>
-                <div class="game-grid" id="top-new-games">
-                    <!-- 게임 카드가 여기에 동적으로 추가됩니다 -->
-                </div>
-            </section>
-        </section>
+.prev:hover,
+.next:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
 
-        <!-- 팝업을 여는 버튼 -->
-        <button id="open-popup-btn">&#x1F50E;</button> <!-- 돋보기 아이콘을 원형 버튼에 넣음 -->
-    </main>
+/* 메인 */
+main {
+    display: flex;
+    padding: 10px 20px;
+}
 
-    <footer>
-        <div class="footer-content">
-            <p>&copy; 대진대학교 벤처 졸업작품.</p>
-        </div>
-    </footer>
+.content {
+    width: 100%;
+    padding: 15px;
+}
 
-    <!-- auth.js 추가 - 페이지 로드 후 실행 -->
-    <script src="auth.js"></script>
-    <script>
-        const serverUrl = 'https://ludorium.store';
+.search {
+    font-style: "Noto Sans KR";
+    font-weight: 500;
+    font-style: normal;
+    color: #333;
+}
 
-        // 이달의 탑4 인기게임 가져오기
-        async function fetchTopPopularGames() {
-            try {
-                const response = await fetch(`${serverUrl}/api/user/game/popular`);
-                if (!response.ok) {
-                    throw new Error('네트워크 응답에 문제가 있습니다.');
-                }
-                const result = await response.json();
-                renderGames(result.data.slice(0, 4), 'top-popular-games');
-            } catch (error) {
-                console.error('이달의 인기 게임을 가져오는 중 오류 발생:', error);
-            }
-        }
+.search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
 
-        // 이달의 탑4 신작게임 가져오기
-        async function fetchTopNewGames() {
-            try {
-                const response = await fetch(`${serverUrl}/api/user/game/new`);
-                if (!response.ok) {
-                    throw new Error('네트워크 응답에 문제가 있습니다.');
-                }
-                const result = await response.json();
-                renderGames(result.data.slice(0, 4), 'top-new-games');
-            } catch (error) {
-                console.error('이달의 신작 게임을 가져오는 중 오류 발생:', error);
-            }
-        }
+.search-input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+}
 
-        // 게임 카드 렌더링 함수
-        function renderGames(games, containerId) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = '';
-            games.forEach(game => {
-                const gameCard = document.createElement('div');
-                gameCard.className = 'game-card';
-                gameCard.innerHTML = `
-                    <a href="gameDetail.html?gameId=${game.gameId}">
-                        <img src="${game.gameImageUrl || './images/placeholder.jpg'}" alt="${game.gameName}">
-                        <p>${game.gameName}</p>
-                    </a>
-                `;
-                container.appendChild(gameCard);
-            });
-        }
+.search-btn {
+    padding: 8px 15px;
+    background-color: #889491;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
-        // 페이지 로드 시 게임 목록 가져오기
-        document.addEventListener("DOMContentLoaded", function() {
-            fetchTopPopularGames();
-            fetchTopNewGames();
-        });
+/* 제품 그리드 */
+.featured-games,
+.discounted-games {
+    margin-bottom: 20px;
+}
 
-        // 팝업창을 열고 토큰을 전달하는 함수
-        function openPopupWithToken() {
-            // localStorage에서 토큰 가져오기
-            const token = localStorage.getItem('token');
+.featured-games h2,
+.discounted-games h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #333;
+    padding-left: 50px;
+}
 
-            // 토큰이 없는 경우 예외 처리
-            if (!token) {
-                console.error('토큰이 없습니다. 먼저 로그인하세요.');
-                return;
-            }
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
 
-            // 팝업창으로 이동할 URL
-            const popupUrl = `https://gameforge-ai-server.streamlit.app/?token=${token}`;
+.game-card {
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s;
+}
 
-            // 새 창 열기
-            const popupWindow = window.open(popupUrl, 'PopupWindow', 'width=600,height=600');
+.game-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
 
-            if (!popupWindow || popupWindow.closed || typeof popupWindow.closed === 'undefined') {
-                alert('팝업이 차단되었습니다. 팝업을 허용해주세요.');
-            }
-        }
+.game-card p {
+    padding: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+}
 
-        // 버튼에 이벤트 리스너 추가
-        document.getElementById('open-popup-btn').addEventListener('click', openPopupWithToken);
-    </script>
-</body>
-</html>
+.game-card:hover {
+    transform: translateY(-10px);
+}
+
+/* 하단 */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+/* 팝업 버튼 스타일링 */
+#open-popup-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+#open-popup-btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.1);
+}
