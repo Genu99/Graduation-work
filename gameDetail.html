@@ -37,7 +37,7 @@
             <p id="release-date">출시일:</p>
             <p id="distributor">배급사:</p>
             <p id="gamePrice">가격: ₩ undefined</p>
-            <button class="cart-btn" onclick="addToCart()">
+            <button class="cart-btn" onclick="addToCart(window.currentGame.gameId)">
               장바구니에 담기
             </button>
           </div>
@@ -178,14 +178,14 @@
       // 게임 후기 불러오기
       async function fetchReviews(gameId) {
         try {
-          console.log("조회할 gameId:", gameId); // gameId 값을 확인하기 위해 추가
+          console.log("조회할 gameId:", gameId);
           const response = await fetch(`${serverUrl}/api/user/review/${gameId}`);
           if (!response.ok) {
             throw new Error("후기 불러오기 실패");
           }
           const result = await response.json();
 
-          console.log("게임 후기를 불러온 결과:", result); // 서버에서 받은 데이터 출력
+          console.log("게임 후기를 불러온 결과:", result);
 
           if (result && result.data && result.data.responseDtoList) {
             const reviews = result.data.responseDtoList;
@@ -236,31 +236,54 @@
         }
       }
 
+      async function addToCart(gameId) {
+        try {
+          const token = localStorage.getItem('token');
+          if (!token) {
+            alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.');
+            window.location.href = 'login.html';
+            return;
+          }
+
+          const response = await fetch(`${serverUrl}/api/user/cart/${gameId}`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error('장바구니에 추가하는 중 오류가 발생했습니다.');
+          }
+
+          alert('장바구니에 추가되었습니다.');
+        } catch (error) {
+          console.error('장바구니에 게임 추가 중 오류 발생:', error);
+          alert('장바구니에 추가하는 데 실패했습니다. 다시 시도해주세요.');
+        }
+      }
+
       function showRequirements(os) {
-        // 모든 섹션을 숨김
         document.querySelectorAll('.requirements-section').forEach(section => {
           section.style.display = 'none';
         });
 
-        // 모든 버튼에서 active 클래스 제거
         document.querySelectorAll('.tabs button').forEach(button => {
           button.classList.remove('active');
         });
 
-        // 선택한 OS의 섹션을 보여줌
         const selectedSection = document.getElementById(os);
         if (selectedSection) {
           selectedSection.style.display = 'block';
         }
 
-        // 선택한 버튼에 active 클래스 추가
         document.querySelector(`.tabs button[onclick="showRequirements('${os}')"]`).classList.add('active');
       }
 
       function handleSystemRequirements(game) {
         const tabsContainer = document.querySelector('.tabs');
 
-        // Windows 사양
         if (game.windowsMinSpecifications || game.windowsMaxSpecifications) {
           document.getElementById('windowsMin').innerHTML = game.windowsMinSpecifications || '';
           document.getElementById('windowsMax').innerHTML = game.windowsMaxSpecifications || '';
@@ -269,7 +292,6 @@
           document.getElementById('windows').style.display = 'none';
         }
 
-        // macOS 사양
         if (game.macMinSpecifications || game.macMaxSpecifications) {
           document.getElementById('macMin').innerHTML = game.macMinSpecifications || '';
           document.getElementById('macMax').innerHTML = game.macMaxSpecifications || '';
@@ -278,7 +300,6 @@
           document.getElementById('mac').style.display = 'none';
         }
 
-        // Linux 사양
         if (game.linuxMinSpecifications || game.linuxMaxSpecifications) {
           document.getElementById('linuxMin').innerHTML = game.linuxMinSpecifications || '';
           document.getElementById('linuxMax').innerHTML = game.linuxMaxSpecifications || '';
