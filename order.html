@@ -126,7 +126,7 @@
                         <p class="product-name">${name}</p>
                         <p class="product-price">${price}</p>
                       </div>
-                      ${(reviewStatus && order.orderStatus === 'PURCHASE_CONFIRMED' && item.price !== 0) ? `<button class="review-btn" onclick="toggleReviewForm('${orderDetailId}')">리뷰 작성</button>` : ''}
+                      ${(item.price !== 0 && reviewStatus && order.orderStatus === 'PURCHASE_CONFIRMED') ? `<button class="review-btn" onclick="toggleReviewForm('${orderDetailId}')">리뷰 작성</button>` : ''}
                       <div class="review-form" id="review-form-${orderDetailId}" style="display: none;">
                         <textarea id="review-text-${orderDetailId}" placeholder="리뷰를 작성하세요..."></textarea>
                         <input type="number" id="review-rating-${orderDetailId}" placeholder="평점을 입력하세요 (1-5)" min="1" max="5" />
@@ -155,6 +155,12 @@
             orderContainer.appendChild(orderItem);
           });
         });
+
+        // 홍보 문구 추가
+        const promoMessage = document.createElement('p');
+        promoMessage.classList.add('promo-message');
+        promoMessage.textContent = '유료 상품 리뷰 작성 시 500원의 적립금을 드립니다!';
+        orderContainer.appendChild(promoMessage);
       }
 
       // 리뷰 제출
@@ -187,7 +193,7 @@
             throw new Error(`리뷰 작성에 실패했습니다: ${errorData.message}`);
           }
 
-          alert('리뷰가 성공적으로 작성되었습니다.');
+          alert('리뷰가 성공적으로 작성되었습니다. 500원의 적립금이 지급되었습니다!');
           loadOrderList(); // UI 업데이트를 위해 주문 목록 다시 로드
         } catch (error) {
           console.error('리뷰 작성 중 오류 발생:', error);
