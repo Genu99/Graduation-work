@@ -149,8 +149,7 @@
             }
 
             // 출시일 및 배급사 정보 업데이트
-            document.getElementById("release-date").innerText =
-              `출시일: ${game.releaseDate || "알 수 없음"}`;
+            document.getElementById("release-date").innerText = `출시일: ${game.releaseDate ? game.releaseDate.split('T')[0] : "알 수 없음"}`;
             document.getElementById("distributor").innerText =
               `배급사: ${game.publisher || "알 수 없음"}`;
 
