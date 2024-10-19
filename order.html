@@ -126,7 +126,7 @@
                         <p class="product-name">${name}</p>
                         <p class="product-price">${price}</p>
                       </div>
-                      ${(item.price !== 0 && order.orderStatus === 'ORDER_COMPLETED' && !reviewStatus) ? `<button class="review-btn" onclick="toggleReviewForm('${orderDetailId}')">리뷰 작성</button>` : ''}
+                      ${(item.price !== 0 && order.orderStatus === 'PURCHASE_CONFIRMED' && !reviewStatus) ? `<button class="review-btn" onclick="toggleReviewForm('${orderDetailId}')">리뷰 작성</button>` : ''}
                       <div class="review-form" id="review-form-${orderDetailId}" style="display: none;">
                         <textarea id="review-text-${orderDetailId}" placeholder="리뷰를 작성하세요..."></textarea>
                         <input type="number" id="review-rating-${orderDetailId}" placeholder="평점을 입력하세요 (1-5)" min="1" max="5" />
@@ -143,7 +143,7 @@
             buttonContainer.classList.add('button-container');
             if (order.orderStatus === 'CANCEL_COMPLETED') {
               buttonContainer.innerHTML = '<p>취소된 주문입니다.</p>';
-            } else if (order.orderStatus === 'ORDER_COMPLETED') {
+            } else if (order.orderStatus === 'PURCHASE_CONFIRMED') {
               buttonContainer.innerHTML = '<p>구매 확정된 상품입니다.</p>';
             } else {
               buttonContainer.innerHTML = 
