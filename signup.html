@@ -37,6 +37,7 @@
             이메일 인증 번호 전송
           </button>
           <p id="verification-status"></p>
+          <p id="timer"></p>
         </div>
 
         <!-- 이메일 인증 입력란, 인증 번호 전송 후에 보임 -->
@@ -127,6 +128,7 @@
 
     <script>
       const API_BASE_URL = "https://ludorium.store/api"; // 서버 주소
+      let timerInterval; // 타이머 interval 변수
 
       // 전화번호에 하이픈 자동 추가
       function autoHyphen(target) {
@@ -217,11 +219,33 @@
             verificationStatus.style.color = "green";
             // 인증 번호 입력란 표시
             document.getElementById("email-verification-group").style.display = "block";
+
+            // 타이머 시작
+            startTimer(3 * 60);
           })
           .catch((error) => {
             verificationStatus.innerText = error.message;
             verificationStatus.style.color = "red";
           });
+      }
+
+      // 타이머 시작 함수
+      function startTimer(duration) {
+        const timerDisplay = document.getElementById("timer");
+        let timer = duration;
+        clearInterval(timerInterval); // 기존 타이머가 있다면 정지
+
+        timerInterval = setInterval(() => {
+          const minutes = Math.floor(timer / 60);
+          const seconds = timer % 60;
+          timerDisplay.innerText = `남은 시간: ${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+
+          if (--timer < 0) {
+            clearInterval(timerInterval);
+            timerDisplay.innerText = "인증 시간이 만료되었습니다. 다시 시도해주세요.";
+            document.getElementById("verification-code").readOnly = true;
+          }
+        }, 1000);
       }
 
       // 이메일 인증번호 검증
@@ -258,6 +282,7 @@
             verificationStatus.innerText = "인증이 완료되었습니다.";
             verificationStatus.style.color = "green";
             document.getElementById("verification-code").readOnly = true;
+            clearInterval(timerInterval); // 인증 성공 시 타이머 정지
           })
           .catch((error) => {
             verificationStatus.innerText = error.message;
