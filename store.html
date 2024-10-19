@@ -187,55 +187,45 @@
       }
     }
 
-    // 무료 게임을 구매하는 함수
-    async function buyGame(gameId) {
-      try {
-        console.log('게임 ID:', gameId); // 게임 ID 로그 출력
-        const token = localStorage.getItem('token');
-        if (!token) {
-          alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.');
-          window.location.href = 'login.html';
-          return;
-        }
-
-        // 게임 정보를 가져오기 위한 요청
-        const gameResponse = await fetch(`${serverUrl}/api/user/game/${gameId}`);
-        if (!gameResponse.ok) {
-          throw new Error('게임 정보를 가져오는 중 오류가 발생했습니다.');
-        }
-
-        const gameData = await gameResponse.json();
-        const { gameName, gameImageUrl, price } = gameData;
-
-        // 무료 게임 구매 요청
-        const response = await fetch(`${serverUrl}/api/user/order/create`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            cartList: [gameId],
-            gamePriceList: [price],
-            originalAmount: 0,
-            totalAmount: 0,
-            rewardPoints: 0,
-            email: localStorage.getItem('email'),
-            gameName: gameName,
-            gameImage: gameImageUrl
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error('게임 구매 중 오류가 발생했습니다.');
-        }
-
-        alert('무료 게임이 성공적으로 구매되었습니다.');
-      } catch (error) {
-        console.error('게임 구매 중 오류 발생:', error);
-        alert('게임 구매에 실패했습니다. 다시 시도해주세요.');
-      }
+   // 무료 게임을 구매하는 함수
+async function buyGame(gameId) {
+  try {
+    console.log('게임 ID:', gameId); // 게임 ID 로그 출력
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.');
+      window.location.href = 'login.html';
+      return;
     }
+
+    // 무료 게임 구매 요청
+    const response = await fetch(`${serverUrl}/api/user/order/create`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        cartList: [gameId],
+        gamePriceList: [0], // 무료 게임이므로 가격은 0
+        originalAmount: 0,
+        totalAmount: 0,
+        rewardPoints: 0,
+        email: localStorage.getItem('email')
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('게임 구매 중 오류가 발생했습니다.');
+    }
+
+    alert('무료 게임이 성공적으로 구매되었습니다.');
+  } catch (error) {
+    console.error('게임 구매 중 오류 발생:', error);
+    alert('게임 구매에 실패했습니다. 다시 시도해주세요.');
+  }
+}
+
 
     // 페이지 로드 시 기본 카테고리(전체)로 게임 목록 가져오기
     document.addEventListener("DOMContentLoaded", function() {
