@@ -16,6 +16,10 @@
     <!-- 헤더 자리 표시자 -->
     <div id="header-placeholder"></div>
 
+    <div class="promo-message">
+      유료 상품 리뷰 작성 시 500원의 적립금을 드립니다!
+    </div>
+
     <div class="order-container" id="order-container">
       <!-- 주문 내역이 여기에 표시됩니다 -->
     </div>
@@ -155,12 +159,6 @@
             orderContainer.appendChild(orderItem);
           });
         });
-
-        // 홍보 문구 추가
-        const promoMessage = document.createElement('p');
-        promoMessage.classList.add('promo-message');
-        promoMessage.textContent = '유료 상품 리뷰 작성 시 500원의 적립금을 드립니다!';
-        orderContainer.appendChild(promoMessage);
       }
 
       // 리뷰 제출
