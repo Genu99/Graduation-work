@@ -238,6 +238,8 @@
 
       async function addToCart(gameId) {
         try {
+          console.log("장바구니에 추가할 게임 ID:", gameId); // 게임 ID 출력
+
           // gameId가 유효한지 확인
           if (!gameId) {
             throw new Error('유효하지 않은 게임 ID입니다.');
