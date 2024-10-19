@@ -123,18 +123,28 @@ function fetchUserInfo() {
         })
         .then(data => {
             console.log('서버로부터 받은 사용자 정보:', data);
+
+            // 닉네임과 이메일 표시
             document.getElementById('user-nickname').innerText = `${data.data.nickname} 님 안녕하세요!`;
             document.getElementById('user-email').innerText = data.data.email || '정보 없음';
 
-            // 로컬스토리지의 provider 값을 사용하여 소셜 로그인 정보를 표시합니다.
+            // 프로필 이미지 설정
+            const profileImage = document.getElementById('profile-image');
+            profileImage.src = data.data.profileImage || 'https://via.placeholder.com/100';
+
+            // 소셜 로그인 정보 표시
             const provider = localStorage.getItem('provider');
             if (provider) {
                 document.getElementById('user-social').innerText = provider === 'kakao' ? '카카오 로그인' : provider === 'naver' ? '네이버 로그인' : provider;
             } else {
-                document.getElementById('user-social').innerText = '정보 없음';
+                document.getElementById('user-social').innerText = 'GameForge';
             }
 
-            document.getElementById('user-birthdate').innerText = data.data.birthDate || '정보 없음';
+            // 시분초 제거 후 날짜만 표시
+            const birthDate = data.data.birthDate ? data.data.birthDate.split(' ')[0] : '정보 없음';
+            document.getElementById('user-birthdate').innerText = birthDate;
+
+            // 전화번호, 성별, 리워드 포인트 표시
             document.getElementById('user-tel').innerText = data.data.tel || '정보 없음';
             document.getElementById('user-gender').innerText = data.data.gender === 'M' ? '남자' : (data.data.gender === 'W' ? '여자' : '정보 없음');
             document.getElementById('user-reward-points').innerText = `${data.data.rewardPoints} 원` || '정보 없음';
