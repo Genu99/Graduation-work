@@ -19,7 +19,19 @@
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById('header').innerHTML = data;
-                });
+                    checkLoginStatus(); // 헤더 로드 후 로그인 상태 확인
+                    const logoutButton = document.getElementById('logout-btn');
+                    if (logoutButton) {
+                        logoutButton.addEventListener('click', logout);
+                    }
+                })
+                .catch(error => console.error('헤더 로드 중 오류 발생:', error));
+
+            // 로그인 여부 확인
+            if (!localStorage.getItem('token')) {
+                alert('로그인 후 이용해주세요');
+                window.location.href = 'login.html';
+            }
         });
 
         // 입력 이벤트 처리
@@ -60,6 +72,8 @@
                 // 성공적으로 요청이 완료된 경우 처리할 로직
                 alert('회원탈퇴 요청이 완료되었습니다.');
                 console.log(data); // 서버의 응답 데이터 확인
+                // 탈퇴 후 로그인 페이지로 이동
+                window.location.href = 'login.html';
             })
             .catch(error => {
                 // 에러 처리
@@ -67,10 +81,6 @@
                 alert('회원탈퇴 요청 중 오류가 발생했습니다.');
             });
         });
-
-        function getAuthToken() {
-            return localStorage.getItem('token');
-        }
     </script>
 </body>
 </html>
