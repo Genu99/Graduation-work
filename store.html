@@ -190,6 +190,7 @@
     // 무료 게임을 구매하는 함수
     async function buyGame(gameId) {
       try {
+        console.log('게임 ID:', gameId); // 게임 ID 로그 출력
         const token = localStorage.getItem('token');
         if (!token) {
           alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.');
