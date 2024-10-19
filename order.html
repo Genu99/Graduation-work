@@ -121,9 +121,7 @@
                   <p class="product-name">${name}</p>
                   <p class="product-price">${price}</p>
                 </div>
-                <div class="review-section" id="review-section-${orderDetailId}">
-                  ${reviewStatus ? `<p>리뷰 내용: ${item.reviewContent}</p>` : ''}
-                </div>`;
+                `;
               productsContainer.appendChild(productItem);
             }
 
@@ -134,7 +132,9 @@
             buttonContainer.classList.add('button-container');
             if (order.orderStatus === 'CANCEL_COMPLETED') {
               buttonContainer.innerHTML = '<p>취소된 주문입니다.</p>';
-            } else if (order.orderStatus !== 'PURCHASE_CONFIRMED') {
+            } else if (order.orderStatus === 'PURCHASE_CONFIRMED') {
+              buttonContainer.innerHTML = '<p>구매 확정된 상품입니다.</p>';
+            } else {
               buttonContainer.innerHTML = 
                 `<button class="confirm-btn" onclick="confirmOrder('${order.orderId}')">구매확정</button>
                 <button class="cancel-btn" onclick="cancelOrder('${order.orderId}')">주문취소</button>`;
