@@ -37,7 +37,7 @@
             <p id="release-date">출시일:</p>
             <p id="distributor">배급사:</p>
             <p id="gamePrice">가격: ₩ undefined</p>
-            <button class="cart-btn" onclick="addToCart(window.currentGame.gameId)">
+            <button class="cart-btn" onclick="addToCart(window.currentGame?.gameId)">
               장바구니에 담기
             </button>
           </div>
@@ -110,54 +110,73 @@
           if (result && result.data) {
             const game = result.data;
 
-            document.getElementById("gameName").innerText =
-              game.gameName || "제목 없음";
+            const gameNameElement = document.getElementById("gameName");
+            if (gameNameElement) {
+              gameNameElement.innerText = game.gameName || "제목 없음";
+            }
 
             if (game.gameCategoryList && game.gameCategoryList.length > 0) {
               const categoriesElement = document.getElementById("categories");
-              categoriesElement.innerHTML = "";
-              game.gameCategoryList.forEach((category) => {
-                const categorySpan = document.createElement("span");
-                categorySpan.className = "category-box";
-                categorySpan.innerText = category;
-                categoriesElement.appendChild(categorySpan);
-              });
-            } else {
-              document.getElementById("categories").innerText = "카테고리: 알 수 없음";
-            }
-
-            document.getElementById("gameDescription").innerHTML =
-              game.gameDc || "게임 설명 없음";
-
-            if (game.originalPrice !== undefined && game.discountPrice !== undefined) {
-              if (game.originalPrice !== game.discountPrice) {
-                document.getElementById(
-                  "gamePrice"
-                ).innerHTML = `정상가: ₩ ${game.originalPrice}<br>판매가: ₩ ${game.discountPrice}`;
-              } else {
-                document.getElementById("gamePrice").innerText =
-                  game.discountPrice === 0 ? "무료" : `가격: ₩ ${game.discountPrice}`;
+              if (categoriesElement) {
+                categoriesElement.innerHTML = "";
+                game.gameCategoryList.forEach((category) => {
+                  const categorySpan = document.createElement("span");
+                  categorySpan.className = "category-box";
+                  categorySpan.innerText = category;
+                  categoriesElement.appendChild(categorySpan);
+                });
               }
             } else {
-              document.getElementById("gamePrice").innerText = "가격 정보를 사용할 수 없습니다.";
+              const categoriesElement = document.getElementById("categories");
+              if (categoriesElement) {
+                categoriesElement.innerText = "카테고리: 알 수 없음";
+              }
             }
 
-            if (game.gameImageList && game.gameImageList.length > 0) {
-              document.getElementById("gameImage").src = game.gameImageList[0];
+            const gameDescriptionElement = document.getElementById("gameDescription");
+            if (gameDescriptionElement) {
+              gameDescriptionElement.innerHTML = game.gameDc || "게임 설명 없음";
+            }
+
+            const gamePriceElement = document.getElementById("gamePrice");
+            if (gamePriceElement) {
+              if (game.originalPrice !== undefined && game.discountPrice !== undefined) {
+                if (game.originalPrice !== game.discountPrice) {
+                  gamePriceElement.innerHTML = `정상가: ₩ ${game.originalPrice}<br>판매가: ₩ ${game.discountPrice}`;
+                } else {
+                  gamePriceElement.innerText =
+                    game.discountPrice === 0 ? "무료" : `가격: ₩ ${game.discountPrice}`;
+                }
+              } else {
+                gamePriceElement.innerText = "가격 정보를 사용할 수 없습니다.";
+              }
+            }
+
+            const gameImageElement = document.getElementById("gameImage");
+            if (gameImageElement && game.gameImageList && game.gameImageList.length > 0) {
+              gameImageElement.src = game.gameImageList[0];
               if (game.gameImageList.length > 1) {
                 const videoElement = document.getElementById("gameVideo");
                 const videoSourceElement = document.getElementById("videoSource");
 
-                videoElement.style.display = "block";
-                videoSourceElement.src = game.gameImageList[1];
-                videoElement.load();
+                if (videoElement && videoSourceElement) {
+                  videoElement.style.display = "block";
+                  videoSourceElement.src = game.gameImageList[1];
+                  videoElement.load();
+                }
               }
             }
 
             // 출시일 및 배급사 정보 업데이트
-            document.getElementById("release-date").innerText = `출시일: ${game.releaseDate ? game.releaseDate.split('T')[0] : "알 수 없음"}`;
-            document.getElementById("distributor").innerText =
-              `배급사: ${game.publisher || "알 수 없음"}`;
+            const releaseDateElement = document.getElementById("release-date");
+            if (releaseDateElement) {
+              releaseDateElement.innerText = `출시일: ${game.releaseDate ? game.releaseDate.split('T')[0] : "알 수 없음"}`;
+            }
+
+            const distributorElement = document.getElementById("distributor");
+            if (distributorElement) {
+              distributorElement.innerText = `배급사: ${game.publisher || "알 수 없음"}`;
+            }
 
             window.currentGame = {
               gameId: gameId,
@@ -193,41 +212,43 @@
             const averageRating = document.getElementById("averageRating");
             const reviewCount = document.getElementById("reviewCount");
 
-            reviewsContainer.innerHTML = "";
-            averageRating.innerText = result.data.avgRating;
-            reviewCount.innerText = `(${reviews.length})`;
+            if (reviewsContainer && averageRating && reviewCount) {
+              reviewsContainer.innerHTML = "";
+              averageRating.innerText = result.data.avgRating;
+              reviewCount.innerText = `(${reviews.length})`;
 
-            reviews.forEach((review) => {
-              const reviewDiv = document.createElement("div");
-              reviewDiv.className = "review-item";
-              reviewDiv.innerHTML = `
-                <img src="image-placeholder.png" alt="User" class="review-image" />
-                <div class="review-content">
-                  <p class="review-rating">⭐ ${review.rating}</p>
-                  <div class="review-text-container">
-                    <p class="review-name">${review.nickname}</p>
-                    <p class="review-text">${review.content}</p>
+              reviews.forEach((review) => {
+                const reviewDiv = document.createElement("div");
+                reviewDiv.className = "review-item";
+                reviewDiv.innerHTML = `
+                  <img src="image-placeholder.png" alt="User" class="review-image" />
+                  <div class="review-content">
+                    <p class="review-rating">⭐ ${review.rating}</p>
+                    <div class="review-text-container">
+                      <p class="review-name">${review.nickname}</p>
+                      <p class="review-text">${review.content}</p>
+                    </div>
                   </div>
-                </div>
-                <div class="review-footer">
-                  <p class="review-date">${review.createdDate}</p>
-                  ${
-                    review.nickname.trim() ===
-                    (window.currentUserNickname
-                      ? window.currentUserNickname.trim()
-                      : "")
-                      ? `
-                  <div class="review-actions">
-                    <button class="edit-btn" onclick="editReview(${review.reviewId}, '${review.content}')">수정</button>
-                    <button class="delete-btn" onclick="deleteReview(${review.reviewId})">삭제</button>
+                  <div class="review-footer">
+                    <p class="review-date">${review.createdDate}</p>
+                    ${
+                      review.nickname.trim() ===
+                      (window.currentUserNickname
+                        ? window.currentUserNickname.trim()
+                        : "")
+                        ? `
+                    <div class="review-actions">
+                      <button class="edit-btn" onclick="editReview(${review.reviewId}, '${review.content}')">수정</button>
+                      <button class="delete-btn" onclick="deleteReview(${review.reviewId})">삭제</button>
+                    </div>
+                    `
+                        : ""
+                    }
                   </div>
-                  `
-                      : ""
-                  }
-                </div>
-              `;
-              reviewsContainer.appendChild(reviewDiv);
-            });
+                `;
+                reviewsContainer.appendChild(reviewDiv);
+              });
+            }
           } else {
             console.error("Error: 응답의 data 필드가 올바른 형태가 아닙니다.", result);
           }
