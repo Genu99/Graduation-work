@@ -198,6 +198,16 @@
           return;
         }
 
+        // 게임 정보를 가져오기 위한 요청
+        const gameResponse = await fetch(`${serverUrl}/api/user/game/${gameId}`);
+        if (!gameResponse.ok) {
+          throw new Error('게임 정보를 가져오는 중 오류가 발생했습니다.');
+        }
+
+        const gameData = await gameResponse.json();
+        const { gameName, gameImageUrl, price } = gameData;
+
+        // 무료 게임 구매 요청
         const response = await fetch(`${serverUrl}/api/user/order/create`, {
           method: 'POST',
           headers: {
@@ -205,12 +215,14 @@
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            cartIdList: [gameId],
-            gamePriceList: [],
+            cartList: [gameId],
+            gamePriceList: [price],
             originalAmount: 0,
             totalAmount: 0,
             rewardPoints: 0,
-            email: localStorage.getItem('email')
+            email: localStorage.getItem('email'),
+            gameName: gameName,
+            gameImage: gameImageUrl
           }),
         });
 
