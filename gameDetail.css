@@ -28,10 +28,11 @@ body {
     width: 70%;
     
   }
-#gameVideo{
+#gameVideo {
+    width: 800px;
     width: 600px;
-    height: 300px;
-}  
+    height: 353px;
+}
   .game-right {
     
     align-items: flex-start; 
