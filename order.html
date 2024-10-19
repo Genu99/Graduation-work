@@ -126,7 +126,7 @@
                         <p class="product-name">${name}</p>
                         <p class="product-price">${price}</p>
                       </div>
-                      ${(item.price !== 0 && order.orderStatus === 'PURCHASE_CONFIRMED' && !reviewStatus) ? `<button class="review-btn" onclick="toggleReviewForm('${orderDetailId}')">리뷰 작성</button>` : ''}
+                      ${(reviewStatus && order.orderStatus === 'PURCHASE_CONFIRMED') ? `<button class="review-btn" onclick="toggleReviewForm('${orderDetailId}')">리뷰 작성</button>` : ''}
                       <div class="review-form" id="review-form-${orderDetailId}" style="display: none;">
                         <textarea id="review-text-${orderDetailId}" placeholder="리뷰를 작성하세요..."></textarea>
                         <input type="number" id="review-rating-${orderDetailId}" placeholder="평점을 입력하세요 (1-5)" min="1" max="5" />
