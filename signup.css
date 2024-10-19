@@ -1,3 +1,8 @@
+.logo img {
+    margin-left: 120px;
+    width: 140px; /* 이미지 크기를 조정하여 일관성 유지 */
+    height: auto;
+    object-fit: cover;
 body {
   font-family: "Noto Sans KR";
   background-color: #f8f8f8;
@@ -17,11 +22,6 @@ body {
   width: 400px;
   text-align: center;
 }
-.logo img {
-    margin-left: 120px;
-    width: 140px; /* 이미지 크기를 조정하여 일관성 유지 */
-    height: auto;
-    object-fit: cover;
 
 h2 {
   font-family: "Noto Sans KR";
