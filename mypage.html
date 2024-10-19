@@ -86,8 +86,13 @@
                 })
                 .catch(error => console.error("헤더 로드 중 오류 발생:", error));
 
-            // 사용자 정보를 채우기 위한 함수 호출
-            fetchUserInfo();
+            // 로그인 여부 확인 후 사용자 정보를 채우기 위한 함수 호출
+            if (!localStorage.getItem('token')) {
+                alert('로그인 후 이용해주세요');
+                window.location.href = 'login.html';
+            } else {
+                fetchUserInfo();
+            }
         });
     </script>
 </body>
