@@ -1,0 +1,92 @@
+<style>
+      body {
+        font-family: "Noto Sans KR";
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 30px;
+        width: 350px;
+        margin: 0 auto;
+      }
+
+      .form-horizontal {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .form-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 16px;
+        color: #333;
+      }
+
+      label {
+        width: 80px;
+        font-weight: bold;
+      }
+
+      input[type="text"] {
+        text-align: right;
+        padding: 25px;
+        width: 200px;
+        border: none;
+        border-bottom: 1px solid grey;
+        font-size: 14px;
+      }
+      #check-phone {
+        width: 120px;
+      }
+      #check-nickname {
+        width: 120px;
+      }
+      span {
+        font-size: 16px;
+        color: #333;
+      }
+
+      .form-actions {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .btn-submit {
+        padding: 10px 20px;
+        background-color: #889491;
+        color: #fff;
+        border: none;
+        border-radius: 25px;
+        font-size: 16px;
+
+        cursor: pointer;
+      }
+
+      .btn-submit:hover {
+        background-color: #778881;
+      }
+
+      .input-group {
+        display: flex;
+        align-items: center;
+      }
+
+      .input-group input {
+        flex: 1;
+        margin-right: 10px;
+      }
+
+      #profile-image {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-right: 10px;
+        border: 2px solid #889491;
+      }
+    </style>
+  </head>
