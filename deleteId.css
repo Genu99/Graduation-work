@@ -1,21 +1,33 @@
-body{
+body {
     font-family: "Noto Sans KR";
     text-align: center;
-    margin-top: 400px;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
+    margin: 0;
 }
-p{
+
+#header {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+p {
     font-size: 24px;
 }
-#withdraw-input{
+
+#withdraw-input {
     font-size: 20px;
     padding-bottom: 5px;
     border: none;
     border-bottom: 1px solid #333;
 }
-#withdraw-btn{
+
+#withdraw-btn {
     font-size: 15px;
     padding: 10px 10px;
     width: 120px;
@@ -24,3 +36,4 @@ p{
     border: none;
     border-radius: 20px;
 }
+
