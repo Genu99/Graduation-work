@@ -39,7 +39,7 @@ header {
 
 .main-menu {
     list-style-type: none;
-    margin: 0 350px;
+    margin: 0 300px;
     padding: 0;
     display: flex;
     gap: 65px;
