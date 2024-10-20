@@ -1,0 +1,25 @@
+body{
+    font-family: "Noto Sans KR";
+    text-align: center;
+    margin-top: 400px;
+    justify-content: center;
+    align-items: center;
+}
+p{
+    font-size: 24px;
+}
+#withdraw-input{
+    font-size: 20px;
+    padding-bottom: 5px;
+    border: none;
+    border-bottom: 1px solid #333;
+}
+#withdraw-btn{
+    font-size: 15px;
+    padding: 10px 10px;
+    width: 120px;
+    background-color: #889491;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+}
