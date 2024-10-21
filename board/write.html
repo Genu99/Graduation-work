@@ -35,7 +35,7 @@
         padding-top: 10px;
         resize: none;
       }
-      .header {
+      .image-upload {
         height: 30px;
       }
       input[type="submit"] {
@@ -49,10 +49,15 @@
         background-color: #889491;
         cursor: pointer;
       }
+      input[type="file"] {
+        font-family: "Noto Sans KR";
+        margin-top: 10px;
+        margin-bottom: 30px;
+      }
     </style>
   </head>
   <body>
-    <form action="board.html" method="post">
+    <form action="board.html" method="post" enctype="multipart/form-data">
       <table>
         <tr>
           <td><h2>글쓰기</h2></td>
@@ -71,6 +76,14 @@
         <tr>
           <td>
             <textarea placeholder="내용을 입력하세요" name="detail"></textarea>
+          </td>
+        </tr>
+        <tr>
+          <td class="image-upload">이미지 업로드</td>
+        </tr>
+        <tr>
+          <td>
+            <input type="file" name="image" accept="image/*" />
           </td>
         </tr>
         <tr>
