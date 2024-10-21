@@ -33,6 +33,20 @@
         color: gray;
       }
 
+      .post-info {
+        display: flex;
+
+        margin-bottom: 15px;
+        color: gray;
+        font-size: 16px;
+      }
+      .post-date {
+        margin-left: 700px;
+      }
+      .post-views {
+        text-align: right;
+        margin-left: 50px;
+      }
       .post-content {
         font-size: 16px;
         margin: 20px 0;
@@ -94,6 +108,76 @@
       .comment-btn:hover {
         background-color: #778881;
       }
+      .comment-item {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-top: 15px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 15px;
+      }
+
+      .comment-image {
+        width: 65px;
+        height: 65px;
+        border-radius: 4px;
+        background-color: #ddd;
+        margin-right: 15px;
+      }
+
+      .comment-content {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+      }
+
+      .comment-text-container {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .comment-name {
+        font-weight: bold;
+        color: #333;
+      }
+
+      .comment-text {
+        color: #333;
+        margin-left: 5px;
+      }
+
+      .comment-footer {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+
+      .comment-date {
+        font-size: 0.9em;
+        color: #666;
+      }
+
+      .comment-actions {
+        display: flex;
+        gap: 5px;
+        margin-top: 5px;
+      }
+
+      .edit-btn,
+      .delete-btn {
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #889491;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .edit-btn:hover,
+      .delete-btn:hover {
+        background-color: #778881;
+      }
     </style>
   </head>
   <body>
@@ -102,8 +186,12 @@
         첫 게시물 입니다. <span class="comment-count">(5)</span>
       </div>
 
-      <div class="post-name">작성자 이름</div>
-      <div class="post-date">2024-10-20</div>
+      <!-- 게시글 정보 영역: 작성자, 날짜, 조회수 -->
+      <div class="post-info">
+        <div class="post-name">작성자 이름</div>
+        <div class="post-date">2024-10-20</div>
+        <div class="post-views">조회수: <span>123</span></div>
+      </div>
 
       <div class="post-content">
         안녕하세요? 반갑습니다. Game Forge에 오신 여러분을 환영합니다!
@@ -112,7 +200,24 @@
       <div class="like-section"><span>좋아요</span> <span>3</span></div>
 
       <div class="divider"></div>
-
+      <div class="comment-item">
+        <img src="image-placeholder.png" alt="User" class="comment-image" />
+        <div class="comment-content">
+          <div class="comment-text-container">
+            <p class="comment-name">구름</p>
+            <p class="comment-text">
+              Game Forge는 정말 최고의 게임 사이트 입니다!
+            </p>
+          </div>
+        </div>
+        <div class="comment-footer">
+          <p class="comment-date">2024-10-10</p>
+          <div class="comment-actions">
+            <button class="edit-btn">수정</button>
+            <button class="delete-btn">삭제</button>
+          </div>
+        </div>
+      </div>
       <div class="comment-section">
         <textarea placeholder="댓글을 입력하세요"></textarea>
         <button class="comment-btn">댓글쓰기</button>
