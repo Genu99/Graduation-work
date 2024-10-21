@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>게시글 보기</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Noto Sans KR";
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 50px auto;
+
+        padding: 20px;
+      }
+
+      .post-title {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .comment-count {
+        font-size: 18px;
+        color: gray;
+      }
+
+      .post-content {
+        font-size: 16px;
+        margin: 20px 0;
+        line-height: 1.6;
+      }
+
+      .post-content span {
+        font-weight: bold;
+      }
+
+      .like-section {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+      }
+
+      .like-section span {
+        margin-left: 5px;
+        font-size: 16px;
+        color: #c0392b;
+        font-weight: bold;
+      }
+
+      .divider {
+        width: 100%;
+        height: 1px;
+        background-color: lightgray;
+        margin: 20px 0;
+      }
+
+      .comment-section {
+        margin-top: 20px;
+      }
+
+      .comment-section textarea {
+        font-family: "Noto Sans KR";
+        width: 100%;
+        height: 100px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        font-size: 16px;
+        margin-bottom: 10px;
+        background-color: #f4f4f4;
+        resize: none;
+      }
+
+      .comment-btn {
+        margin-left: 895px;
+        background-color: #889491;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .comment-btn:hover {
+        background-color: #778881;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="post-title">
+        첫 게시물 입니다. <span class="comment-count">(5)</span>
+      </div>
+
+      <div class="post-name">작성자 이름</div>
+      <div class="post-date">2024-10-20</div>
+
+      <div class="post-content">
+        안녕하세요? 반갑습니다. Game Forge에 오신 여러분을 환영합니다!
+      </div>
+
+      <div class="like-section"><span>좋아요</span> <span>3</span></div>
+
+      <div class="divider"></div>
+
+      <div class="comment-section">
+        <textarea placeholder="댓글을 입력하세요"></textarea>
+        <button class="comment-btn">댓글쓰기</button>
+      </div>
+    </div>
+  </body>
+</html>
