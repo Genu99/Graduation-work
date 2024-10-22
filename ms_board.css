@@ -8,12 +8,7 @@ body {
     padding: 0;
 }
 
-/* 헤더 고정 */
-#header-placeholder {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
+
 
 /* 전체 레이아웃 설정 */
 .container {
