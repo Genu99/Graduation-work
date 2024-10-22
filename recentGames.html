@@ -63,7 +63,8 @@
           throw new Error('최근 본 게임 목록을 가져오는 중 오류가 발생했습니다.');
         }
 
-        const recentGames = await response.json();
+        const result = await response.json();
+        const recentGames = result.data || [];
         const recentGamesList = document.getElementById('recent-games-list');
 
         if (recentGames.length === 0) {
