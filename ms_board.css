@@ -6,12 +6,13 @@ body {
     color: #333;
 }
 
-
 /* 전체 레이아웃 설정 */
 .container {
     display: flex;
-    justify-content: center; /* 중앙 정렬 */
-    margin-top: 100px; /* 상단 여백 추가 */
+    justify-content: flex-start;
+    max-width: 1200px;
+    margin: auto;
+    margin-top: 20px; /* 상단 여백 조정 */
 }
 
 /* 좌측 네비게이션 바 */
@@ -25,12 +26,13 @@ nav {
 nav ul {
     list-style-type: none;
     padding: 0;
+    margin: 0;
 }
 
 nav ul li {
+    margin: 10px 0;
     border-bottom: 1px solid #333;
     padding-bottom: 10px;
-    margin: 20px 0;
 }
 
 /* 기본 링크 스타일 */
@@ -42,13 +44,13 @@ nav ul li a {
 
 /* 메뉴가 선택되었을 때의 스타일 */
 nav ul li a.active {
-    color: #889491 !important; /* 하이라이트 색상 */
-    font-weight: bold !important; /* 선택된 항목을 더 굵게 표시 */
+    color: #889491; /* 하이라이트 색상 */
+    font-weight: bold; /* 선택된 항목을 더 굵게 표시 */
 }
 
 /* 기본 hover 스타일 */
 nav ul li a:hover {
-    color: rgb(68, 136, 244) !important;
+    color: rgb(68, 136, 244);
 }
 
 /* 게시판 테이블 */
@@ -122,11 +124,11 @@ table {
 }
 
 .main-header-date {
-    width: 15%; /* 작성자 열의 너비 설정 */
+    width: 15%; /* 작성일 열의 너비 설정 */
 }
 
 .main-header-name {
-    width: 15%; /* 작성일 열의 너비 설정 */
+    width: 15%; /* 작성자 열의 너비 설정 */
 }
 
 #search-button {
@@ -156,19 +158,19 @@ table {
 
 /* 검색창을 화면 하단에 고정 */
 .search-container {
-    position: relative; /* position을 relative로 설정 */
+    position: relative;
     width: 100%;
     display: flex;
-    justify-content: center; /* 중앙 정렬 */
-    padding: 20px 0; /* 상하 여백 조정 */
-    margin-top: 20px; /* 게시판 내용과의 간격을 위해 여백 추가 */
+    justify-content: center;
+    padding: 20px 0;
+    margin-top: 20px;
 }
 
 .pagination {
     display: flex;
     justify-content: center;
-    margin-top: 20px; /* 페이지네이션과 버튼 사이 여백 */
-    z-index: 1; /* 다른 요소와 겹치지 않도록 설정 */
+    margin-top: 20px;
+    z-index: 1;
 }
 
 .pagination button {
@@ -179,7 +181,7 @@ table {
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    z-index: 1; /* 버튼이 클릭 가능하도록 설정 */
+    z-index: 1;
 }
 
 .pagination button:hover {
@@ -199,22 +201,22 @@ table {
 /* 추가 스타일로 페이지네이션과 버튼 간의 간격을 조정 */
 .button-container {
     display: flex;
-    justify-content: center; /* 버튼을 중앙 정렬 */
-    margin-top: 20px; /* 페이지네이션과 버튼 간의 여백 */
+    justify-content: center;
+    margin-top: 20px;
 }
 
 #write-button {
-    width: 100px; /* 버튼 너비 설정 */
-    height: 40px; /* 버튼 높이 설정 */
-    font-size: 15px; /* 버튼 폰트 크기 설정 */
-    border: none; /* 버튼 테두리 제거 */
-    color: #fff; /* 버튼 글자 색상 */
-    border-radius: 5px; /* 버튼 모서리 둥글게 */
-    background-color: #889491; /* 버튼 배경 색상 */
-    cursor: pointer; /* 커서를 포인터로 변경 */
-    transition: background-color 0.3s ease; /* 배경 색상 전환 효과 */
+    width: 100px;
+    height: 40px;
+    font-size: 15px;
+    border: none;
+    color: #fff;
+    border-radius: 5px;
+    background-color: #889491;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 #write-button:hover {
-    background-color: #6c7c7b; /* 버튼 호버 시 배경 색상 */
+    background-color: #6c7c7b;
 }
