@@ -159,13 +159,42 @@
             </div>
             ${priceInfo}
             <div class="rating" style="display: flex; align-items: center; margin: 8px 0;">
-              <i class="material-icons" style="color: #ffc107; margin-right: 4px;">star</i><span style="font-size: 1em;">${game.rating || 0}</span>
+              <i class="material-icons" style="color: #ffc107; margin-right: 4px;">star</i><span style="font-size: 1em;">${game.rating || 0} (${game.reviewCount || 0} 리뷰)</span>
             </div>
             ${actionButton}
           </div>
         `;
         productGrid.innerHTML += gameCard;
       });
+    }
+
+    // 게임을 무료로 구매하는 함수
+    async function buyGame(gameId) {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.');
+          window.location.href = 'login.html';
+          return;
+        }
+
+        const response = await fetch(`${serverUrl}/api/user/order/purchase-now/${gameId}`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('게임 구매 중 오류가 발생했습니다.');
+        }
+
+        alert('게임이 구매되었습니다.');
+      } catch (error) {
+        console.error('게임 구매 중 오류 발생:', error);
+        alert('게임 구매에 실패했습니다. 다시 시도해주세요.');
+      }
     }
 
     // 페이지네이션 업데이트 함수
