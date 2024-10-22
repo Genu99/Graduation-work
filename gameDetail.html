@@ -227,7 +227,7 @@
                   const reviewDiv = document.createElement("div");
                   reviewDiv.className = "review-item";
                   reviewDiv.innerHTML = `
-                    <img src="image-placeholder.png" alt="User" class="review-image" />
+                    <img src="${review.profileImage || 'image-placeholder.png'}" alt="User" class="review-image" />
                     <div class="review-content">
                       <p class="review-rating">⭐ ${review.rating}</p>
                       <div class="review-text-container">
