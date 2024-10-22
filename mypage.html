@@ -120,12 +120,17 @@
                 document.getElementById('user-email').textContent = userData.email || '정보 없음';
                 document.getElementById('user-birthdate').textContent = userData.birthdate || '생년월일 정보 없음';
                 document.getElementById('user-tel').textContent = userData.tel || '전화번호 정보 없음';
-                document.getElementById('user-gender').textContent = userData.gender || '성별 정보 없음';
+                document.getElementById('user-gender').textContent = userData.gender === 'M' ? '남자' : userData.gender === 'W' ? '여자' : '성별 정보 없음';
                 document.getElementById('user-reward-points').textContent = userData.rewardPoints !== undefined ? `${userData.rewardPoints} 원` : '적립금 정보 없음';
 
                 // 소셜 로그인 정보 표시
-                const provider = userData.provider || '정보 없음';
+                const provider = userData.provider === 'local' ? 'GameForge' : userData.provider || '정보 없음';
                 document.getElementById('user-social').textContent = provider;
+
+                // 프로필 이미지 설정
+                if (userData.profileImage) {
+                    document.getElementById('profile-image').src = userData.profileImage;
+                }
             })
             .catch(error => {
                 console.error('사용자 정보 로드 중 오류 발생:', error);
