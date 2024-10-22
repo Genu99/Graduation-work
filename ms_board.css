@@ -6,6 +6,14 @@ body {
     color: #333;
 }
 
+
+/* 전체 레이아웃 설정 */
+.container {
+    display: flex;
+    justify-content: center; /* 중앙 정렬 */
+    margin-top: 100px; /* 상단 여백 추가 */
+}
+
 /* 좌측 네비게이션 바 */
 nav {
     width: 150px; /* 좌측 메뉴의 폭 */
