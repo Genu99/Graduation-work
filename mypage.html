@@ -76,68 +76,68 @@
 
     <script src="auth.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // 헤더를 동적으로 로드
-            fetch("header.html")
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("header-placeholder").innerHTML = data;
-                    checkLoginStatus();
-                })
-                .catch(error => console.error("헤더 로드 중 오류 발생:", error));
-
-            // 로그인 여부 확인 후 사용자 정보를 채우기 위한 함수 호출
-            if (!localStorage.getItem('token')) {
-                alert('로그인 후 이용해주세요');
-                window.location.href = 'login.html';
-            } else {
-                fetchUserInfo();
-            }
-        });
-
-        // 사용자 정보 로드
-        function fetchUserInfo() {
-            const apiUrl = 'https://https://ludorium.store/api/user/mypage';
-            fetch(apiUrl, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`네트워크 응답 오류: ${response.status} - ${response.statusText}`);
-                }
-                return response.json();
-            })
+    document.addEventListener("DOMContentLoaded", function() {
+        // 헤더를 동적으로 로드
+        fetch("header.html")
+            .then(response => response.text())
             .then(data => {
-                console.log('서버 응답 데이터:', data); // 데이터를 확인하기 위해 추가
-                document.getElementById('user-nickname').textContent = `${data.nickname} 님 안녕하세요!`;
-                document.getElementById('user-email').textContent = data.email;
-                document.getElementById('user-birthdate').textContent = data.birthdate || '생년월일 정보 없음';
-                document.getElementById('user-tel').textContent = data.phoneNumber || '전화번호 정보 없음';
-                document.getElementById('user-gender').textContent = data.gender || '성별 정보 없음';
-                document.getElementById('user-reward-points').textContent = data.rewardPoints !== undefined ? `${data.rewardPoints} 원` : '적립금 정보 없음';
-
-                // 소셜 로그인 정보 표시
-                const provider = data.provider || '정보 없음';
-                document.getElementById('user-social').textContent = provider;
+                document.getElementById("header-placeholder").innerHTML = data;
+                checkLoginStatus();
             })
-            .catch(error => {
-                console.error('사용자 정보 로드 중 오류 발생:', error);
-                alert(`사용자 정보를 로드하는 중 문제가 발생했습니다: ${error.message}`);
-            });
-        }
+            .catch(error => console.error("헤더 로드 중 오류 발생:", error));
 
-        // 프로필 이미지 업로드
-        function uploadImage(event) {
-            const reader = new FileReader();
-            reader.onload = function() {
-                const profileImage = document.getElementById('profile-image');
-                profileImage.src = reader.result;
-            };
-            reader.readAsDataURL(event.target.files[0]);
+        // 로그인 여부 확인 후 사용자 정보를 채우기 위한 함수 호출
+        if (!localStorage.getItem('token')) {
+            alert('로그인 후 이용해주세요');
+            window.location.href = 'login.html';
+        } else {
+            fetchUserInfo();
         }
-    </script>
+    });
+
+    // 사용자 정보 로드
+    function fetchUserInfo() {
+        const apiUrl = 'https://ludorium.store/api/user/mypage';
+        fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`네트워크 응답 오류: ${response.status} - ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('서버 응답 데이터:', data); // 데이터를 확인하기 위해 추가
+            document.getElementById('user-nickname').textContent = `${data.nickname} 님 안녕하세요!`;
+            document.getElementById('user-email').textContent = data.email;
+            document.getElementById('user-birthdate').textContent = data.birthdate || '생년월일 정보 없음';
+            document.getElementById('user-tel').textContent = data.phoneNumber || '전화번호 정보 없음';
+            document.getElementById('user-gender').textContent = data.gender || '성별 정보 없음';
+            document.getElementById('user-reward-points').textContent = data.rewardPoints !== undefined ? `${data.rewardPoints} 원` : '적립금 정보 없음';
+
+            // 소셜 로그인 정보 표시
+            const provider = data.provider || '정보 없음';
+            document.getElementById('user-social').textContent = provider;
+        })
+        .catch(error => {
+            console.error('사용자 정보 로드 중 오류 발생:', error);
+            alert(`사용자 정보를 로드하는 중 문제가 발생했습니다: ${error.message}`);
+        });
+    }
+
+    // 프로필 이미지 업로드
+    function uploadImage(event) {
+        const reader = new FileReader();
+        reader.onload = function() {
+            const profileImage = document.getElementById('profile-image');
+            profileImage.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
 </body>
 </html>
