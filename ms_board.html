@@ -78,12 +78,42 @@
                     if (logoutButton) {
                         logoutButton.addEventListener('click', logout);
                     }
+                    updateWelcomeMessage();
                 })
                 .catch(error => console.error('헤더 로드 중 오류 발생:', error));
 
             // 게시판 초기화 및 이벤트 바인딩
             initBoard();
         });
+
+        function fetchUserInfo() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.error('사용자 토큰이 없습니다.');
+                return;
+            }
+
+            fetch('https://ludorium.store/api/user/mypage', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('서버 응답이 좋지 않습니다.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const userData = data.data;
+
+                // 헤더의 닉네임 업데이트
+                localStorage.setItem('nickname', userData.nickname);
+                updateWelcomeMessage();
+            })
+            .catch(error => console.error('사용자 정보 가져오는 중 오류 발생:', error));
+        }
 
         // 게시판 초기화 및 이벤트 바인딩
         function initBoard() {
@@ -224,6 +254,15 @@
                     fetchBoardList(getActiveCategoryId(), currentPage);
                 });
                 paginationContainer.appendChild(nextButton);
+            }
+        }
+
+        // 헤더의 환영 메시지를 업데이트하는 함수
+        function updateWelcomeMessage() {
+            const nickname = localStorage.getItem('nickname');
+            const welcomeMessage = document.getElementById('welcome-message');
+            if (welcomeMessage && nickname) {
+                welcomeMessage.innerText = `환영합니다, ${nickname}님!`;
             }
         }
     </script>
