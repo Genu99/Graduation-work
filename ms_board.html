@@ -8,7 +8,7 @@
 </head>
 <body>
     <!-- 헤더 자리 표시자 -->
-    <div id="header-placeholder"></div>
+    <div id="header"></div>
 
     <div class="container">
         <!-- 좌측 네비게이션 바 -->
@@ -67,23 +67,22 @@
     </div>
     <script src="auth.js"></script>
     <script>
-       document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener('DOMContentLoaded', function() {
             // 헤더를 동적으로 로드
-            fetch("header.html")
+            fetch('header.html')
                 .then(response => response.text())
                 .then(data => {
-                    document.getElementById("header-placeholder").innerHTML = data;
-                    checkLoginStatus();
+                    document.getElementById('header').innerHTML = data;
+                    checkLoginStatus(); // 헤더 로드 후 로그인 상태 확인
+                    const logoutButton = document.getElementById('logout-btn');
+                    if (logoutButton) {
+                        logoutButton.addEventListener('click', logout);
+                    }
                 })
-                .catch(error => console.error("헤더 로드 중 오류 발생:", error));
+                .catch(error => console.error('헤더 로드 중 오류 발생:', error));
 
-            // 로그인 여부 확인 후 사용자 정보를 채우기 위한 함수 호출
-            if (!localStorage.getItem('token')) {
-                alert('로그인 후 이용해주세요');
-                window.location.href = 'login.html';
-            } else {
-                fetchUserInfo();
-            }
+            // 게시판 초기화 및 이벤트 바인딩
+            initBoard();
         });
 
         // 게시판 초기화 및 이벤트 바인딩
