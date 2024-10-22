@@ -169,12 +169,12 @@
 
     // 최근 본 게임 아이콘 표시 함수
     function showRecentGameIcon() {
-      const recentGame = localStorage.getItem('recentGame');
-      if (recentGame) {
-        const recentGameData = JSON.parse(recentGame);
+      const recentGames = JSON.parse(localStorage.getItem('recentGames')) || [];
+      if (recentGames.length > 0) {
+        const recentGameData = recentGames[recentGames.length - 1]; // 가장 최근에 본 게임
         const recentGameIcon = document.getElementById('recent-game-icon');
         const recentGameImage = document.getElementById('recent-game-image');
-        recentGameImage.src = recentGameData.imageUrl;
+        recentGameImage.src = recentGameData.gameImageUrl;
         recentGameIcon.style.display = 'block';
         recentGameIcon.onclick = () => {
           window.location.href = `gameDetail.html?gameId=${recentGameData.gameId}`;
