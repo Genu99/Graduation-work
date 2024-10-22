@@ -64,10 +64,11 @@
           throw new Error('최근 본 게임 목록을 가져오는 중 오류가 발생했습니다.');
         }
 
-        const recentGames = await response.json();
+        const result = await response.json();
+        const recentGames = result.data; // 데이터 수정: 서버 응답에서 data 필드 사용
         const recentGamesList = document.getElementById('recent-games-list');
 
-        if (recentGames.length === 0) {
+        if (!recentGames || recentGames.length === 0) {
           recentGamesList.innerHTML = '<p>최근 본 게임이 없습니다.</p>';
           return;
         }
