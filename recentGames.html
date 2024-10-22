@@ -51,7 +51,8 @@
           return;
         }
 
-        const response = await fetch(`${serverUrl}/api/user/recent-games?limit=20`, {
+        // 서버에 Redis에 저장된 최근 본 게임 리스트 요청 (경로는 서버에서 제공한 경로로 수정 필요)
+        const response = await fetch(`${serverUrl}/api/user/game`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -63,9 +64,8 @@
           throw new Error('최근 본 게임 목록을 가져오는 중 오류가 발생했습니다.');
         }
 
-        const result = await response.json();
-        const recentGames = result.data || [];
-        const recentGamesList = document.getElementById('recent-games-list');
+        const recentGames = await response.json();
+        const recentGamesList = document.getElementById('games-list');
 
         if (recentGames.length === 0) {
           recentGamesList.innerHTML = '<p>최근 본 게임이 없습니다.</p>';
@@ -76,7 +76,7 @@
         recentGames.forEach(game => {
           const gameCard = `
             <div class="recent-game-card">
-              <img src="${game.gameImageUrl || 'https://via.placeholder.com/150'}" alt="${game.gameName || '게임 이미지'}" class="recent-game-image" />
+              <img src="${game.gameImageUrl || 'https://via.placeholder.com/150'}" alt="${game.gameName || '게임 이미지'}" class="game-image" />
               <div class="recent-game-info">
                 <h3 class="recent-game-title">${game.gameName || '제목 없음'}</h3>
                 <p class="recent-game-price">${game.gamePrice === 0 ? '무료' : '₩ ' + game.gamePrice}</p>
