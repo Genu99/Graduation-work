@@ -1,14 +1,31 @@
+* {
+    font-family: "Noto Sans KR";
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* 헤더 고정 */
+#header-placeholder {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
 /* 전체 레이아웃 설정 */
 .container {
     display: flex;
-    justify-content: flex-start; /* 좌측에 고정 */
+    justify-content: center; /* 중앙 정렬 */
+    margin-top: 20px; /* 상단 여백 추가 */
 }
 
 /* 좌측 네비게이션 바 */
 nav {
     width: 150px; /* 좌측 메뉴의 폭 */
-    margin-left: 20px;
-    margin-top: 20px;
+    margin-right: 20px; /* 오른쪽 여백 추가 */
     text-align: center;
     padding: 10px;
 }
@@ -33,19 +50,23 @@ nav ul li a {
 
 /* 메뉴가 선택되었을 때의 스타일 */
 nav ul li a.active {
-    color: #889491; /* 하이라이트 색상 */
-    font-weight: bold; /* 선택된 항목을 더 굵게 표시 */
+    color: #889491 !important; /* 하이라이트 색상 */
+    font-weight: bold !important; /* 선택된 항목을 더 굵게 표시 */
 }
 
 /* 기본 hover 스타일 */
 nav ul li a:hover {
-    color: rgb(68, 136, 244);
+    color: rgb(68, 136, 244) !important;
 }
 
 /* 게시판 테이블 */
 .content {
     flex-grow: 1;
-    margin-right: 20px;
+    max-width: 1000px; /* 최대 너비 제한 */
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .sort-options {
@@ -60,8 +81,7 @@ nav ul li a:hover {
 }
 
 table {
-    margin: auto;
-    width: 95%; /* 테이블 너비를 95%로 설정하여 가로 크기 조정 */
+    width: 100%; /* 테이블 너비를 100%로 설정하여 가로 크기 조정 */
     border-radius: 5px;
     border-collapse: collapse;
 }
@@ -70,6 +90,7 @@ table {
     background-color: #889491;
     text-align: center;
     font-size: 16px;
+    color: white;
 }
 
 .table td,
@@ -82,11 +103,11 @@ table {
 
 /* 제목 열의 너비와 정렬 수정 */
 .main-header-num {
-    width: 3%; /* 번호 열의 너비 설정 (작게) */
+    width: 5%; /* 번호 열의 너비 설정 */
 }
 
 .main-header-title {
-    width: 50%; /* 제목 열의 너비 설정 (길게) */
+    width: 50%; /* 제목 열의 너비 설정 */
     text-align: left; /* 제목을 왼쪽 정렬 */
 }
 
@@ -105,15 +126,15 @@ table {
 }
 
 .main-header-like {
-    width: 5%; /* 조회수 열의 너비 설정 (작게) */
+    width: 10%; /* 조회수 열의 너비 설정 */
 }
 
 .main-header-date {
-    width: 10%; /* 작성자 열의 너비 설정 (조금 작게) */
+    width: 15%; /* 작성자 열의 너비 설정 */
 }
 
 .main-header-name {
-    width: 10%; /* 작성일 열의 너비 설정 (적당히) */
+    width: 15%; /* 작성일 열의 너비 설정 */
 }
 
 #search-button {
