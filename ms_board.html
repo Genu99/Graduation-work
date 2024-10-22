@@ -338,6 +338,39 @@
           return noticeLink.classList.contains('active') ? 2 : 1; // 공지사항: 2, 자유게시판: 1
         }
 
+        // 공지사항 클릭 시
+        noticeLink.addEventListener('click', function(event) {
+          event.preventDefault(); // 기본 동작 막기
+          setActiveLink(noticeLink); // active 클래스 설정
+          fetchBoardList(2); // 공지사항은 categoryId 2번으로 호출
+        });
+
+        // 자유게시판 클릭 시
+        freeboardLink.addEventListener('click', function(event) {
+          event.preventDefault(); // 기본 동작 막기
+          setActiveLink(freeboardLink); // active 클래스 설정
+          fetchBoardList(1); // 자유게시판은 categoryId 1번으로 호출
+        });
+
+        // 정렬 옵션 변경 시 게시판 리스트 업데이트
+        orderSelect.addEventListener('change', function() {
+          const activeCategory = getActiveCategoryId(); // 현재 활성화된 카테고리 ID
+          fetchBoardList(activeCategory, 1, orderSelect.value, currentSearchType, currentSearchKeyword); // 선택된 정렬 옵션으로 게시판 리스트 호출
+        });
+
+        // 검색 버튼 클릭 시
+        searchButton.addEventListener('click', function() {
+          currentSearchKeyword = searchInput.value.trim(); // 입력된 검색어
+          currentSearchType = searchTypeSelect.value; // 선택된 검색 유형
+
+          if (currentSearchKeyword) {
+            const activeCategory = getActiveCategoryId(); // 현재 활성화된 카테고리 ID
+            fetchBoardList(activeCategory, 1, orderSelect.value, currentSearchType, currentSearchKeyword); // 검색어와 검색 유형을 전달
+          } else {
+            alert("검색어를 입력하세요.");
+          }
+        });
+
         // 게시판 리스트 불러오기
         async function fetchBoardList(categoryId = 1, page = 1, orderBy = '', searchType = '', searchKeyword = '') {
           const response = await fetch(`https://ludorium.store/api/user/board/${categoryId}/list?page=${page}&orderBy=${orderBy}&searchType=${searchType}&searchKeyword=${searchKeyword}`, {
@@ -438,7 +471,7 @@
           }
         }
 
-        // 초기 데이터 로드 (헤더 추가 후에 fetchBoardList 호출)
+        // 초기 데이터 로드 (토큰 가져온 후 fetchBoardList 호출)
       </script>
   </body>
 </html>
