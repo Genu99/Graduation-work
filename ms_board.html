@@ -8,7 +8,7 @@
 </head>
 <body>
     <!-- 헤더 자리 표시자 -->
-    <div id="header-placeholder"></div>
+    <div id="header"></div>
 
     <div class="container">
         <!-- 좌측 네비게이션 바 -->
@@ -67,16 +67,15 @@
     </div>
     <script src="auth.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // 헤더를 동적으로 로드
-            fetch("header.html")
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("header-placeholder").innerHTML = data;
-                    checkLoginStatus();
-                })
-                .catch(error => console.error("헤더 로드 중 오류 발생:", error));
-
+        document.addEventListener("DOMContentLoaded", function () {
+        fetch("header.html")
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById("header-placeholder").innerHTML = data;
+            checkLoginStatus();
+          })
+          .catch((error) => console.error("헤더 로드 중 오류 발생:", error));
+            
             // 게시판 초기화 및 이벤트 바인딩
             initBoard();
         });
