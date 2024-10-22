@@ -13,19 +13,20 @@
     <style>
         * {
             font-family: "Noto Sans KR";
+            box-sizing: border-box;
         }
 
         /* 전체 레이아웃 설정 */
         .container {
             display: flex;
-            justify-content: flex-start; /* 좌측에 고정 */
+            justify-content: center; /* 중앙 정렬 */
+            margin-top: 20px; /* 상단 여백 추가 */
         }
 
-      /* 좌측 네비게이션 바 */
+        /* 좌측 네비게이션 바 */
         nav {
             width: 150px; /* 좌측 메뉴의 폭 */
-            margin-left: 180px;
-            margin-top: 60px;
+            margin-right: 20px; /* 오른쪽 여백 추가 */
             text-align: center;
             padding: 10px;
         }
@@ -62,12 +63,12 @@
         /* 게시판 테이블 */
         .content {
             flex-grow: 1;
-            margin-right: 150px;
+            max-width: 1000px; /* 최대 너비 제한 */
         }
 
         .sort-options {
             float: right;
-            margin-right: 100px;
+            margin-right: 20px;
             margin-top: 20px;
         }
 
@@ -77,7 +78,6 @@
         }
 
         table {
-            margin: auto;
             width: 100%; /* 테이블 너비를 100%로 설정하여 가로 크기 조정 */
             border-radius: 5px;
             border-collapse: collapse;
@@ -99,11 +99,11 @@
 
         /* 제목 열의 너비와 정렬 수정 */
         .main-header-num {
-            width: 3%; /* 번호 열의 너비 설정 (작게) */
+            width: 5%; /* 번호 열의 너비 설정 */
         }
 
         .main-header-title {
-            width: 30%; /* 제목 열의 너비 설정 (길게) */
+            width: 50%; /* 제목 열의 너비 설정 */
             text-align: left; /* 제목을 왼쪽 정렬 */
         }
 
@@ -122,15 +122,15 @@
         }
 
         .main-header-like {
-            width: 5%; /* 조회수 열의 너비 설정 (작게) */
+            width: 10%; /* 조회수 열의 너비 설정 */
         }
 
         .main-header-date {
-            width: 10%; /* 작성자 열의 너비 설정 (조금 작게) */
+            width: 15%; /* 작성자 열의 너비 설정 */
         }
 
         .main-header-name {
-            width: 10%; /* 작성일 열의 너비 설정 (적당히) */
+            width: 15%; /* 작성일 열의 너비 설정 */
         }
 
         #search-button {
@@ -270,13 +270,9 @@
          <div class="pagination" id="pagination">
             <!-- 페이지네이션 버튼이 동적으로 생성될 곳 -->
         </div>
-        <table>
-            <tr>
-                <td>
-                    <button id="write-button" onclick="location.href='write.html'">글쓰기</button>
-                </td>
-            </tr>
-        </table>
+        <div class="button-container">
+            <button id="write-button" onclick="location.href='write.html'">글쓰기</button>
+        </div>
         <!-- 검색창 및 검색 옵션 -->
         <div class="search-container">
             <div class="search-bar">
