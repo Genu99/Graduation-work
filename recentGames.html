@@ -40,29 +40,53 @@
       showRecentGames(); // 최근 본 게임 목록 표시
     });
 
-    function showRecentGames() {
-      const recentGames = JSON.parse(localStorage.getItem('recentGames')) || [];
-      const recentGamesList = document.getElementById('recent-games-list');
+    async function showRecentGames() {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.');
+          window.location.href = 'login.html';
+          return;
+        }
 
-      if (recentGames.length === 0) {
-        recentGamesList.innerHTML = '<p>최근 본 게임이 없습니다.</p>';
-        return;
-      }
+        const response = await fetch(`${serverUrl}/api/user/recent-games?limit=20`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
 
-      recentGamesList.innerHTML = '';
-      recentGames.forEach(game => {
-        const gameCard = `
-          <div class="recent-game-card">
-            <img src="${game.gameImageUrl || 'https://via.placeholder.com/150'}" alt="${game.gameName || '게임 이미지'}" class="recent-game-image" />
-            <div class="recent-game-info">
-              <h3 class="recent-game-title">${game.gameName || '제목 없음'}</h3>
-              <p class="recent-game-price">${game.gamePrice === 0 ? '무료' : '₩ ' + game.gamePrice}</p>
-              <a href="gameDetail.html?gameId=${game.gameId}" class="recent-game-link">상세 보기</a>
+        if (!response.ok) {
+          throw new Error('최근 본 게임 목록을 가져오는 중 오류가 발생했습니다.');
+        }
+
+        const recentGames = await response.json();
+        const recentGamesList = document.getElementById('recent-games-list');
+
+        if (recentGames.length === 0) {
+          recentGamesList.innerHTML = '<p>최근 본 게임이 없습니다.</p>';
+          return;
+        }
+
+        recentGamesList.innerHTML = '';
+        recentGames.forEach(game => {
+          const gameCard = `
+            <div class="recent-game-card">
+              <img src="${game.gameImageUrl || 'https://via.placeholder.com/150'}" alt="${game.gameName || '게임 이미지'}" class="recent-game-image" />
+              <div class="recent-game-info">
+                <h3 class="recent-game-title">${game.gameName || '제목 없음'}</h3>
+                <p class="recent-game-price">${game.gamePrice === 0 ? '무료' : '₩ ' + game.gamePrice}</p>
+                <a href="gameDetail.html?gameId=${game.gameId}" class="recent-game-link">상세 보기</a>
+              </div>
             </div>
-          </div>
-        `;
-        recentGamesList.innerHTML += gameCard;
-      });
+          `;
+          recentGamesList.innerHTML += gameCard;
+        });
+      } catch (error) {
+        console.error('최근 본 게임을 가져오는 중 오류 발생:', error);
+        alert('최근 본 게임을 불러오는 데 실패했습니다. 다시 시도해주세요.');
+      }
     }
   </script>
 </body>
