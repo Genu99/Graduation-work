@@ -167,31 +167,36 @@
       });
     }
 
-    // 페이지네이션 버튼 업데이트 함수
-    function updatePagination(totalPages) {
-      const pagination = document.getElementById('pagination');
-      pagination.innerHTML = '';
+    // 게임을 무료로 구매하는 함수
+    async function buyGame(gameId) {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.');
+          window.location.href = 'login.html';
+          return;
+        }
 
-      if (totalPages <= 1) return;
+        const response = await fetch(`${serverUrl}/api/user/order/purchase-now/${gameId}`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          }
+        });
 
-      const createPageButton = (pageNum) => {
-        return `<button class="page-btn" style="margin: 2px; padding: 8px 12px; cursor: pointer; ${pageNum === currentPage ? 'font-weight: bold;' : ''}" onclick="goToPage(${pageNum})">${pageNum}</button>`;
-      };
+        if (!response.ok) {
+          throw new Error('게임 구매 중 오류가 발생했습니다.');
+        }
 
-      for (let i = startPage; i <= Math.min(totalPages, endPage); i++) {
-        pagination.innerHTML += createPageButton(i);
+        alert('게임이 구매되었습니다.');
+      } catch (error) {
+        console.error('게임 구매 중 오류 발생:', error);
+        alert('게임 구매에 실패했습니다. 다시 시도해주세요.');
       }
     }
 
-    // 페이지 이동 함수
-    function goToPage(pageNum) {
-      currentPage = pageNum;
-      const selectedGenre = document.querySelector('input[name="genre"]:checked').value;
-      const sortOrder = document.getElementById('sortOrder').value;
-      fetchGamesByCategory(selectedGenre, currentPage, sortOrder);
-    }
-
-    // 게임을 장바구니에 추가하는 함수
+    // 장바구니에 게임 추가 함수
     async function addToCart(gameId) {
       try {
         const token = localStorage.getItem('token');
@@ -209,11 +214,6 @@
           },
         });
 
-        if (response.status === 409) {
-          showPopup('이미 장바구니에 담긴 게임입니다.');
-          return;
-        }
-
         if (!response.ok) {
           throw new Error('장바구니에 추가하는 중 오류가 발생했습니다.');
         }
@@ -225,45 +225,58 @@
       }
     }
 
-    // 무료 게임을 구매하는 함수
-    async function buyGame(gameId) {
-      try {
-        console.log('게임 ID:', gameId); // 게임 ID 로그 출력
-        const token = localStorage.getItem('token');
-        if (!token) {
-          alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.');
-          window.location.href = 'login.html';
-          return;
-        }
+    // 페이지네이션 업데이트 함수
+    function updatePagination(totalPages) {
+      const paginationContainer = document.getElementById('pagination');
+      paginationContainer.innerHTML = '';
 
-        // 무료 게임 구매 요청
-        const response = await fetch(`${serverUrl}/api/user/order/purchase-now/${gameId}`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          }
+      if (startPage > 1) {
+        const prevButton = document.createElement('button');
+        prevButton.textContent = '<';
+        prevButton.addEventListener('click', () => {
+          startPage -= maxButtons;
+          endPage -= maxButtons;
+          currentPage = startPage;
+          const categoryId = document.querySelector('.genre-filter input[type="radio"]:checked').value;
+          const orderBy = document.getElementById('sortOrder').value;
+          const searchKeyword = document.getElementById('searchKeyword').value;
+          fetchGamesByCategory(categoryId, currentPage, orderBy, searchKeyword);
+          updatePagination(totalPages);
         });
-
-        if (response.status === 409) {
-          showPopup('이미 구매한 게임입니다.');
-          return;
-        }
-
-        if (!response.ok) {
-          throw new Error('게임 구매 중 오류가 발생했습니다.');
-        }
-
-        alert('무료 게임이 성공적으로 구매되었습니다.');
-      } catch (error) {
-        console.error('게임 구매 중 오류 발생:', error);
-        alert('게임 구매에 실패했습니다. 다시 시도해주세요.');
+        paginationContainer.appendChild(prevButton);
       }
-    }
 
-    // 팝업을 표시하는 함수
-    function showPopup(message) {
-      alert(message);
+      for (let i = startPage; i <= Math.min(endPage, totalPages); i++) {
+        const button = document.createElement('button');
+        button.textContent = i;
+        button.className = i === currentPage ? 'active' : '';
+        button.disabled = i === currentPage;
+        button.addEventListener('click', () => {
+          currentPage = i;
+          const categoryId = document.querySelector('.genre-filter input[type="radio"]:checked').value;
+          const orderBy = document.getElementById('sortOrder').value;
+          const searchKeyword = document.getElementById('searchKeyword').value;
+          fetchGamesByCategory(categoryId, currentPage, orderBy, searchKeyword);
+          updatePagination(totalPages);
+        });
+        paginationContainer.appendChild(button);
+      }
+
+      if (endPage < totalPages) {
+        const nextButton = document.createElement('button');
+        nextButton.textContent = '>';
+        nextButton.addEventListener('click', () => {
+          startPage += maxButtons;
+          endPage += maxButtons;
+          currentPage = startPage;
+          const categoryId = document.querySelector('.genre-filter input[type="radio"]:checked').value;
+          const orderBy = document.getElementById('sortOrder').value;
+          const searchKeyword = document.getElementById('searchKeyword').value;
+          fetchGamesByCategory(categoryId, currentPage, orderBy, searchKeyword);
+          updatePagination(totalPages);
+        });
+        paginationContainer.appendChild(nextButton);
+      }
     }
 
     // 페이지 로드 시 기본 카테고리(전체)로 게임 목록 가져오기
