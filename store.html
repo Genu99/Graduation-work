@@ -167,6 +167,30 @@
       });
     }
 
+    // 페이지네이션 버튼 업데이트 함수
+    function updatePagination(totalPages) {
+      const pagination = document.getElementById('pagination');
+      pagination.innerHTML = '';
+
+      if (totalPages <= 1) return;
+
+      const createPageButton = (pageNum) => {
+        return `<button class="page-btn" style="margin: 2px; padding: 8px 12px; cursor: pointer; ${pageNum === currentPage ? 'font-weight: bold;' : ''}" onclick="goToPage(${pageNum})">${pageNum}</button>`;
+      };
+
+      for (let i = startPage; i <= Math.min(totalPages, endPage); i++) {
+        pagination.innerHTML += createPageButton(i);
+      }
+    }
+
+    // 페이지 이동 함수
+    function goToPage(pageNum) {
+      currentPage = pageNum;
+      const selectedGenre = document.querySelector('input[name="genre"]:checked').value;
+      const sortOrder = document.getElementById('sortOrder').value;
+      fetchGamesByCategory(selectedGenre, currentPage, sortOrder);
+    }
+
     // 게임을 장바구니에 추가하는 함수
     async function addToCart(gameId) {
       try {
@@ -260,6 +284,7 @@
     document.querySelectorAll('input[name="genre"]').forEach(radio => {
       radio.addEventListener('change', function() {
         const categoryId = this.value;
+        currentPage = 1; // 페이지를 1로 초기화
         fetchGamesByCategory(categoryId);
       });
     });
@@ -268,6 +293,7 @@
     document.getElementById('sortOrder').addEventListener('change', function() {
       const sortOrder = this.value;
       const selectedGenre = document.querySelector('input[name="genre"]:checked').value;
+      currentPage = 1; // 페이지를 1로 초기화
       fetchGamesByCategory(selectedGenre, currentPage, sortOrder);
     });
   </script>
