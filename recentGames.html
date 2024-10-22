@@ -51,8 +51,8 @@
           return;
         }
 
-        // 서버에 Redis에 저장된 최근 본 게임 리스트 요청 (경로는 서버에서 제공한 경로로 수정 필요)
-        const response = await fetch(`${serverUrl}/api/user/game`, {
+        // 서버에 Redis에 저장된 최근 본 게임 리스트 요청
+        const response = await fetch(`${serverUrl}/api/user/mypage/recent-list`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -65,7 +65,7 @@
         }
 
         const recentGames = await response.json();
-        const recentGamesList = document.getElementById('games-list');
+        const recentGamesList = document.getElementById('recent-games-list');
 
         if (recentGames.length === 0) {
           recentGamesList.innerHTML = '<p>최근 본 게임이 없습니다.</p>';
