@@ -168,6 +168,60 @@
       });
     }
 
+    // 페이지네이션 업데이트 함수
+    function updatePagination(totalPages) {
+      const paginationContainer = document.getElementById('pagination');
+      paginationContainer.innerHTML = '';
+
+      if (startPage > 1) {
+        const prevButton = document.createElement('button');
+        prevButton.textContent = '<';
+        prevButton.addEventListener('click', () => {
+          startPage -= maxButtons;
+          endPage -= maxButtons;
+          currentPage = startPage;
+          const categoryId = document.querySelector('.genre-filter input[type="radio"]:checked').value;
+          const orderBy = document.getElementById('sortOrder').value;
+          const searchKeyword = document.getElementById('searchKeyword').value;
+          fetchGamesByCategory(categoryId, currentPage, orderBy, searchKeyword);
+          updatePagination(totalPages);
+        });
+        paginationContainer.appendChild(prevButton);
+      }
+
+      for (let i = startPage; i <= Math.min(endPage, totalPages); i++) {
+        const button = document.createElement('button');
+        button.textContent = i;
+        button.className = i === currentPage ? 'active' : '';
+        button.disabled = i === currentPage;
+        button.addEventListener('click', () => {
+          currentPage = i;
+          const categoryId = document.querySelector('.genre-filter input[type="radio"]:checked').value;
+          const orderBy = document.getElementById('sortOrder').value;
+          const searchKeyword = document.getElementById('searchKeyword').value;
+          fetchGamesByCategory(categoryId, currentPage, orderBy, searchKeyword);
+          updatePagination(totalPages);
+        });
+        paginationContainer.appendChild(button);
+      }
+
+      if (endPage < totalPages) {
+        const nextButton = document.createElement('button');
+        nextButton.textContent = '>';
+        nextButton.addEventListener('click', () => {
+          startPage += maxButtons;
+          endPage += maxButtons;
+          currentPage = startPage;
+          const categoryId = document.querySelector('.genre-filter input[type="radio"]:checked').value;
+          const orderBy = document.getElementById('sortOrder').value;
+          const searchKeyword = document.getElementById('searchKeyword').value;
+          fetchGamesByCategory(categoryId, currentPage, orderBy, searchKeyword);
+          updatePagination(totalPages);
+        });
+        paginationContainer.appendChild(nextButton);
+      }
+    }
+
     // 최근 본 게임 아이콘 표시 함수
     async function showRecentGameIcon() {
       try {
