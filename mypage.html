@@ -103,8 +103,14 @@
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('네트워크 응답이 올바르지 않습니다.');
+                }
+                return response.json();
+            })
             .then(data => {
+                console.log(data); // 데이터를 확인하기 위해 추가
                 document.getElementById('user-nickname').textContent = `${data.nickname} 님 안녕하세요!`;
                 document.getElementById('user-email').textContent = data.email;
                 document.getElementById('user-birthdate').textContent = data.birthdate || '생년월일 정보 없음';
@@ -118,7 +124,16 @@
             })
             .catch(error => console.error('사용자 정보 로드 중 오류 발생:', error));
         }
-       
+
+        // 프로필 이미지 업로드
+        function uploadImage(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const profileImage = document.getElementById('profile-image');
+                profileImage.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
     </script>
 </body>
 </html>
