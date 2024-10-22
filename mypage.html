@@ -111,9 +111,19 @@
             return response.json();
         })
         .then(data => {
-            console.log('서버 응답 데이터:', data); // 데이터를 확인하기 위해 추가
-            document.getElementById('user-nickname').textContent = `${data.nickname} 님 안녕하세요!`;
-            document.getElementById('user-email').textContent = data.email;
+            console.log('서버 응답 데이터:', data); // 데이터를 확인하기 위해 전체 로그 추가
+
+            // 필드가 잘 오는지 개별 필드 로그 추가
+            console.log('nickname:', data.nickname);
+            console.log('email:', data.email);
+            console.log('birthdate:', data.birthdate);
+            console.log('phoneNumber:', data.phoneNumber);
+            console.log('gender:', data.gender);
+            console.log('rewardPoints:', data.rewardPoints);
+            console.log('provider:', data.provider);
+
+            document.getElementById('user-nickname').textContent = data.nickname ? `${data.nickname} 님 안녕하세요!` : '닉네임 정보 없음';
+            document.getElementById('user-email').textContent = data.email || '정보 없음';
             document.getElementById('user-birthdate').textContent = data.birthdate || '생년월일 정보 없음';
             document.getElementById('user-tel').textContent = data.phoneNumber || '전화번호 정보 없음';
             document.getElementById('user-gender').textContent = data.gender || '성별 정보 없음';
@@ -139,5 +149,6 @@
         reader.readAsDataURL(event.target.files[0]);
     }
 </script>
+
 </body>
 </html>
