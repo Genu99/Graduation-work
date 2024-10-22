@@ -7,8 +7,8 @@
 /* 좌측 네비게이션 바 */
 nav {
     width: 150px; /* 좌측 메뉴의 폭 */
-    margin-left: 180px;
-    margin-top: 60px;
+    margin-left: 20px;
+    margin-top: 20px;
     text-align: center;
     padding: 10px;
 }
@@ -45,12 +45,12 @@ nav ul li a:hover {
 /* 게시판 테이블 */
 .content {
     flex-grow: 1;
-    margin-right: 150px;
+    margin-right: 20px;
 }
 
 .sort-options {
     float: right;
-    margin-right: 100px;
+    margin-right: 20px;
     margin-top: 20px;
 }
 
@@ -61,7 +61,7 @@ nav ul li a:hover {
 
 table {
     margin: auto;
-    width: 100%; /* 테이블 너비를 100%로 설정하여 가로 크기 조정 */
+    width: 95%; /* 테이블 너비를 95%로 설정하여 가로 크기 조정 */
     border-radius: 5px;
     border-collapse: collapse;
 }
@@ -86,7 +86,7 @@ table {
 }
 
 .main-header-title {
-    width: 30%; /* 제목 열의 너비 설정 (길게) */
+    width: 50%; /* 제목 열의 너비 설정 (길게) */
     text-align: left; /* 제목을 왼쪽 정렬 */
 }
 
