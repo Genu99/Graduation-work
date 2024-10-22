@@ -142,9 +142,14 @@
         event.preventDefault(); // 기본 제출 방지
 
         const title = document.querySelector('input[name="title"]').value; // 제목
-        const content = detailDiv.innerHTML; // 내용 (HTML 형식)
+        const content = detailDiv ? detailDiv.innerHTML : ''; // 내용 (HTML 형식)
         const categoryId = 1; // 카테고리 ID
         const imageList = []; // 이미지 리스트 (필요에 따라 추가)
+
+        if (!content) {
+            alert('내용을 입력하세요.');
+            return;
+        }
 
         const postData = {
           categoryId: categoryId,
