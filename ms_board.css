@@ -12,7 +12,7 @@ body {
     justify-content: flex-start;
     max-width: 1200px;
     margin: auto;
-    margin-top: 40px; /* 상단 여백 추가 */
+    margin-top: 60px; /* 상단 여백 추가 */
 }
 
 /* 좌측 네비게이션 바 */
@@ -61,13 +61,13 @@ nav ul li a:hover {
     background-color: #f9f9f9;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-left: 20px; /* 네비게이션 바와의 간격 추가 */
+    margin-left: 30px; /* 네비게이션 바와의 간격 추가 */
 }
 
 .sort-options {
     float: right;
     margin-right: 20px;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .sort-options select {
@@ -79,6 +79,7 @@ table {
     width: 100%; /* 테이블 너비를 100%로 설정하여 가로 크기 조정 */
     border-radius: 5px;
     border-collapse: collapse;
+    margin-top: 20px; /* 테이블과 상단 내용 사이 간격 추가 */
 }
 
 .main-header {
