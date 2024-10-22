@@ -177,7 +177,7 @@
         recentGameImage.src = recentGameData.gameImageUrl;
         recentGameIcon.style.display = 'block';
         recentGameIcon.onclick = () => {
-          window.location.href = `gameDetail.html?gameId=${recentGameData.gameId}`;
+          window.location.href = 'recentGames.html'; // recentGames.html 페이지로 이동
         };
       }
     }
@@ -228,6 +228,11 @@
             'Content-Type': 'application/json',
           },
         });
+
+        if (response.status === 409) {
+          showPopup('이미 장바구니에 담긴 게임입니다.');
+          return;
+        }
 
         if (!response.ok) {
           throw new Error('장바구니에 추가하는 중 오류가 발생했습니다.');
@@ -324,6 +329,11 @@
       currentPage = 1; // 페이지를 1로 초기화
       fetchGamesByCategory(selectedGenre, currentPage, sortOrder);
     });
+
+    // 팝업을 표시하는 함수
+    function showPopup(message) {
+      alert(message);
+    }
   </script>
 </body>
 </html>
