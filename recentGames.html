@@ -75,12 +75,13 @@
 
         recentGamesList.innerHTML = '';
         recentGames.forEach(game => {
+          const gamePrice = game.discountPrice !== undefined ? game.discountPrice : game.originalPrice;
           const gameCard = `
             <div class="recent-game-card">
               <img src="${game.gameImageUrl || 'https://via.placeholder.com/150'}" alt="${game.gameName || '게임 이미지'}" class="game-image" />
               <div class="recent-game-info">
                 <h3 class="recent-game-title">${game.gameName || '제목 없음'}</h3>
-                <p class="recent-game-price">${game.gamePrice === 0 ? '무료' : '₩ ' + game.gamePrice}</p>
+                <p class="recent-game-price">${gamePrice === 0 ? '무료' : '₩ ' + gamePrice}</p>
                 <a href="gameDetail.html?gameId=${game.gameId}" class="recent-game-link">상세 보기</a>
               </div>
             </div>
