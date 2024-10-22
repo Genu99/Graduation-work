@@ -24,6 +24,7 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+  justify-content: center;
 }
 
 .recent-game-card {
@@ -43,7 +44,7 @@ h2 {
   transform: translateY(-5px);
 }
 
-.recent-game-image {
+.game-image {
   width: 100px;
   height: 100px;
   border-radius: 8px;
@@ -88,7 +89,7 @@ h2 {
   position: fixed;
   bottom: 0;
   width: 100%;
-} 
+}
 
 p {
   margin: 0;
