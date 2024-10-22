@@ -56,12 +56,12 @@ nav ul li a:hover {
 /* 게시판 테이블 */
 .content {
     flex-grow: 1;
-    max-width: 1000px; /* 최대 너비 제한 */
+    max-width: none; /* 최대 너비 제한 제거 */
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-left: 30px; /* 네비게이션 바와의 간격 추가 */
+    margin-left: 20px; /* 네비게이션 바와의 간격 추가 */
 }
 
 .sort-options {
@@ -99,12 +99,17 @@ table {
 
 /* 제목 열의 너비와 정렬 수정 */
 .main-header-num {
-    width: 5%; /* 번호 열의 너비 설정 */
+    width: 10%; /* 번호 열의 너비 설정 */
 }
 
 .main-header-title {
-    width: 50%; /* 제목 열의 너비 설정 */
+    width: 40%; /* 제목 열의 너비 설정 */
     text-align: left; /* 제목을 왼쪽 정렬 */
+}
+
+.main-header-name, .main-header-date, .main-header-like {
+    width: 15%;
+    text-align: center;
 }
 
 /* 제목과 그에 해당하는 데이터 셀 왼쪽 정렬 */
@@ -119,18 +124,6 @@ table {
 
 .main-header-title a:hover {
     color: inherit; /* 마우스 오버 시에도 색상 유지 */
-}
-
-.main-header-like {
-    width: 10%; /* 조회수 열의 너비 설정 */
-}
-
-.main-header-date {
-    width: 15%; /* 작성일 열의 너비 설정 */
-}
-
-.main-header-name {
-    width: 15%; /* 작성자 열의 너비 설정 */
 }
 
 #search-button {
