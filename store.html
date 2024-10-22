@@ -197,6 +197,40 @@
       }
     }
 
+    // 장바구니에 게임 추가 함수
+    async function addToCart(gameId) {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.');
+          window.location.href = 'login.html';
+          return;
+        }
+
+        const response = await fetch(`${serverUrl}/api/user/cart/${gameId}`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.status === 409) {
+          showPopup('이미 장바구니에 담긴 게임입니다.');
+          return;
+        }
+
+        if (!response.ok) {
+          throw new Error('장바구니에 추가하는 중 오류가 발생했습니다.');
+        }
+
+        alert('장바구니에 추가되었습니다.');
+      } catch (error) {
+        console.error('장바구니에 게임 추가 중 오류 발생:', error);
+        alert('장바구니에 추가하는 데 실패했습니다. 다시 시도해주세요.');
+      }
+    }
+
     // 페이지네이션 업데이트 함수
     function updatePagination(totalPages) {
       const paginationContainer = document.getElementById('pagination');
