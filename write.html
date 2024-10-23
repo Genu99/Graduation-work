@@ -128,6 +128,7 @@
       // auth.js에서 JWT 토큰 가져오기 함수 정의
       function getAuthToken() {
           const token = localStorage.getItem('token');
+          console.log('Retrieved token:', token); // 토큰 값을 로그로 출력하여 확인
           if (!token) {
               console.error('토큰이 없습니다. 로그인이 필요합니다.');
           }
