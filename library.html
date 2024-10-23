@@ -72,13 +72,15 @@
             color: #777;
         }
 
+        /* 링크의 밑줄 없애기 */
         a {
             text-decoration: none;
             color: inherit;
-            display: flex;
+            display: flex; /* a 태그 내부를 가로로 배치 */
             align-items: center;
         }
 
+        /* 링크에 마우스를 올렸을 때 효과 */
         a:hover {
             color: #007bff;
         }
@@ -96,23 +98,25 @@
     <script src="auth.js"></script>
     <script>
         window.onload = function() {
-            // Load header.html
+            // 1. 헤더 로딩
             fetch('header.html')
                 .then(response => response.text())
                 .then(data => {
+                    // header.html 파일의 내용을 id가 'header'인 요소에 삽입합니다.
                     document.getElementById('header').innerHTML = data;
                 })
                 .catch(error => console.error('Error loading header:', error));
 
-            // Get token from auth.js
-            const token = getAccessToken(); // Assuming auth.js provides a function named getAccessToken
+            // 2. 토큰 가져오기 (auth.js 사용)
+            const token = getAccessToken(); // auth.js에 정의된 getAccessToken 함수 사용
 
+            // 3. 토큰이 없을 경우 로그인 필요 알림
             if (!token) {
                 alert('로그인이 필요합니다.');
                 return;
             }
 
-            // Fetch game library
+            // 4. 게임 라이브러리 목록 불러오기
             fetch('https://ludorium.store/api/user/library/list', {
                 method: 'GET',
                 headers: {
@@ -122,19 +126,25 @@
             })
             .then(response => response.json())
             .then(data => {
+                // 서버로부터 게임 목록을 받아왔을 때 상태 코드가 200일 경우만 처리
                 if (data.status === 200) {
                     const gameList = document.getElementById('game-list');
+                    // 각 게임에 대해 UI 요소를 생성하고 게임 목록에 추가
                     data.data.forEach(game => {
+                        // 게임 항목 요소 생성
                         const gameItem = document.createElement('div');
                         gameItem.classList.add('game-item');
 
+                        // 게임 세부 정보를 포함하는 링크 생성
                         const gameLink = document.createElement('a');
                         gameLink.href = `https://genu99.github.io/Graduation-work/gameDetail.html?gameId=${game.gameId}`;
 
+                        // 게임 이미지 생성
                         const gameImage = document.createElement('img');
                         gameImage.classList.add('game-image');
                         gameImage.src = game.imageUrl;
 
+                        // 게임 이름 및 구매 날짜를 포함하는 div 생성
                         const gameDetails = document.createElement('div');
                         gameDetails.classList.add('game-details');
 
@@ -142,18 +152,24 @@
                         gameName.classList.add('game-name');
                         gameName.innerText = game.gameName;
 
+                        // 시분초를 제거하고 날짜만 표시
                         const formattedDate = game.addDate.split(' ')[0];
                         const addDate = document.createElement('p');
                         addDate.classList.add('add-date');
                         addDate.innerText = `구매일: ${formattedDate}`;
 
+                        // 게임 이름과 구매일을 세부 정보에 추가
                         gameDetails.appendChild(gameName);
                         gameDetails.appendChild(addDate);
 
+                        // 링크 요소에 이미지와 세부 정보 추가
                         gameLink.appendChild(gameImage);
                         gameLink.appendChild(gameDetails);
 
+                        // 게임 항목에 링크 추가
                         gameItem.appendChild(gameLink);
+
+                        // 게임 목록에 항목 추가
                         gameList.appendChild(gameItem);
                     });
                 } else {
