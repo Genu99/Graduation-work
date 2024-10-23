@@ -227,7 +227,7 @@
                 const prevButton = document.createElement('button');
                 prevButton.textContent = '<';
                 prevButton.addEventListener('click', () => {
-                    fetchBoardList(getActiveCategoryId(), startPage - 1);
+                    fetchBoardList(getActiveCategoryId(), startPage - 1, orderSelect.value, searchTypeSelect.value, searchInput.value.trim());
                 });
                 paginationContainer.appendChild(prevButton);
             }
@@ -239,7 +239,7 @@
                 button.className = i === currentPage ? 'active' : '';
                 button.disabled = i === currentPage; // 현재 페이지 버튼은 비활성화
                 button.addEventListener('click', () => {
-                    fetchBoardList(getActiveCategoryId(), i);
+                    fetchBoardList(getActiveCategoryId(), i, orderSelect.value, searchTypeSelect.value, searchInput.value.trim());
                 });
                 paginationContainer.appendChild(button);
             }
@@ -249,7 +249,7 @@
                 const nextButton = document.createElement('button');
                 nextButton.textContent = '>';
                 nextButton.addEventListener('click', () => {
-                    fetchBoardList(getActiveCategoryId(), endPage + 1);
+                    fetchBoardList(getActiveCategoryId(), endPage + 1, orderSelect.value, searchTypeSelect.value, searchInput.value.trim());
                 });
                 paginationContainer.appendChild(nextButton);
             }
