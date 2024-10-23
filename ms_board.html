@@ -233,7 +233,9 @@
             .then(response => response.text())
             .then(data => {
                 document.getElementById("header").innerHTML = data;
-            });
+                checkLoginStatus();
+            })
+            .catch(error => console.error("헤더 로드 중 오류 발생:", error));
     </script>
     <script src="auth.js"></script>
     <!-- 로그인 상태 관리를 위한 스크립트 추가 -->
@@ -440,28 +442,4 @@
                 const button = document.createElement('button');
                 button.textContent = i;
                 button.className = i === currentPage ? 'active' : '';
-                button.disabled = i === currentPage; // 현재 페이지 버튼은 비활성화
-                button.addEventListener('click', () => {
-                    currentPage = i;
-                    fetchBoardList(getActiveCategoryId(), currentPage, orderSelect.value, currentSearchType, currentSearchKeyword);
-                });
-                paginationContainer.appendChild(button);
-            }
-
-            // 다음 버튼
-            if (endPage < totalPages) {
-                const nextButton = document.createElement('button');
-                nextButton.textContent = '>';
-                nextButton.addEventListener('click', () => {
-                    currentPage = endPage + 1;
-                    fetchBoardList(getActiveCategoryId(), currentPage, orderSelect.value, currentSearchType, currentSearchKeyword);
-                });
-                paginationContainer.appendChild(nextButton);
-            }
-        }
-
-        // 초기 데이터 로드
-        fetchBoardList();
-    </script>
-  </body>
-</html>
+                button.disabled = i === currentPage; // 현재 페이지 버튼은
