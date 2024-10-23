@@ -8,7 +8,7 @@
 </head>
 <body>
     <!-- 헤더 자리 표시자 -->
-    <div id="header"></div>
+    <div id="header-placeholder"></div>
 
     <div class="container">
         <!-- 좌측 네비게이션 바 -->
@@ -65,14 +65,14 @@
             </div>
         </div>
     </div>
-    <script src="auth.js"></script>
+    <script src="auth.js" onload="console.log('auth.js loaded successfully')" onerror="console.error('Failed to load auth.js')"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // 헤더를 동적으로 로드
             fetch('header.html')
                 .then(response => response.text())
                 .then(data => {
-                    document.getElementById('header').innerHTML = data;
+                    document.getElementById('header-placeholder').innerHTML = data;
                     checkLoginStatus(); // 헤더 로드 후 로그인 상태 확인
                     const logoutButton = document.getElementById('logout-btn');
                     if (logoutButton) {
