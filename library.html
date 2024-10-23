@@ -11,8 +11,6 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="icon" href="favicon.ico" />
-    <meta http-equiv="Permissions-Policy" content="interest-cohort=()" />
     <style>
         body {
             font-family: 'Noto Sans KR', sans-serif;
@@ -90,7 +88,7 @@
 </head>
 <body>
     <!-- 헤더를 삽입할 요소 -->
-    <div id="header"></div>
+    <div id="header-placeholder"></div>
 
     <div class="game-list-container">
         <h2>라이브러리</h2>
@@ -99,111 +97,89 @@
 
     <script src="auth.js"></script>
     <script>
-        async function loadHeader() {
-            try {
-                // header.html 파일을 로드하여 헤더 섹션에 추가
-                const response = await fetch('header.html');
-                if (!response.ok) {
-                    throw new Error('헤더 파일을 불러오는데 실패했습니다.');
-                }
-                const data = await response.text();
-                const headerElement = document.getElementById('header');
-                if (headerElement) {
-                    headerElement.innerHTML = data;
-                } else {
-                    console.error('헤더 요소를 찾을 수 없습니다.');
-                }
-            } catch (error) {
-                console.error('헤더 로딩 오류:', error);
+        document.addEventListener("DOMContentLoaded", function() {
+            // 헤더를 동적으로 로드
+            fetch("header.html")
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("header-placeholder").innerHTML = data;
+                    checkLoginStatus(); // 헤더에 로그인 상태 확인 함수가 있을 경우 호출
+                })
+                .catch(error => console.error("헤더 로드 중 오류 발생:", error));
+
+            // 로그인 여부 확인 후 게임 라이브러리 로드
+            if (!localStorage.getItem('token')) {
+                alert('로그인 후 이용해주세요');
+                window.location.href = 'login.html';
+            } else {
+                loadGameLibrary();
             }
-        }
+        });
 
-        async function loadLibrary() {
-            try {
-                // auth.js에 정의된 getAccessToken() 함수로 토큰 가져오기
-                if (typeof getAccessToken !== 'function') {
-                    throw new Error('getAccessToken 함수가 정의되지 않았습니다.');
+        // 게임 라이브러리 로드 함수
+        function loadGameLibrary() {
+            const apiUrl = 'https://ludorium.store/api/user/library/list';
+            fetch(apiUrl, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
-                const token = getAccessToken();
-                if (!token) {
-                    alert('로그인이 필요합니다.');
-                    return;
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`네트워크 응답 오류: ${response.status} - ${response.statusText}`);
                 }
+                return response.json();
+            })
+            .then(data => {
+                console.log('서버 응답 데이터:', data); // 데이터를 확인하기 위해 전체 로그 추가
 
-                // 게임 라이브러리 데이터를 가져오기 위한 API 호출
-                const response = await fetch('https://ludorium.store/api/user/library/list', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'accept': '*/*'
-                    }
+                // 응답 데이터의 data 필드 접근
+                const gameData = data.data;
+                const gameList = document.getElementById('game-list');
+                gameList.innerHTML = ''; // 기존 게임 목록 초기화
+
+                gameData.forEach(game => {
+                    const gameItem = document.createElement('div');
+                    gameItem.classList.add('game-item');
+
+                    // 링크 생성
+                    const gameLink = document.createElement('a');
+                    gameLink.href = `https://genu99.github.io/Graduation-work/gameDetail.html?gameId=${game.gameId}`;
+
+                    const gameImage = document.createElement('img');
+                    gameImage.classList.add('game-image');
+                    gameImage.src = game.imageUrl;
+
+                    const gameDetails = document.createElement('div');
+                    gameDetails.classList.add('game-details');
+
+                    const gameName = document.createElement('p');
+                    gameName.classList.add('game-name');
+                    gameName.innerText = game.gameName;
+
+                    // 시분초를 제거하고 날짜만 표시
+                    const formattedDate = game.addDate.split(' ')[0];
+                    const addDate = document.createElement('p');
+                    addDate.classList.add('add-date');
+                    addDate.innerText = `구매일: ${formattedDate}`;
+
+                    gameDetails.appendChild(gameName);
+                    gameDetails.appendChild(addDate);
+
+                    // 링크에 이미지와 게임 세부 정보 포함
+                    gameLink.appendChild(gameImage);
+                    gameLink.appendChild(gameDetails);
+
+                    gameItem.appendChild(gameLink);
+                    gameList.appendChild(gameItem);
                 });
-
-                // HTTP 응답이 성공적인지 확인
-                if (!response.ok) {
-                    throw new Error('게임 목록을 불러오는데 실패했습니다.');
-                }
-
-                const data = await response.json();
-                if (data && data.data) {
-                    const gameList = document.getElementById('game-list');
-                    gameList.innerHTML = ''; // 기존 게임 목록 초기화
-
-                    // 각 게임 항목 생성 및 추가
-                    data.data.forEach(game => {
-                        const gameItem = document.createElement('div');
-                        gameItem.classList.add('game-item');
-
-                        // 링크 생성
-                        const gameLink = document.createElement('a');
-                        gameLink.href = `https://genu99.github.io/Graduation-work/gameDetail.html?gameId=${game.gameId}`;
-
-                        // 게임 이미지 추가
-                        const gameImage = document.createElement('img');
-                        gameImage.classList.add('game-image');
-                        gameImage.src = game.imageUrl;
-
-                        // 게임 세부 정보 추가
-                        const gameDetails = document.createElement('div');
-                        gameDetails.classList.add('game-details');
-
-                        const gameName = document.createElement('p');
-                        gameName.classList.add('game-name');
-                        gameName.innerText = game.gameName;
-
-                        // 날짜 형식 정리 (시분초 제거)
-                        const formattedDate = game.addDate.split(' ')[0];
-                        const addDate = document.createElement('p');
-                        addDate.classList.add('add-date');
-                        addDate.innerText = `구매일: ${formattedDate}`;
-
-                        // 게임 이름 및 구매 날짜 추가
-                        gameDetails.appendChild(gameName);
-                        gameDetails.appendChild(addDate);
-
-                        // 링크 요소에 이미지와 세부 정보 추가
-                        gameLink.appendChild(gameImage);
-                        gameLink.appendChild(gameDetails);
-
-                        // 게임 항목에 링크 추가
-                        gameItem.appendChild(gameLink);
-
-                        // 게임 목록에 항목 추가
-                        gameList.appendChild(gameItem);
-                    });
-                } else {
-                    alert('게임 목록을 불러오는데 실패했습니다.');
-                }
-            } catch (error) {
-                console.error('게임 목록 로딩 오류:', error);
-            }
+            })
+            .catch(error => {
+                console.error('게임 라이브러리 로드 중 오류 발생:', error);
+                alert(`게임 목록을 불러오는 중 문제가 발생했습니다: ${error.message}`);
+            });
         }
-
-        // 페이지 로드 시 헤더와 라이브러리 로드
-        window.onload = async function() {
-            await loadHeader();  // 헤더를 먼저 로드
-            await loadLibrary(); // 라이브러리 데이터를 로드
-        };
     </script>
 </body>
 </html>
