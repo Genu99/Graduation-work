@@ -189,7 +189,7 @@
 
         const title = document.querySelector('input[name="title"]').value; // 제목
         const content = detailDiv ? detailDiv.innerHTML : ''; // 내용 (HTML 형식)
-        const categoryId = 0; // 카테고리 ID (Swagger 예시와 일치하도록 수정)
+        const categoryId = 1; // 카테고리 ID를 1로 설정 (자유게시판 예시)
         const imageList = []; // 이미지 리스트 (필요에 따라 추가)
 
         if (!content) {
@@ -228,43 +228,14 @@
             console.log('게시물이 성공적으로 등록되었습니다:', data);
             alert('게시물이 성공적으로 등록되었습니다.');
             
-            // 게시글 작성 후 게시글 상세 조회로 이동
-            const boardId = data.data;
-            if (boardId) {
-              fetchBoardDetail(boardId);
-            } else {
-              console.error('boardId를 가져오지 못했습니다:', data);
-            }
-           
+            // 게시글 작성 후 게시글 목록 페이지로 이동
+            window.location.href = `bs_board.html?categoryId=${categoryId}`;
           } else {
             console.error('게시물 등록 실패:', response.status, response.statusText);
             alert('게시물 등록에 실패했습니다.');
           }
         } catch (error) {
           console.error('오류 발생:', error);
-        }
-      }
-
-      // 게시글 상세 조회 처리
-      async function fetchBoardDetail(boardId) {
-        try {
-          const response = await fetch(`https://ludorium.store/api/user/board/${boardId}`, {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${getAuthToken()}`
-            }
-          });
-
-          if (response.ok) {
-            const data = await response.json();
-            console.log('게시글 상세 조회 성공:', data);
-            alert(`게시글 상세 조회 성공: ${data.data.title}`);
-          } else {
-            console.error('게시글 조회 실패:', response.status, response.statusText);
-            alert('게시글 조회에 실패했습니다.');
-          }
-        } catch (error) {
-          console.error('게시글 조회 중 오류 발생:', error);
         }
       }
     </script>
