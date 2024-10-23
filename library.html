@@ -103,6 +103,12 @@
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("header-placeholder").innerHTML = data;
+                    const scriptElements = document.getElementById("header-placeholder").getElementsByTagName("script");
+                    for (let script of scriptElements) {
+                        const newScript = document.createElement("script");
+                        newScript.src = script.src;
+                        document.head.appendChild(newScript);
+                    }
                     checkLoginStatus(); // 헤더에 로그인 상태 확인 함수가 있을 경우 호출
                 })
                 .catch(error => console.error("헤더 로드 중 오류 발생:", error));
