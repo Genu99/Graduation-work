@@ -12,7 +12,7 @@
 
 /* 장바구니 섹션 */
 .cart-container {
-    max-width: 600px;
+    max-width: 1000px;
     margin: 50px auto;
     padding: 30px;
     position: relative;
@@ -127,14 +127,14 @@
 /* 장바구니 아이템 스타일 */
 .cart-item {
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     align-items: center;
     padding: 20px 0;
     margin-bottom: 20px;
 }
 
 .cart-item p {
-    margin: 0;
+    margin-right: 0px;
     font-size: 20px;
     color: #333;
 }
@@ -159,6 +159,13 @@
 .game-image {
     width: 200px; /* 이미지 크기를 200px로 설정 */
     height: auto; /* 비율 유지 */
-    margin-right: 10px; /* 이미지와 텍스트 사이 간격 */
+    margin-left:50px;
+    margin-right: 40px; /* 이미지와 텍스트 사이 간격 */
     vertical-align: middle; /* 텍스트와 중앙 정렬 */
+}
+.game-name{
+    flex-grow:1;
+}
+.game-price{
+    margin-left:50px;
 }
