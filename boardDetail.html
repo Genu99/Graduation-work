@@ -174,32 +174,6 @@
         .delete-btn:hover {
             background-color: #778881;
         }
-
-        .comment-edit {
-    font-family: "Noto Sans KR";
-    width: 100%;
-    height: 100px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    font-size: 16px;
-    margin-bottom: 10px;
-    background-color: #f4f4f4;
-    resize: none;
-}
-
-.save-btn, .cancel-btn {
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #889491;
-    color: #fff;
-    cursor: pointer;
-}
-
-.save-btn:hover, .cancel-btn:hover {
-    background-color: #778881;
-}
     </style>
 </head>
 <body>
@@ -236,32 +210,7 @@
 
         <div class="divider"></div>
 
-        <div id="commentList" class="comment-list">
-            <div class="comment-item">
-                <img src="image-placeholder.png" alt="User" class="comment-image" />
-                <div class="comment-content">
-                    <div class="comment-text-container">
-                        <p class="comment-name">구름</p>
-                        <p class="comment-text">Game Forge는 정말 최고의 게임 사이트 입니다!</p>
-                    </div>
-                </div>
-                <div class="comment-footer">
-                    <p class="comment-date">2024-10-10</p>
-                    <div class="comment-actions">
-                        <button class="edit-btn">수정</button>
-                        <button class="delete-btn">삭제</button>
-                    </div>
-                </div>
-                <!-- 수정 모드일 때 나타나는 입력 칸과 버튼들 -->
-                <div class="comment-edit-mode">
-                    <textarea class="comment-edit"></textarea>
-                    <div class="comment-actions">
-                        <button class="save-btn">저장</button>
-                        <button class="cancel-btn">취소</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div id="commentList" class="comment-list"></div>
         
         <div class="comment-section">
             <textarea id="commentInput" placeholder="댓글을 입력하세요"></textarea>
@@ -277,115 +226,129 @@
         };
 
         const fetchPostDetails = async () => {
-        const boardId = getBoardIdFromUrl();
-        const token = localStorage.getItem('token'); // JWT 토큰 가져오기
+            const boardId = getBoardIdFromUrl();
+            const token = localStorage.getItem('token'); // JWT 토큰 가져오기
 
-        const postResponse = await fetch(`https://ludorium.store/api/user/board/${boardId}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`, // JWT 토큰을 Authorization 헤더에 추가
-                'Content-Type': 'application/json'
-            }
-        });
-
-        const postData = await postResponse.json();
-
-        if (postData.status === 200) {
-            // 게시글 정보 설정
-            document.getElementById('postTitle').innerText = postData.data.title;
-            document.getElementById('postAuthor').innerText = postData.data.nickname;
-            document.getElementById('postDate').innerText = postData.data.updatedDate;
-            document.getElementById('viewCount').innerText = postData.data.hit;
-            document.getElementById('postContent').innerHTML = postData.data.content;
-
-            // 좋아요 수와 상태 설정
-            currentLikeCount = postData.data.favoriteCount;
-            document.getElementById('likeCount').innerText = currentLikeCount;
-
-            // 좋아요 상태에 따라 하트 아이콘 설정
-            isLiked = postData.data.favoriteStatus;
-            updateLikeDisplay();
-
-            // 내가 쓴 글이면 수정, 삭제 버튼 추가
-            if (postData.data.status) {  // 서버에서 내가 쓴 글인지 여부를 boolean으로 전달받는다고 가정
-                displayPostControls(boardId);
-            }
-        } else {
-            console.error('게시글 정보를 가져오는 데 실패했습니다.');
-        }
-    };
-
-    // 수정/삭제 버튼 추가 함수
-    function displayPostControls(boardId) {
-        const postControls = document.getElementById('postControls');
-        
-        // 수정 버튼
-        const editButton = document.createElement('button');
-        editButton.innerText = '수정';
-        editButton.style.marginLeft = 'auto';
-        editButton.style.backgroundColor = '#889491';
-        editButton.style.color = 'white';
-        editButton.style.border = 'none';
-        editButton.style.borderRadius = '5px';
-        editButton.style.padding = '10px 20px';
-        editButton.style.fontSize = '16px';
-        editButton.style.cursor = 'pointer';
-        editButton.style.marginRight = '10px';
-        
-        editButton.onmouseover = () => editButton.style.backgroundColor = '#778881'; // Hover 효과
-        editButton.onmouseleave = () => editButton.style.backgroundColor = '#889491'; // Mouse leave 효과
-
-      editButton.onclick = () => {
-    // edit.html을 팝업으로 열기
-    window.open(`/edit.html?boardId=${boardId}`, 'Edit Post', 'width=800,height=600');
-};
-
-
-
-        // 삭제 버튼
-        const deleteButton = document.createElement('button');
-        deleteButton.innerText = '삭제';
-        deleteButton.style.marginLeft = 'auto';
-        deleteButton.style.backgroundColor = '#889491';
-        deleteButton.style.color = 'white';
-        deleteButton.style.border = 'none';
-        deleteButton.style.borderRadius = '5px';
-        deleteButton.style.padding = '10px 20px';
-        deleteButton.style.fontSize = '16px';
-        deleteButton.style.cursor = 'pointer';
-
-        deleteButton.onmouseover = () => deleteButton.style.backgroundColor = '#778881'; // Hover 효과
-        deleteButton.onmouseleave = () => deleteButton.style.backgroundColor = '#889491'; // Mouse leave 효과
-
-        deleteButton.onclick = async () => {
-            if (confirm('정말 이 글을 삭제하시겠습니까?')) {
-                const token = localStorage.getItem('token');
-                try {
-                    const response = await fetch(`https://ludorium.store/api/user/board/${boardId}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'Authorization': `Bearer ${token}`,
-                            'Content-Type': 'application/json'
-                        }
-                    });
-
-                    if (response.ok) {
-                        alert('게시글이 삭제되었습니다.');
-                        window.location.href = 'ms_board.html'; // 삭제 후 메인 페이지로 이동
-                    } else {
-                        alert('게시글 삭제에 실패했습니다.');
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('게시글 삭제 중 오류가 발생했습니다.');
+            const postResponse = await fetch(`https://ludorium.store/api/user/board/${boardId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`, // JWT 토큰을 Authorization 헤더에 추가
+                    'Content-Type': 'application/json'
                 }
+            });
+
+            const postData = await postResponse.json();
+
+            if (postData.status === 200) {
+                // 게시글 정보 설정
+                document.getElementById('postTitle').innerText = postData.data.title;
+                document.getElementById('postAuthor').innerText = postData.data.nickname;
+                document.getElementById('postDate').innerText = postData.data.updatedDate;
+                document.getElementById('viewCount').innerText = postData.data.hit;
+                document.getElementById('postContent').innerHTML = postData.data.content;
+
+                // 좋아요 수와 상태 설정
+                currentLikeCount = postData.data.favoriteCount;
+                document.getElementById('likeCount').innerText = currentLikeCount;
+
+                // 좋아요 상태에 따라 하트 아이콘 설정
+                isLiked = postData.data.favoriteStatus;
+                updateLikeDisplay();
+
+                // 내가 쓴 글이면 수정, 삭제 버튼 추가
+                if (postData.data.status) {  // 서버에서 내가 쓴 글인지 여부를 boolean으로 전달받는다고 가정
+                    displayPostControls(boardId);
+                }
+            } else {
+                console.error('게시글 정보를 가져오는 데 실패했습니다.');
             }
         };
 
-        // 버튼을 컨트롤 섹션에 추가
-        postControls.appendChild(editButton);
-        postControls.appendChild(deleteButton);
-    }
+        // 수정/삭제 버튼 추가 함수
+        function displayPostControls(boardId) {
+            const postControls = document.getElementById('postControls');
+            
+            // 수정 버튼
+            const editButton = document.createElement('button');
+            editButton.innerText = '수정';
+            editButton.style.marginLeft = 'auto';
+            editButton.style.backgroundColor = '#889491';
+            editButton.style.color = 'white';
+            editButton.style.border = 'none';
+            editButton.style.borderRadius = '5px';
+            editButton.style.padding = '10px 20px';
+            editButton.style.fontSize = '16px';
+            editButton.style.cursor = 'pointer';
+            editButton.style.marginRight = '10px';
+            
+            editButton.onmouseover = () => editButton.style.backgroundColor = '#778881'; // Hover 효과
+            editButton.onmouseleave = () => editButton.style.backgroundColor = '#889491'; // Mouse leave 효과
 
+            editButton.onclick = () => {
+                // edit.html을 팝업으로 열기
+                window.open(`/edit.html?boardId=${boardId}`, 'Edit Post', 'width=800,height=600');
+            };
+
+            // 삭제 버튼
+            const deleteButton = document.createElement('button');
+            deleteButton.innerText = '삭제';
+            deleteButton.style.marginLeft = 'auto';
+            deleteButton.style.backgroundColor = '#889491';
+            deleteButton.style.color = 'white';
+            deleteButton.style.border = 'none';
+            deleteButton.style.borderRadius = '5px';
+            deleteButton.style.padding = '10px 20px';
+            deleteButton.style.fontSize = '16px';
+            deleteButton.style.cursor = 'pointer';
+
+            deleteButton.onmouseover = () => deleteButton.style.backgroundColor = '#778881'; // Hover 효과
+            deleteButton.onmouseleave = () => deleteButton.style.backgroundColor = '#889491'; // Mouse leave 효과
+
+            deleteButton.onclick = async () => {
+                if (confirm('정말 이 글을 삭제하시겠습니까?')) {
+                    const token = localStorage.getItem('token');
+                    try {
+                        const response = await fetch(`https://ludorium.store/api/user/board/${boardId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        if (response.ok) {
+                            alert('게시글이 삭제되었습니다.');
+                            window.location.href = 'ms_board.html'; // 삭제 후 메인 페이지로 이동
+                        } else {
+                            alert('게시글 삭제에 실패했습니다.');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('게시글 삭제 중 오류가 발생했습니다.');
+                    }
+                }
+            };
+
+            // 버튼을 컨트롤 섹션에 추가
+            postControls.appendChild(editButton);
+            postControls.appendChild(deleteButton);
+        }
+
+        // 좋아요 수와 상태 업데이트 함수
+        function updateLikeDisplay() {
+            const likeCountDisplay = document.getElementById('likeCount');
+            const likeIcon = document.getElementById('likeIcon');
+
+            likeCountDisplay.innerText = currentLikeCount; // 좋아요 수 업데이트
+
+            // 하트 아이콘 상태 업데이트
+            if (isLiked) {
+                likeIcon.classList.remove('far'); // 비어있는 하트 제거
+                likeIcon.classList.add('fas'); // 꽉 찬 하트 추가
+            } else {
+                likeIcon.classList.remove('fas'); // 꽉 찬 하트 제거
+                likeIcon.classList.add('far'); // 비어있는 하트 추가
+            }
+        }
 
         // 댓글 가져오기
         const fetchComments = async () => {
