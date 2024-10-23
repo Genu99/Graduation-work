@@ -232,7 +232,7 @@
                 prevButton.textContent = '<';
                 prevButton.addEventListener('click', () => {
                     currentPage = startPage - 1;
-                    fetchBoardList(getActiveCategoryId(), currentPage, orderSelect.value, searchTypeSelect.value, searchInput.value.trim());
+                    fetchBoardList(getActiveCategoryId(), currentPage, document.getElementById('order').value, document.getElementById('search-type').value, document.getElementById('search-input').value.trim());
                 });
                 paginationContainer.appendChild(prevButton);
             }
@@ -244,8 +244,7 @@
                 button.className = i === currentPage ? 'active' : '';
                 button.disabled = i === currentPage; // 현재 페이지 버튼은 비활성화
                 button.addEventListener('click', () => {
-                    currentPage = i;
-                    fetchBoardList(getActiveCategoryId(), currentPage, orderSelect.value, searchTypeSelect.value, searchInput.value.trim());
+                    fetchBoardList(getActiveCategoryId(), i, document.getElementById('order').value, document.getElementById('search-type').value, document.getElementById('search-input').value.trim());
                 });
                 paginationContainer.appendChild(button);
             }
@@ -256,7 +255,7 @@
                 nextButton.textContent = '>';
                 nextButton.addEventListener('click', () => {
                     currentPage = endPage + 1;
-                    fetchBoardList(getActiveCategoryId(), currentPage, orderSelect.value, searchTypeSelect.value, searchInput.value.trim());
+                    fetchBoardList(getActiveCategoryId(), currentPage, document.getElementById('order').value, document.getElementById('search-type').value, document.getElementById('search-input').value.trim());
                 });
                 paginationContainer.appendChild(nextButton);
             }
