@@ -334,11 +334,11 @@
         editButton.onmouseover = () => editButton.style.backgroundColor = '#778881'; // Hover 효과
         editButton.onmouseleave = () => editButton.style.backgroundColor = '#889491'; // Mouse leave 효과
 
-       editButton.onclick = () => {
-    console.log(boardId); // boardId 값 확인
-    // 수정 페이지로 이동 (예: /edit.html?boardId=boardId)
-    window.location.href = `/edit.html?boardId=${boardId}`;
+      editButton.onclick = () => {
+    // edit.html을 팝업으로 열기
+    window.open('edit.html', 'Edit Post', 'width=800,height=600');
 };
+
 
 
         // 삭제 버튼
