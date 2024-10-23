@@ -63,6 +63,21 @@
     </style>
 </head>
 <body>
+    <!-- 헤더 추가 -->
+    <div id="header-placeholder"></div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+          // 헤더를 동적으로 로드
+          fetch("header.html")
+              .then(response => response.text())
+              .then(data => {
+                  document.getElementById("header-placeholder").innerHTML = data;
+                  checkLoginStatus();
+              })
+              .catch(error => console.error("헤더 로드 중 오류 발생:", error));
+      });
+    </script>
+
     <form id="uploadForm" onsubmit="submitPost(event)">
       <table>
         <tr>
