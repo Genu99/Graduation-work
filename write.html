@@ -76,6 +76,15 @@
               })
               .catch(error => console.error("헤더 로드 중 오류 발생:", error));
       });
+
+      // 로그인 상태 확인 함수
+      function checkLoginStatus() {
+          const jwtToken = getAuthToken();
+          if (!jwtToken) {
+              alert('로그인 후 이용해주세요');
+              window.location.href = 'login.html';
+          }
+      }
     </script>
 
     <form id="uploadForm" onsubmit="submitPost(event)">
@@ -118,7 +127,7 @@
 
       // auth.js에서 JWT 토큰 가져오기 함수 정의
       function getAuthToken() {
-          return localStorage.getItem('jwtToken');
+          return localStorage.getItem('token'); // 토큰 키 이름을 'token'으로 수정
       }
 
       // 파일 선택 시 이미지 업로드 처리
