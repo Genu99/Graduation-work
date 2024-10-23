@@ -26,6 +26,14 @@
           <span class="material-symbols-outlined">add_shopping_cart</span>
         </div>
         <div id="cart-items"></div>
+        <!-- 전체 선택 체크박스 추가 -->
+<div class="select-all-container" style="margin-bottom: 10px;">
+  <input type="checkbox" id="select-all" onclick="toggleSelectAll(this)" />
+  <label for="select-all">전체 선택</label>
+</div>
+
+<div id="cart-items"></div>
+
         <div class="cart-summary">
           <h3>총 결제 금액:</h3>
           <span id="total-price"></span>₩
@@ -184,15 +192,17 @@
           alert('장바구니에서 아이템을 삭제하는 데 실패했습니다. 다시 시도해주세요.');
         }
       }
-
       // 전체 선택/해제 기능
-      function toggleSelectAll(selectAllCheckbox) {
-        const checkboxes = document.querySelectorAll('.cart-item-checkbox');
-        checkboxes.forEach(checkbox => {
-          checkbox.checked = selectAllCheckbox.checked;
-        });
-        updateTotalPrice();  // 총 가격 업데이트
-      }
+function toggleSelectAll(selectAllCheckbox) {
+  const checkboxes = document.querySelectorAll('.cart-item-checkbox');
+  checkboxes.forEach(checkbox => {
+    checkbox.checked = selectAllCheckbox.checked;
+  });
+  updateTotalPrice();  // 총 가격 업데이트
+}
+
+
+      
     </script>
   </body>
 </html>
