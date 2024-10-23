@@ -31,6 +31,10 @@
           <span id="total-price"></span>₩
           <button id="btn-primary" onclick="goToCheckout()">결제하기</button>
           <button id="btn-delete" onclick="removeSelectedItems()">선택 삭제</button>
+          <div class="select-all-container">
+            <input type="checkbox" id="select-all" onclick="toggleSelectAll(this)" />
+            <label for="select-all">전체 선택</label>
+          </div>
         </div>
       </section>
     </main>
@@ -179,6 +183,15 @@
           console.error('Error removing items from cart:', error);
           alert('장바구니에서 아이템을 삭제하는 데 실패했습니다. 다시 시도해주세요.');
         }
+      }
+
+      // 전체 선택/해제 기능
+      function toggleSelectAll(selectAllCheckbox) {
+        const checkboxes = document.querySelectorAll('.cart-item-checkbox');
+        checkboxes.forEach(checkbox => {
+          checkbox.checked = selectAllCheckbox.checked;
+        });
+        updateTotalPrice();  // 총 가격 업데이트
       }
     </script>
   </body>
