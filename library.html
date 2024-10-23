@@ -15,13 +15,67 @@
         body {
             font-family: 'Noto Sans KR', sans-serif;
             color: #333;
+            padding: 0;
+            margin: 0;
+            max-width: 100%;
+            width: 100%;
+        }
+
+        header {
+            background-color: #f8f9fa;
             padding: 20px;
-            max-width: 800px;
-            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .menu {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .menu li {
+            display: inline;
+        }
+
+        .menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 700;
+        }
+
+        .menu a:hover {
+            color: #007bff;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-buttons button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .header-buttons button.logout {
+            background-color: #6c757d;
         }
 
         .game-list-container {
-            width: 100%;
+            width: 80%;
             margin: 50px auto;
             background-color: white;
             padding: 15px;
@@ -88,7 +142,20 @@
 </head>
 <body>
     <!-- 헤더를 삽입할 요소 -->
-    <div id="header-placeholder"></div>
+    <header>
+        <div class="logo">Game Forge</div>
+        <nav>
+            <ul class="menu">
+                <li><a href="shop.html">상점</a></li>
+                <li><a href="mypage.html">마이페이지</a></li>
+                <li><a href="board.html">게시판</a></li>
+                <li><a href="library.html">라이브러리</a></li>
+            </ul>
+        </nav>
+        <div class="header-buttons">
+            <button onclick="logout()">로그아웃</button>
+        </div>
+    </header>
 
     <div class="game-list-container">
         <h2>라이브러리</h2>
@@ -98,21 +165,6 @@
     <script src="auth.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 헤더를 동적으로 로드
-            fetch("header.html")
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("header-placeholder").innerHTML = data;
-                    const scriptElements = document.getElementById("header-placeholder").getElementsByTagName("script");
-                    for (let script of scriptElements) {
-                        const newScript = document.createElement("script");
-                        newScript.src = script.src;
-                        document.head.appendChild(newScript);
-                    }
-                    checkLoginStatus(); // 헤더에 로그인 상태 확인 함수가 있을 경우 호출
-                })
-                .catch(error => console.error("헤더 로드 중 오류 발생:", error));
-
             // 로그인 여부 확인 후 게임 라이브러리 로드
             if (!localStorage.getItem('token')) {
                 alert('로그인 후 이용해주세요');
@@ -185,6 +237,13 @@
                 console.error('게임 라이브러리 로드 중 오류 발생:', error);
                 alert(`게임 목록을 불러오는 중 문제가 발생했습니다: ${error.message}`);
             });
+        }
+
+        // 로그아웃 함수
+        function logout() {
+            localStorage.removeItem('token');
+            alert('로그아웃되었습니다.');
+            window.location.href = 'login.html';
         }
     </script>
 </body>
