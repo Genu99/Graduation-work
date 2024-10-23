@@ -21,104 +21,6 @@
             justify-content: flex-start; /* 좌측에 고정 */
         }
 
-        /* 헤더 스타일 */
-        header {
-            font-family: "Noto Sans KR", sans-serif;
-            font-weight: 500;
-            font-style: normal;
-            color: #333;
-        }
-
-        .head {
-            text-align: right;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 10px; /* 요소들 사이의 간격을 60px로 설정 */
-            margin-right: 160px;
-            font-size: 24px;
-        }
-
-        .top-nav {
-            display: flex;
-            align-items: center;
-            padding-right: 0;
-            padding-left: 15px;
-            padding-bottom: 50px;
-            color: #333;
-            width: 100%;
-            box-sizing: border-box;
-            border-bottom: 1px solid #333;
-        }
-
-        .logo img {
-            margin-left: 120px;
-            width: 140px; /* 이미지 크기를 조정하여 일관성 유지 */
-            height: auto;
-            object-fit: cover;
-        }
-
-        .main-menu {
-            list-style-type: none;
-            margin: 0 300px;
-            padding: 0;
-            display: flex;
-            gap: 65px;
-            justify-content: center;
-            flex: 1;
-        }
-
-        .main-menu li a {
-            color: #333;
-            text-decoration: none;
-            font-size: 20px;
-            padding: 5px 10px;
-            font-weight: 500;
-            font-style: normal;
-            transition: color 0.3s;
-        }
-
-        .main-menu li a:hover {
-            color: #666;
-        }
-
-        .auth-buttons {
-            display: inline-block;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .auth-buttons a, .auth-buttons button {
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            color: white;
-            background-color: #889491;
-        }
-
-        .auth-buttons {
-            font-size: 20px;
-            padding: 10px;
-            color: #333;
-            background-color: transparent;
-            cursor: pointer;
-        }
-
-        .material-symbols-outlined {
-            color: #333;
-        }
-
-        .material-symbols-outlined:visited {
-            color: #333;
-        }
-
-        #welcome-message {
-            font-size: 20px;
-            font-weight: 500;
-            margin-left: 10px;
-            color: #333;
-        }
-
         /* 좌측 네비게이션 바 */
         nav {
             width: 150px; /* 좌측 메뉴의 폭 */
@@ -323,37 +225,16 @@
     </style>
   </head>
   <body>
-    <header>
-      <div class="head">
-        <a href="cart.html" class="cart-btn">
-          <span class="material-symbols-outlined"> shopping_cart </span>
-        </a>
-        <span id="welcome-message"></span>
-
-        <div class="auth-buttons">
-          <button id="logout-btn" style="display: none" onclick="logout()">
-            로그아웃
-          </button>
-
-          <a href="login.html" class="login-btn" id="login-btn">로그인</a>
-        </div>
-      </div>
-
-      <div class="top-nav">
-        <div class="logo">
-          <a href="main.html"><img src="logo.jpg" alt="Game Forge Logo" /></a>
-          <!-- main 페이지로 이동 -->
-        </div>
-        <nav>
-          <ul class="main-menu">
-            <li><a href="store.html">상점</a></li>
-            <li><a href="mypage.html">마이페이지</a></li>
-            <li><a href="ms_board.html">게시판</a></li>
-            <li><a href="library.html">라이브러리</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
+    <!-- 헤더를 별도의 파일로 가져옴 -->
+    <div id="header"></div>
+    <script>
+        // header.html 파일을 로드하여 헤더를 추가
+        fetch("header.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("header").innerHTML = data;
+            });
+    </script>
     <script src="auth.js"></script>
     <!-- 로그인 상태 관리를 위한 스크립트 추가 -->
     <div class="container">
