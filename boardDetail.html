@@ -333,22 +333,166 @@
             postControls.appendChild(deleteButton);
         }
 
-        // 좋아요 수와 상태 업데이트 함수
-        function updateLikeDisplay() {
-            const likeCountDisplay = document.getElementById('likeCount');
-            const likeIcon = document.getElementById('likeIcon');
+       // 댓글 가져오기
+        const fetchComments = async () => {
+            const boardId = getBoardIdFromUrl();
+            const token = localStorage.getItem('token');
 
-            likeCountDisplay.innerText = currentLikeCount; // 좋아요 수 업데이트
+            const response = await fetch(`https://ludorium.store/api/user/comment/${boardId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
 
-            // 하트 아이콘 상태 업데이트
-            if (isLiked) {
-                likeIcon.classList.remove('far'); // 비어있는 하트 제거
-                likeIcon.classList.add('fas'); // 꽉 찬 하트 추가
-            } else {
-                likeIcon.classList.remove('fas'); // 꽉 찬 하트 제거
-                likeIcon.classList.add('far'); // 비어있는 하트 추가
+            const data = await response.json();
+
+            if (data.status === 200) {
+                const commentList = document.getElementById('commentList');
+                commentList.innerHTML = ''; // 기존 댓글 초기화
+
+                data.data.forEach(comment => {
+                    const commentItem = document.createElement('div');
+                    commentItem.classList.add('comment-item');
+
+                    const userImageUrl = comment.profileImage || 'https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp';
+                    const isOwner = comment.status;
+
+                    // 댓글 리스트의 초기 상태
+                    commentItem.innerHTML = `
+                        <img src="${userImageUrl}" alt="User" class="comment-image" />
+                        <div class="comment-content">
+                            <div class="comment-text-container">
+                                <p class="comment-name">${comment.nickname}</p>
+                                <p class="comment-text">${comment.content}</p>
+                            </div>
+                        </div>
+                        <div class="comment-footer">
+                            <p class="comment-date">${comment.updatedDate}</p>
+                            <div class="comment-actions">
+                                ${isOwner ? `
+                                <button class="edit-btn">수정</button>
+                                <button class="delete-btn">삭제</button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                    commentList.appendChild(commentItem);
+
+                    const editBtn = commentItem.querySelector('.edit-btn');
+                    const deleteBtn = commentItem.querySelector('.delete-btn');
+
+                    // 삭제 버튼 클릭 시 댓글 삭제 요청
+                    deleteBtn?.addEventListener('click', async () => {
+                        const confirmDelete = confirm("정말로 이 댓글을 삭제하시겠습니까?");
+                        if (confirmDelete) {
+                            const deleteResponse = await fetch(`https://ludorium.store/api/user/comment/${comment.commentId}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json'
+                                }
+                            });
+
+                            const deleteData = await deleteResponse.json();
+
+                            if (deleteData.status === 200) {
+                                alert('댓글이 삭제되었습니다.');
+                                fetchComments(); // 댓글 목록 새로고침
+                            } else {
+                                alert('댓글 삭제에 실패했습니다.');
+                            }
+                        }
+                    });
+
+                    // 수정 버튼 클릭 시 수정 화면으로 변환
+                    editBtn?.addEventListener('click', () => {
+                        commentItem.innerHTML = `
+                            <div class="comment-section">
+                                <textarea id="commentInput" placeholder="댓글을 입력하세요">${comment.content}</textarea>
+                                <button class="save-btn">수정</button>
+                                <button class="cancel-btn">취소</button>
+                            </div>
+                        `;
+
+                        const saveBtn = commentItem.querySelector('.save-btn');
+                        const cancelBtn = commentItem.querySelector('.cancel-btn');
+                        const editTextArea = commentItem.querySelector('#commentInput');
+
+                        // 수정 취소 버튼 클릭 시 원래 상태로 복귀
+                        cancelBtn?.addEventListener('click', () => {
+                            commentItem.innerHTML = `
+                                <img src="${userImageUrl}" alt="User" class="comment-image" />
+                                <div class="comment-content">
+                                    <div class="comment-text-container">
+                                        <p class="comment-name">${comment.nickname}</p>
+                                        <p class="comment-text">${comment.content}</p>
+                                    </div>
+                                </div>
+                                <div class="comment-footer">
+                                    <p class="comment-date">${comment.updatedDate}</p>
+                                    <div class="comment-actions">
+                                        ${isOwner ? `
+                                        <button class="edit-btn">수정</button>
+                                        <button class="delete-btn">삭제</button>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            `;
+
+                            // 다시 수정 버튼에 대한 이벤트 리스너 추가
+                            const newEditBtn = commentItem.querySelector('.edit-btn');
+                            newEditBtn?.addEventListener('click', () => {
+                                editBtn.click(); // 재귀 호출하여 수정 상태로 전환
+                            });
+                        });
+
+                        // 수정 완료 버튼 클릭 시 서버에 PATCH 요청
+                        saveBtn?.addEventListener('click', async () => {
+                            const updatedContent = editTextArea.value;
+
+                            // PATCH 요청 전송
+                            const patchResponse = await fetch(`https://ludorium.store/api/user/comment/${comment.commentId}`, {
+                                method: 'PATCH',
+                                headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    content: updatedContent
+                                })
+                            });
+
+                            const patchData = await patchResponse.json();
+
+                            if (patchData.status === 200) {
+                                commentItem.innerHTML = `
+                                    <img src="${userImageUrl}" alt="User" class="comment-image" />
+                                    <div class="comment-content">
+                                        <div class="comment-text-container">
+                                            <p class="comment-name">${comment.nickname}</p>
+                                            <p class="comment-text">${updatedContent}</p>
+                                        </div>
+                                    </div>
+                                    <div class="comment-footer">
+                                        <p class="comment-date">${new Date().toLocaleString()}</p>
+                                        <div class="comment-actions">
+                                            ${isOwner ? `
+                                            <button class="edit-btn">수정</button>
+                                            <button class="delete-btn">삭제</button>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                `;
+                            } else {
+                                alert('댓글 수정에 실패했습니다.');
+                            }
+                        });
+                    });
+                });
             }
-        }
+        };
 
         // 댓글 작성
         const submitComment = async () => {
@@ -411,6 +555,23 @@
                 alert('좋아요 처리 중 오류가 발생했습니다.');
             }
         });
+
+        // 좋아요 수와 상태 업데이트 함수
+        function updateLikeDisplay() {
+            const likeCountDisplay = document.getElementById('likeCount');
+            const likeIcon = document.getElementById('likeIcon');
+
+            likeCountDisplay.innerText = currentLikeCount; // 좋아요 수 업데이트
+
+            // 하트 아이콘 상태 업데이트
+            if (isLiked) {
+                likeIcon.classList.remove('far'); // 비어있는 하트 제거
+                likeIcon.classList.add('fas'); // 꽉 찬 하트 추가
+            } else {
+                likeIcon.classList.remove('fas'); // 꽉 찬 하트 제거
+                likeIcon.classList.add('far'); // 비어있는 하트 추가
+            }
+        }
 
         // 이벤트 리스너 설정
         document.getElementById('commentSubmitBtn').addEventListener('click', submitComment);
