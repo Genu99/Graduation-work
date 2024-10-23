@@ -27,7 +27,7 @@
         #header {
             width: 100%;
             background-color: #f9f9f9;
-            padding: 20px 0;
+            padding: 20px;
             border-bottom: 1px solid #e0e0e0;
             display: flex;
             justify-content: space-between;
@@ -35,21 +35,24 @@
         }
 
         #header .logo {
-            margin-left: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        #header .logo img {
+            margin-right: 10px;
         }
 
         #header nav {
-            margin-right: 20px;
+            flex: 1;
+            display: flex;
+            justify-content: center;
         }
 
         #header nav ul {
             list-style: none;
             display: flex;
-            gap: 20px;
-        }
-
-        #header nav ul li {
-            margin: 0;
+            gap: 40px;
         }
 
         #header nav ul li a {
@@ -62,6 +65,34 @@
 
         #header nav ul li a:hover {
             color: #6c7c7b;
+        }
+
+        #header .auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        #header .auth-buttons button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            color: #fff;
+            background-color: #889491;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #header .auth-buttons button:hover {
+            background-color: #6c7c7b;
+        }
+
+        #header .cart-btn {
+            font-size: 24px;
+            color: #333;
+            text-decoration: none;
+            margin-right: 10px;
         }
 
         /* 전체 레이아웃 설정 */
