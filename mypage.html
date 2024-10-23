@@ -118,7 +118,7 @@
 
                 document.getElementById('user-nickname').textContent = userData.name ? `${userData.name} 님 안녕하세요!` : '닉네임 정보 없음';
                 document.getElementById('user-email').textContent = userData.email || '정보 없음';
-                document.getElementById('user-birthdate').textContent = userData.birthdate ? userData.birthdate.split(' ')[0] : '생년월일 정보 없음';
+                document.getElementById('user-birthdate').textContent = userData.birthdate ? userData.birthdate.substring(0, 10) : '생년월일 정보 없음';
                 document.getElementById('user-tel').textContent = userData.tel || '전화번호 정보 없음';
                 document.getElementById('user-gender').textContent = userData.gender === 'M' ? '남자' : userData.gender === 'W' ? '여자' : '성별 정보 없음';
                 document.getElementById('user-reward-points').textContent = userData.rewardPoints !== undefined ? `${userData.rewardPoints} 원` : '적립금 정보 없음';
