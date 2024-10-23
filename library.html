@@ -72,29 +72,47 @@
             color: #777;
         }
 
-        /* 링크의 밑줄 없애기 */
         a {
             text-decoration: none;
             color: inherit;
-            display: flex; /* a 태그 내부를 가로로 배치 */
+            display: flex;
             align-items: center;
         }
 
-        /* 링크에 마우스를 올렸을 때 효과 */
         a:hover {
             color: #007bff;
         }
     </style>
 </head>
 <body>
+    <!-- Header placeholder -->
+    <div id="header"></div>
+
     <div class="game-list-container">
         <h2>라이브러리</h2>
         <div id="game-list"></div>
     </div>
+
+    <script src="auth.js"></script>
     <script>
         window.onload = function() {
-            const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImlhdCI6MTcyOTI2NTI5MiwiZXhwIjoxNzMwNDc0ODkyLCJlbWFpbCI6ImppbWluZG9uZzEwMEBuYXZlci5jb20iLCJuaWNrbmFtZSI6IuycpOuqheyyoDk4MTQiLCJyb2xlIjoiUk9MRV9VU0VSIn0.63EuSA3x_jhBdxEVxBnxDpl1LRyQ3Kg3bHTF-49f5-w';
+            // Load header.html
+            fetch('header.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header').innerHTML = data;
+                })
+                .catch(error => console.error('Error loading header:', error));
 
+            // Get token from auth.js
+            const token = getAccessToken(); // Assuming auth.js provides a function named getAccessToken
+
+            if (!token) {
+                alert('로그인이 필요합니다.');
+                return;
+            }
+
+            // Fetch game library
             fetch('https://ludorium.store/api/user/library/list', {
                 method: 'GET',
                 headers: {
@@ -110,7 +128,6 @@
                         const gameItem = document.createElement('div');
                         gameItem.classList.add('game-item');
 
-                        // 링크 생성
                         const gameLink = document.createElement('a');
                         gameLink.href = `https://genu99.github.io/Graduation-work/gameDetail.html?gameId=${game.gameId}`;
 
@@ -125,7 +142,6 @@
                         gameName.classList.add('game-name');
                         gameName.innerText = game.gameName;
 
-                        // 시분초를 제거하고 날짜만 표시
                         const formattedDate = game.addDate.split(' ')[0];
                         const addDate = document.createElement('p');
                         addDate.classList.add('add-date');
@@ -134,7 +150,6 @@
                         gameDetails.appendChild(gameName);
                         gameDetails.appendChild(addDate);
 
-                        // 링크에 이미지와 게임 세부 정보 포함
                         gameLink.appendChild(gameImage);
                         gameLink.appendChild(gameDetails);
 
@@ -150,4 +165,3 @@
     </script>
 </body>
 </html>
-
