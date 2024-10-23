@@ -203,6 +203,19 @@
     </style>
 </head>
 <body>
+    <!-- 헤더를 별도의 파일로 가져옴 -->
+    <div id="header"></div>
+    <script>
+        // header.html 파일을 로드하여 헤더를 추가
+        fetch("header.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("header").innerHTML = data;
+                checkLoginStatus();
+            })
+            .catch(error => console.error("헤더 로드 중 오류 발생:", error));
+    </script>
+    <script src="auth.js"></script>
     <div class="container">
         <div class="post-title" id="postTitle"></div>
 
@@ -241,7 +254,7 @@
                 </div>
                 <!-- 수정 모드일 때 나타나는 입력 칸과 버튼들 -->
                 <div class="comment-edit-mode">
-                    <textarea class="comment-edit">${comment.content}</textarea>
+                    <textarea class="comment-edit"></textarea>
                     <div class="comment-actions">
                         <button class="save-btn">저장</button>
                         <button class="cancel-btn">취소</button>
@@ -257,7 +270,6 @@
     </div>
 
     <script>
-
         // 게시글 ID 가져오기
         const getBoardIdFromUrl = () => {
             const params = new URLSearchParams(window.location.search);
