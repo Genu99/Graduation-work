@@ -82,6 +82,207 @@
       let startPage = 1; // 시작 페이지
       let endPage = maxButtons; // 끝 페이지
 
+      // 카테고리 ID로 게임 목록을 가져오는 함수
+      async function fetchGamesByCategory(categoryId, page = 1, orderBy = 'orderByPopular', searchKeyword = '') {
+        try {
+          let allGames = [];
+          let totalPages = 0;
+
+          const response = await fetch(
+            `${serverUrl}/api/user/game/${categoryId}/list?page=${page}&orderBy=${orderBy}&searchKeyword=${encodeURIComponent(searchKeyword)}`
+          );
+
+          if (!response.ok) {
+            throw new Error('네트워크 응답에 문제가 있습니다.');
+          }
+
+          const result = await response.json();
+
+          // 서버에서 받은 데이터 콘솔에 출력
+          console.log('서버에서 받은 데이터:', result);
+
+          if (result.data && Array.isArray(result.data.content)) {
+            allGames = result.data.content;
+            totalPages = result.data.totalPages;
+          } else {
+            console.error('Error: 응답의 data 필드가 올바른 배열이 아닙니다.', result);
+            return;
+          }
+
+          renderGameList(allGames);
+          updatePagination(totalPages);
+        } catch (error) {
+          console.error('게임 데이터를 가져오는 중 오류 발생:', error);
+        }
+      }
+
+      // 게임 목록을 렌더링하는 함수
+      function renderGameList(games) {
+        const productGrid = document.querySelector('.product-grid');
+        productGrid.innerHTML = ''; // 기존 게임 목록 삭제
+
+        games.forEach((game) => {
+          let priceInfo = '';
+          if (game.originalPrice === game.discountPrice) {
+            if (game.discountPrice === 0) {
+              priceInfo = '<p class="sale-price" style="color: #4865dc">무료</p>';
+            } else {
+              priceInfo = `<p class="sale-price" style="color: #4865dc">₩ ${game.discountPrice}</p>`;
+            }
+          } else {
+            priceInfo = `
+            <p class="product-price">정산가: ₩ ${game.originalPrice}</p>
+            <p class="sale-price">판매가: ₩ ${game.discountPrice}</p>
+            <p class="discount-percentage" style="color: #ffffff; font-weight: bold; display: inline-block; padding: 2px 5px; border-radius: 5px; background-color: #ff0000;">${game.discountPercentage}%</p>
+          `;
+          }
+
+          // 카테고리 정보 추가 - 클릭링크가 아니라 그냥 텍스트 형태로 표시
+          const categoryText = game.gameCategoryList
+            .map(
+              (category) =>
+                `<span class="category-text" style="color: #555; background-color: #e9ecef; padding: 2px 6px; margin: 2px; border-radius: 4px;">${category}</span>`
+            )
+            .join(' ');
+          const gameCard = `
+          <div class="product-card" style="border: 1px solid #e0e0e0; border-radius: 10px; padding: 16px; margin: 16px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: box-shadow 0.3s ease;">
+            <a href="gameDetail.html?gameId=${
+              game.gameId
+            }" class="game-title-link" style="text-decoration: none; color: inherit;" onclick="trackRecentGame('${
+            game.gameId
+          }')">
+              <img src="${
+                game.gameImageUrl || 'https://via.placeholder.com/150'
+              }" alt="${
+            game.gameName || '게임 이미지'
+          }" style="width: 100%; height: auto; border-radius: 10px; transition: transform 0.3s ease;" />
+              <p class="product-title" style="font-size: 1.2em; font-weight: bold; margin: 12px 0;">${
+                game.gameName || '제목 없음'
+              }</p>
+            </a>
+            <div class="product-category">
+              ${categoryText}
+            </div>
+            ${priceInfo}
+            <div class="rating" style="display: flex; align-items: center; margin: 8px 0;">
+              <i class="material-icons" style="color: #ffc107; margin-right: 4px;">star</i><span style="font-size: 1em;">${
+                game.rating || 0
+              }</span>
+            </div>
+            <button class="cart-btn" style="background-color: #6c757d; color: #fff; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; transition: background-color 0.3s ease;" onclick="addToCart('${
+              game.gameId
+            }')">장바구니</button>
+          </div>
+        `;
+          productGrid.innerHTML += gameCard;
+        });
+      }
+
+      // 게임을 장바구니에 추가하는 함수
+      async function addToCart(gameId) {
+        try {
+          const token = localStorage.getItem('token');
+          if (!token) {
+            alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.');
+            window.location.href = 'login.html';
+            return;
+          }
+
+          const response = await fetch(`${serverUrl}/api/user/cart/${gameId}`, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error('장바구니에 추가하는 중 오류가 발생했습니다.');
+          }
+
+          alert('장바구니에 추가되었습니다.');
+        } catch (error) {
+          console.error('장바구니에 게임 추가 중 오류 발생:', error);
+          alert('장바구니에 추가하는 데 실패했습니다. 다시 시도해주세요.');
+        }
+      }
+
+      // 페이지네이션 업데이트 함수
+      function updatePagination(totalPages) {
+        const paginationContainer = document.getElementById('pagination');
+        paginationContainer.innerHTML = '';
+
+        if (startPage > 1) {
+          const prevButton = document.createElement('button');
+          prevButton.textContent = '<';
+          prevButton.addEventListener('click', () => {
+            startPage -= maxButtons;
+            endPage -= maxButtons;
+            currentPage = startPage;
+            const categoryId = document.querySelector('.genre-filter input[type="radio"]:checked').value;
+            const orderBy = document.getElementById('sortOrder').value;
+            const searchKeyword = document.getElementById('searchKeyword').value;
+            fetchGamesByCategory(categoryId, currentPage, orderBy, searchKeyword);
+            updatePagination(totalPages);
+          });
+          paginationContainer.appendChild(prevButton);
+        }
+
+        for (let i = startPage; i <= Math.min(endPage, totalPages); i++) {
+          const button = document.createElement('button');
+          button.textContent = i;
+          button.className = i === currentPage ? 'active' : '';
+          button.disabled = i === currentPage;
+          button.addEventListener('click', () => {
+            currentPage = i;
+            const categoryId = document.querySelector('.genre-filter input[type="radio"]:checked').value;
+            const orderBy = document.getElementById('sortOrder').value;
+            const searchKeyword = document.getElementById('searchKeyword').value;
+            fetchGamesByCategory(categoryId, currentPage, orderBy, searchKeyword);
+            updatePagination(totalPages);
+          });
+          paginationContainer.appendChild(button);
+        }
+
+        if (endPage < totalPages) {
+          const nextButton = document.createElement('button');
+          nextButton.textContent = '>';
+          nextButton.addEventListener('click', () => {
+            startPage += maxButtons;
+            endPage += maxButtons;
+            currentPage = startPage;
+            const categoryId = document.querySelector('.genre-filter input[type="radio"]:checked').value;
+            const orderBy = document.getElementById('sortOrder').value;
+            const searchKeyword = document.getElementById('searchKeyword').value;
+            fetchGamesByCategory(categoryId, currentPage, orderBy, searchKeyword);
+            updatePagination(totalPages);
+          });
+          paginationContainer.appendChild(nextButton);
+        }
+      }
+
+      // 최근 본 게임을 기록하는 함수
+      async function trackRecentGame(gameId) {
+        try {
+          const token = localStorage.getItem('token');
+          if (!token) {
+            console.warn('사용자가 로그인되어 있지 않습니다.');
+            return;
+          }
+
+          await fetch(`${serverUrl}/api/user/games`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ gameId }),
+          });
+        } catch (error) {
+          console.error('최근 본 게임을 기록하는 중 오류 발생:', error);
+        }
+      }
+
       // 최근 본 게임 아이콘 표시 함수
       async function showRecentGameIcon() {
         try {
@@ -138,28 +339,6 @@
         fetchGamesByCategory(0); // 페이지 로드 시 전체 카테고리로 초기 게임 목록 가져오기
         showRecentGameIcon(); // 최근 본 게임 아이콘 표시
       });
-
-      // 장르 필터 변경 시 게임 목록을 다시 가져오는 함수
-      document.querySelectorAll('input[name="genre"]').forEach(radio => {
-        radio.addEventListener('change', function() {
-          const categoryId = this.value;
-          currentPage = 1; // 페이지를 1로 초기화
-          fetchGamesByCategory(categoryId);
-        });
-      });
-
-      // 정렬 기준 변경 시 게임 목록을 다시 가져오는 함수
-      document.getElementById('sortOrder').addEventListener('change', function() {
-        const sortOrder = this.value;
-        const selectedGenre = document.querySelector('input[name="genre"]:checked').value;
-        currentPage = 1; // 페이지를 1로 초기화
-        fetchGamesByCategory(selectedGenre, currentPage, sortOrder);
-      });
-
-      // 팝업을 표시하는 함수
-      function showPopup(message) {
-        alert(message);
-      }
     </script>
   </body>
 </html>
