@@ -142,23 +142,23 @@
 
             // 정렬 옵션 변경 및 검색 기능 이벤트 바인딩
             orderSelect.addEventListener('change', () => {
-                fetchBoardList(getActiveCategoryId(), 1);
+                fetchBoardList(getActiveCategoryId(), 1, orderSelect.value, searchTypeSelect.value, searchInput.value.trim());
             });
 
             searchButton.addEventListener('click', () => {
-                fetchBoardList(getActiveCategoryId(), 1);
+                fetchBoardList(getActiveCategoryId(), 1, orderSelect.value, searchTypeSelect.value, searchInput.value.trim());
             });
 
             noticeLink.addEventListener('click', (event) => {
                 event.preventDefault(); // 기본 동작 막기
                 setActiveLink(noticeLink); // active 클래스 설정
-                fetchBoardList(2); // 공지사항은 categoryId 2번으로 호출
+                fetchBoardList(2, 1);
             });
 
             freeboardLink.addEventListener('click', (event) => {
                 event.preventDefault(); // 기본 동작 막기
                 setActiveLink(freeboardLink); // active 클래스 설정
-                fetchBoardList(1); // 자유게시판은 categoryId 1번으로 호출
+                fetchBoardList(1, 1);
             });
 
             fetchBoardList(getActiveCategoryId(), currentPage);
@@ -206,14 +206,14 @@
                 });
 
                 // 페이지네이션 처리
-                updatePagination(data.data.totalPages);
+                updatePagination(data.data.totalPages, page);
             } else {
                 console.error("게시글 불러오기 실패:", data);
             }
         }
 
         // 페이지네이션 업데이트 함수
-        function updatePagination(totalPages) {
+        function updatePagination(totalPages, currentPage) {
             const paginationContainer = document.getElementById('pagination');
             paginationContainer.innerHTML = '';
 
@@ -226,8 +226,7 @@
                 const prevButton = document.createElement('button');
                 prevButton.textContent = '<';
                 prevButton.addEventListener('click', () => {
-                    currentPage = startPage - 1;
-                    fetchBoardList(getActiveCategoryId(), currentPage);
+                    fetchBoardList(getActiveCategoryId(), startPage - 1);
                 });
                 paginationContainer.appendChild(prevButton);
             }
@@ -239,8 +238,7 @@
                 button.className = i === currentPage ? 'active' : '';
                 button.disabled = i === currentPage; // 현재 페이지 버튼은 비활성화
                 button.addEventListener('click', () => {
-                    currentPage = i;
-                    fetchBoardList(getActiveCategoryId(), currentPage);
+                    fetchBoardList(getActiveCategoryId(), i);
                 });
                 paginationContainer.appendChild(button);
             }
@@ -250,8 +248,7 @@
                 const nextButton = document.createElement('button');
                 nextButton.textContent = '>';
                 nextButton.addEventListener('click', () => {
-                    currentPage = endPage + 1;
-                    fetchBoardList(getActiveCategoryId(), currentPage);
+                    fetchBoardList(getActiveCategoryId(), endPage + 1);
                 });
                 paginationContainer.appendChild(nextButton);
             }
