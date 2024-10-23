@@ -276,7 +276,7 @@
             <!-- 페이지네이션 버튼이 동적으로 생성될 곳 -->
         </div>
         <div class="button-container">
-          <button id="write-button" onclick="location.href='write.html'">글쓰기</button>
+          <button id="write-button" onclick="location.href='write.html'" style="display:none;">글쓰기</button>
         </div>
         <!-- 검색창 및 검색 옵션 -->
         <div class="search-container">
@@ -304,6 +304,7 @@
         const searchTypeSelect = document.getElementById('search-type');
         const noticeLink = document.getElementById('notice-link');
         const freeboardLink = document.getElementById('freeboard-link');
+        const writeButton = document.getElementById('write-button');
 
         // 검색어 및 검색 유형
         let currentSearchKeyword = '';
@@ -326,6 +327,7 @@
             event.preventDefault(); // 기본 동작 막기
             setActiveLink(noticeLink); // active 클래스 설정
             fetchBoardList(2); // 공지사항은 categoryId 2번으로 호출
+            checkAdminRole(); // ROLE_ADMIN 여부 체크
         });
 
         // 자유게시판 클릭 시
@@ -333,6 +335,7 @@
             event.preventDefault(); // 기본 동작 막기
             setActiveLink(freeboardLink); // active 클래스 설정
             fetchBoardList(1); // 자유게시판은 categoryId 1번으로 호출
+            writeButton.style.display = 'block'; // 자유게시판에서는 글쓰기 버튼 항상 보이기
         });
 
         // 정렬 옵션 변경 시 게시판 리스트 업데이트
@@ -353,6 +356,16 @@
                 alert("검색어를 입력하세요.");
             }
         });
+
+        // ROLE_ADMIN 여부 체크 함수
+        function checkAdminRole() {
+            const userRole = sessionStorage.getItem('userRole'); // 사용자 역할 가져오기 (예: ROLE_USER, ROLE_ADMIN)
+            if (userRole === 'ROLE_ADMIN') {
+                writeButton.style.display = 'block'; // ROLE_ADMIN인 경우 글쓰기 버튼 보이기
+            } else {
+                writeButton.style.display = 'none'; // ROLE_ADMIN이 아닌 경우 글쓰기 버튼 숨기기
+            }
+        }
 
         // 게시판 리스트 불러오기
         async function fetchBoardList(categoryId = 1, page = 1, orderBy = '', searchType = '', searchKeyword = '') {
