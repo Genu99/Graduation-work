@@ -244,7 +244,8 @@
                 button.className = i === currentPage ? 'active' : '';
                 button.disabled = i === currentPage; // 현재 페이지 버튼은 비활성화
                 button.addEventListener('click', () => {
-                    fetchBoardList(getActiveCategoryId(), i, document.getElementById('order').value, document.getElementById('search-type').value, document.getElementById('search-input').value.trim());
+                    currentPage = i;
+                    fetchBoardList(getActiveCategoryId(), currentPage, document.getElementById('order').value, document.getElementById('search-type').value, document.getElementById('search-input').value.trim());
                 });
                 paginationContainer.appendChild(button);
             }
