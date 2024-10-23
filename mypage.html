@@ -96,47 +96,51 @@
         });
 
         // 사용자 정보 로드
-        function fetchUserInfo() {
-            const apiUrl = 'https://ludorium.store/api/user/mypage';
-            fetch(apiUrl, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`네트워크 응답 오류: ${response.status} - ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('서버 응답 데이터:', data); // 데이터를 확인하기 위해 전체 로그 추가
-
-                // 응답 데이터의 data 필드 접근
-                const userData = data.data;
-
-                document.getElementById('user-nickname').textContent = userData.name ? `${userData.name} 님 안녕하세요!` : '닉네임 정보 없음';
-                document.getElementById('user-email').textContent = userData.email || '정보 없음';
-                document.getElementById('user-birthdate').textContent = userData.birthdate ? userData.birthdate.substring(0, 10) : '생년월일 정보 없음';
-                document.getElementById('user-tel').textContent = userData.tel || '전화번호 정보 없음';
-                document.getElementById('user-gender').textContent = userData.gender === 'M' ? '남자' : userData.gender === 'W' ? '여자' : '성별 정보 없음';
-                document.getElementById('user-reward-points').textContent = userData.rewardPoints !== undefined ? `${userData.rewardPoints} 원` : '적립금 정보 없음';
-
-                // 소셜 로그인 정보 표시
-                const provider = userData.provider === 'local' ? 'GameForge' : userData.provider || '정보 없음';
-                document.getElementById('user-social').textContent = provider;
-
-                // 프로필 이미지 설정
-                if (userData.profileImage) {
-                    document.getElementById('profile-image').src = userData.profileImage;
-                }
-            })
-            .catch(error => {
-                console.error('사용자 정보 로드 중 오류 발생:', error);
-                alert(`사용자 정보를 로드하는 중 문제가 발생했습니다: ${error.message}`);
-            });
+       function fetchUserInfo() {
+    const apiUrl = 'https://ludorium.store/api/user/mypage';
+    fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`네트워크 응답 오류: ${response.status} - ${response.statusText}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('서버 응답 데이터:', data); // 데이터를 확인하기 위해 전체 로그 추가
+
+        // 응답 데이터의 data 필드 접근
+        const userData = data.data;
+
+        // 생년월일 데이터를 로깅하여 확인
+        console.log('생년월일 데이터:', userData.birthdate);
+
+        document.getElementById('user-nickname').textContent = userData.name ? `${userData.name} 님 안녕하세요!` : '닉네임 정보 없음';
+        document.getElementById('user-email').textContent = userData.email || '정보 없음';
+        document.getElementById('user-birthdate').textContent = userData.birthdate ? userData.birthdate.substring(0, 10) : '생년월일 정보 없음';
+        document.getElementById('user-tel').textContent = userData.tel || '전화번호 정보 없음';
+        document.getElementById('user-gender').textContent = userData.gender === 'M' ? '남자' : userData.gender === 'W' ? '여자' : '성별 정보 없음';
+        document.getElementById('user-reward-points').textContent = userData.rewardPoints !== undefined ? `${userData.rewardPoints} 원` : '적립금 정보 없음';
+
+        // 소셜 로그인 정보 표시
+        const provider = userData.provider === 'local' ? 'GameForge' : userData.provider || '정보 없음';
+        document.getElementById('user-social').textContent = provider;
+
+        // 프로필 이미지 설정
+        if (userData.profileImage) {
+            document.getElementById('profile-image').src = userData.profileImage;
+        }
+    })
+    .catch(error => {
+        console.error('사용자 정보 로드 중 오류 발생:', error);
+        alert(`사용자 정보를 로드하는 중 문제가 발생했습니다: ${error.message}`);
+    });
+}
+
 
         // 프로필 이미지 업로드
         function uploadImage(event) {
