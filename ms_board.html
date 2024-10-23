@@ -13,32 +13,42 @@
     <style>
         * {
             font-family: "Noto Sans KR";
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* 헤더 스타일 */
+        #header {
+            width: 100%;
+            background-color: #f9f9f9;
+            padding: 20px 0;
+            border-bottom: 1px solid #e0e0e0;
         }
 
         /* 전체 레이아웃 설정 */
         .container {
             display: flex;
-            justify-content: flex-start; /* 좌측에 고정 */
+            margin: 40px;
         }
 
         /* 좌측 네비게이션 바 */
         nav {
-            width: 150px; /* 좌측 메뉴의 폭 */
-            margin-left: 180px;
-            margin-top: 60px;
-            text-align: center;
-            padding: 10px;
+            width: 200px;
+            margin-right: 20px;
         }
 
         nav ul {
             list-style-type: none;
-            padding: 0;
         }
 
         nav ul li {
-            border-bottom: 1px solid #333;
-            padding-bottom: 10px;
-            margin: 20px 0;
+            margin: 15px 0;
         }
 
         /* 기본 링크 스타일 */
@@ -46,181 +56,140 @@
             text-decoration: none;
             color: #333;
             font-size: 18px;
+            padding: 10px;
+            display: block;
+            border-radius: 5px;
+            transition: background-color 0.3s;
         }
 
         /* 메뉴가 선택되었을 때의 스타일 */
         nav ul li a.active {
-            color: #889491; /* 하이라이트 색상 */
-            font-weight: bold; /* 선택된 항목을 더 굵게 표시 */
+            background-color: #889491;
+            color: #fff;
         }
 
         /* 기본 hover 스타일 */
         nav ul li a:hover {
-            color: rgb(68, 136, 244);
+            background-color: #6c7c7b;
+            color: #fff;
         }
 
         /* 게시판 테이블 */
         .content {
             flex-grow: 1;
-            margin-right: 150px;
         }
 
-        .sort-options {
-            float: right;
-            margin-right: 100px;
-            margin-top: 20px;
+        .board-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #889491;
+            margin-bottom: 20px;
         }
 
         .sort-options select {
             height: 30px;
-            margin-right: 10px;
-        }
-
-        table {
-            margin: auto;
-            width: 100%; /* 테이블 너비를 100%로 설정하여 가로 크기 조정 */
-            border-radius: 5px;
-            border-collapse: collapse;
-        }
-
-        .main-header {
-            background-color: #889491;
-            text-align: center;
+            padding: 5px;
             font-size: 16px;
         }
 
-        .table td,
-        .table th {
-            border-bottom: 1px lightgray solid;
-            height: 30px; /* 높이를 적절하게 조정 */
-            padding: 5px; /* 내부 여백을 줄임 */
-            text-align: center; /* 기본 중앙 정렬 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
         }
 
-        /* 제목 열의 너비와 정렬 수정 */
-        .main-header-num {
-            width: 3%; /* 번호 열의 너비 설정 (작게) */
+        th, td {
+            border: 1px solid #e0e0e0;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #889491;
+            color: #fff;
         }
 
         .main-header-title {
-            width: 30%; /* 제목 열의 너비 설정 (길게) */
-            text-align: left; /* 제목을 왼쪽 정렬 */
+            text-align: left;
+            padding-left: 15px;
         }
 
-        /* 제목과 그에 해당하는 데이터 셀 왼쪽 정렬 */
-        .table td.main-header-title {
-            text-align: left; /* 제목 열 데이터 왼쪽 정렬 */
+        #write-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            color: #fff;
+            background-color: #889491;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
-        .main-header-title a {
-            text-decoration: none; /* 언더라인 제거 */
-            color: inherit; /* 부모 요소의 텍스트 색상 상속 */
+        #write-button:hover {
+            background-color: #6c7c7b;
         }
 
-        .main-header-title a:hover {
-            color: inherit; /* 마우스 오버 시에도 색상 유지 */
+        /* 검색창 스타일 */
+        .search-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
         }
 
-        .main-header-like {
-            width: 5%; /* 조회수 열의 너비 설정 (작게) */
-        }
-
-        .main-header-date {
-            width: 10%; /* 작성자 열의 너비 설정 (조금 작게) */
-        }
-
-        .main-header-name {
-            width: 10%; /* 작성일 열의 너비 설정 (적당히) */
+        .search-bar select, .search-bar input {
+            height: 35px;
+            padding: 5px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
 
         #search-button {
-            width: 100px;
-            height: 40px;
-            font-size: 15px;
+            padding: 10px 15px;
+            font-size: 16px;
             border: none;
             color: #fff;
-            border-radius: 5px;
-            padding-left: 10px;
             background-color: #889491;
+            border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
-        .search-bar input {
-            width: 200px;
-            padding-left: 10px;
-            margin-right: 10px;
-            border: none;
-            border-bottom: 1px solid #333;
+        #search-button:hover {
+            background-color: #6c7c7b;
         }
 
-        .search-bar select {
-            height: 30px;
-            margin-right: 10px;
-        }
-
-        /* 검색창을 화면 하단에 고정 */
-        .search-container {
-            position: relative; /* position을 relative로 설정 */
-            width: 100%;
-            display: flex;
-            justify-content: center; /* 중앙 정렬 */
-            padding: 20px 0; /* 상하 여백 조정 */
-            margin-top: 20px; /* 게시판 내용과의 간격을 위해 여백 추가 */
-        }
-
+        /* 페이지네이션 스타일 */
         .pagination {
             display: flex;
             justify-content: center;
-            margin-top: 20px; /* 페이지네이션과 버튼 사이 여백 */
-            z-index: 1; /* 다른 요소와 겹치지 않도록 설정 */
+            align-items: center;
+            margin-top: 20px;
+            gap: 5px;
         }
 
         .pagination button {
-            margin: 0 5px;
             padding: 10px 15px;
+            font-size: 16px;
             background-color: #889491;
-            color: white;
+            color: #fff;
             border: none;
+            border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
-            z-index: 1; /* 버튼이 클릭 가능하도록 설정 */
+            transition: background-color 0.3s;
         }
 
         .pagination button:hover {
             background-color: #6c7c7b;
         }
 
-        .pagination button.disabled {
-            background-color: #bdc3c7;
-            cursor: not-allowed;
-        }
-
         .pagination button.active {
             background-color: #4c5754;
             font-weight: bold;
-        }
-
-        /* 추가 스타일로 페이지네이션과 버튼 간의 간격을 조정 */
-        .button-container {
-            display: flex;
-            justify-content: center; /* 버튼을 중앙 정렬 */
-            margin-top: 20px; /* 페이지네이션과 버튼 간의 여백 */
-        }
-
-        #write-button {
-            width: 100px; /* 버튼 너비 설정 */
-            height: 40px; /* 버튼 높이 설정 */
-            font-size: 15px; /* 버튼 폰트 크기 설정 */
-            border: none; /* 버튼 테두리 제거 */
-            color: #fff; /* 버튼 글자 색상 */
-            border-radius: 5px; /* 버튼 모서리 둥글게 */
-            background-color: #889491; /* 버튼 배경 색상 */
-            cursor: pointer; /* 커서를 포인터로 변경 */
-            transition: background-color 0.3s ease; /* 배경 색상 전환 효과 */
-        }
-
-        #write-button:hover {
-            background-color: #6c7c7b; /* 버튼 호버 시 배경 색상 */
         }
     </style>
   </head>
@@ -252,11 +221,11 @@
         </ul>
     </nav>
     
-
       <!-- 게시판 내용 -->
       <div class="content">
         <!-- 게시판 이름 및 정렬 옵션 -->
         <div class="board-header">
+          <h2>게시판</h2>
           <div class="sort-options">
             <select id="order">
               <option value="recent">최신순</option>
@@ -267,11 +236,11 @@
         <table id="boardTable" class="table">
           <thead>
             <tr class="main-header">
-              <td class="main-header-num">번호</td>
-              <td class="main-header-title">제목</td>
-              <td class="main-header-name">작성자</td>
-              <td class="main-header-date">작성날짜</td>
-              <td class="main-header-like">조회수</td>
+              <th class="main-header-num">번호</th>
+              <th class="main-header-title">제목</th>
+              <th class="main-header-name">작성자</th>
+              <th class="main-header-date">작성날짜</th>
+              <th class="main-header-like">조회수</th>
             </tr>
           </thead>
           <tbody>
@@ -282,13 +251,9 @@
          <div class="pagination" id="pagination">
             <!-- 페이지네이션 버튼이 동적으로 생성될 곳 -->
         </div>
-        <table>
-            <tr>
-                <td>
-                    <button id="write-button" onclick="location.href='write.html'">글쓰기</button>
-                </td>
-            </tr>
-        </table>
+        <div class="button-container">
+          <button id="write-button" onclick="location.href='write.html'">글쓰기</button>
+        </div>
         <!-- 검색창 및 검색 옵션 -->
         <div class="search-container">
             <div class="search-bar">
@@ -442,4 +407,28 @@
                 const button = document.createElement('button');
                 button.textContent = i;
                 button.className = i === currentPage ? 'active' : '';
-                button.disabled = i === currentPage; // 현재 페이지 버튼은
+                button.disabled = i === currentPage; // 현재 페이지 버튼은 비활성화
+                button.addEventListener('click', () => {
+                    currentPage = i;
+                    fetchBoardList(getActiveCategoryId(), currentPage, orderSelect.value, currentSearchType, currentSearchKeyword);
+                });
+                paginationContainer.appendChild(button);
+            }
+
+            // 다음 버튼
+            if (endPage < totalPages) {
+                const nextButton = document.createElement('button');
+                nextButton.textContent = '>';
+                nextButton.addEventListener('click', () => {
+                    currentPage = endPage + 1;
+                    fetchBoardList(getActiveCategoryId(), currentPage, orderSelect.value, currentSearchType, currentSearchKeyword);
+                });
+                paginationContainer.appendChild(nextButton);
+            }
+        }
+
+        // 초기 데이터 로드
+        fetchBoardList();
+    </script>
+  </body>
+</html>
