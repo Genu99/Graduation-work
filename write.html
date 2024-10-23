@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
       rel="stylesheet"
     />
-    <script src="auth.js"></script> <!-- auth.js 추가 -->
+    <script src="auth.js" onload="console.log('auth.js loaded successfully')" onerror="console.error('Failed to load auth.js')"></script>
     <style>
       body {
         font-family: "Noto Sans KR";
@@ -127,7 +127,11 @@
 
       // auth.js에서 JWT 토큰 가져오기 함수 정의
       function getAuthToken() {
-          return localStorage.getItem('token'); // 토큰 키 이름을 'token'으로 수정
+          const token = localStorage.getItem('token');
+          if (!token) {
+              console.error('토큰이 없습니다. 로그인이 필요합니다.');
+          }
+          return token;
       }
 
       // 파일 선택 시 이미지 업로드 처리
