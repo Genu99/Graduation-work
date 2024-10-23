@@ -18,10 +18,42 @@
             box-sizing: border-box;
         }
 
-        body {
-            line-height: 1.6;
-            color: #333;
-        }
+       body {
+    font-family: "Noto Sans KR", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    color: #333;
+}
+
+/* 서브메뉴 */
+.sub-nav {
+    background-color: #889491;
+    margin: 0 150px;
+    padding: 15px 45px;
+    border-radius: 30px;
+}
+
+.submenu {
+    list-style-type: none;
+    margin: 0 10px;
+    padding: 0;
+    display: flex;
+    gap: 30px;
+}
+
+.submenu li {
+    color: white;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 15px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.submenu li:hover {
+    background-color: #777;
+    color: #fff;
+}
        
         /* 전체 레이아웃 설정 */
         .container {
