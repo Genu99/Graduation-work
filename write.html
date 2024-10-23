@@ -73,6 +73,7 @@
               .then(data => {
                   document.getElementById("header-placeholder").innerHTML = data;
                   checkLoginStatus();
+                  updateWelcomeMessage();
               })
               .catch(error => console.error("헤더 로드 중 오류 발생:", error));
       });
@@ -85,6 +86,15 @@
               window.location.href = 'login.html';
           } else {
               console.log('로그인 상태 확인 완료: 토큰이 유효합니다.');
+          }
+      }
+
+      // 헤더의 환영 메시지를 업데이트하는 함수
+      function updateWelcomeMessage() {
+          const nickname = localStorage.getItem('nickname');
+          const welcomeMessage = document.getElementById('welcome-message');
+          if (welcomeMessage && nickname) {
+              welcomeMessage.innerText = `환영합니다, ${nickname}님!`;
           }
       }
     </script>
