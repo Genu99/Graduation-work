@@ -151,7 +151,7 @@
             event.preventDefault();
 
             const email = document.getElementById('email').value;
-            const verificationCode = document.getElementById('verification-code').value;
+            const verificationCode = document.getElementById('verification-code').value.trim();
             const password = document.getElementById('password').value;
             const checkPassword = document.getElementById('checkPassword').value;
             const name = document.getElementById('name').value;
@@ -172,7 +172,7 @@
                 },
                 body: JSON.stringify({
                     email: email,
-                    authenticationCode: verificationcode,
+                    authenticationCode: verificationCode,
                     password: password,
                     checkPassword: checkPassword,
                     name: name,
