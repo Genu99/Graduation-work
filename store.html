@@ -192,7 +192,7 @@
         alert('게임이 구매되었습니다.');
       } catch (error) {
         console.error('게임 구매 중 오류 발생:', error);
-        alert('게임 구매에 실패했습니다. 다시 시도해주세요.');
+        alert('이미 구매한 게임입니다..');
       }
     }
 
@@ -215,7 +215,7 @@
         });
 
         if (response.status === 409) {
-          showPopup('이미 장바구니에 담긴 게임입니다.');
+          showPopup('이미 장바구니에 담긴 게임이거나 구매한게임입니다.');
           return;
         }
 
