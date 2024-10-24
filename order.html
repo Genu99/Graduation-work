@@ -28,7 +28,7 @@
     </nav>
 
     <div class="promo-message">
-      유료 상품 리뷰 작성 시 500원의 적립금을 드립니다! (무료게임은 불가능)
+      유료 상품 리뷰 작성 시 500원의 적립금을 드립니다!
     </div>
 
     <div class="order-container" id="order-container">
@@ -150,11 +150,11 @@
                           <input type="radio" id="star2-${orderDetailId}" name="rating-${orderDetailId}" value="2" />
                           <label for="star2-${orderDetailId}">★</label>
                           <input type="radio" id="star3-${orderDetailId}" name="rating-${orderDetailId}" value="3" />
-                          <label for="star3-${orderDetailId}">★</label>   
+                          <label for="star3-${orderDetailId}">★</label>
                           <input type="radio" id="star4-${orderDetailId}" name="rating-${orderDetailId}" value="4" />
                           <label for="star4-${orderDetailId}">★</label>
                           <input type="radio" id="star5-${orderDetailId}" name="rating-${orderDetailId}" value="5" />
-                          <label for="star5-${orderDetailId}">★</label>                          
+                          <label for="star5-${orderDetailId}">★</label>
                         </div>
                         <textarea id="review-text-${orderDetailId}" placeholder="리뷰를 작성하세요..."></textarea>
                         <button onclick="submitReview('${orderDetailId}')">리뷰 제출</button>
@@ -214,7 +214,7 @@
             throw new Error(`리뷰 작성에 실패했습니다: ${errorData.message}`);
           }
 
-          alert('리뷰가 성공적으로 작성되었습니다. 500원의 적립금이 지급되었습니다!(무료게임은 지급x)');
+          alert('리뷰가 성공적으로 작성되었습니다. 500원의 적립금이 지급되었습니다!');
           loadOrderList(); // UI 업데이트를 위해 주문 목록 다시 로드
         } catch (error) {
           console.error('리뷰 작성 중 오류 발생:', error);
