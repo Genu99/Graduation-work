@@ -1,4 +1,4 @@
-<style>
+
         * {
             font-family: "Noto Sans KR";
             
@@ -47,21 +47,21 @@
         }
 
         /* 좌측 네비게이션 바 */
-        nav {
+        .nav-left {
             width: 200px;
             margin-right: 20px;
         }
 
-        nav ul {
+        .nav-left ul {
             list-style-type: none;
         }
 
-        nav ul li {
+        .nav-left ul li {
             margin: 15px 0;
         }
 
         /* 기본 링크 스타일 */
-        nav ul li a {
+        .nav-left ul li a {
             text-decoration: none;
             color: #333;
             font-size: 18px;
@@ -72,13 +72,13 @@
         }
 
         /* 메뉴가 선택되었을 때의 스타일 */
-        nav ul li a.active {
+        .nav-left ul li a.active {
             background-color: #889491;
             color: #fff;
         }
 
         /* 기본 hover 스타일 */
-        nav ul li a:hover {
+        .nav-left ul li a:hover {
             background-color: #6c7c7b;
             color: #fff;
         }
@@ -200,4 +200,3 @@
             background-color: #4c5754;
             font-weight: bold;
         }
-    </style>
