@@ -210,6 +210,7 @@ textarea:focus {
 /* 별점 스타일 */
 .rating {
   display: flex;
+  flex-direction: row-reverse; /* 별점 순서를 반대로 */
   justify-content: center;
   margin-bottom: 20px;
 }
