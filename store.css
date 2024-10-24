@@ -42,7 +42,7 @@
   }
   
   /* 검색창 스타일링 */
-  .search-bar {
+  .product-search-bar {
     position: absolute;
     display: flex; 
     align-items: center; 
@@ -55,7 +55,7 @@
     background-color: transparent;
 }
 
-.search-bar input {
+.product-search-bar input {
     border: none;
     outline: none;
     flex: 1;
@@ -64,7 +64,7 @@
     background-color: transparent;
 }
 
-.search-bar i {
+.product-search-bar i {
     color: #666;
     font-size: 18px; 
 }
