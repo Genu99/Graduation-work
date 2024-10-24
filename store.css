@@ -41,7 +41,18 @@
     display: block;
   }
   
-  /* 검색창 스타일링 */
+ 
+  
+  .product-list {
+    flex-grow: 1;
+  }
+  
+  .product-list h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    margin-left:15px;
+  }
+ /* 검색창 스타일링 */
   .product-search-bar {
     position: absolute;
     display: flex; 
@@ -69,16 +80,6 @@
     font-size: 18px; 
 }
 
-  
-  .product-list {
-    flex-grow: 1;
-  }
-  
-  .product-list h2 {
-    margin-bottom: 20px;
-    font-size: 24px;
-    margin-left:15px;
-  }
   
   .product-grid {
     display: grid;
