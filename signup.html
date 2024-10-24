@@ -234,6 +234,108 @@
           });
       }
 
+      // 이메일 인증 번호 전송
+      function sendEmailVerification() {
+        const email = document.getElementById("email").value.trim();
+        const verificationStatus = document.getElementById("verification-status");
+
+        if (!email) {
+          verificationStatus.innerText = "이메일을 입력하세요.";
+          verificationStatus.style.color = "red";
+          return;
+        }
+
+        verificationStatus.innerText = "인증 번호 전송 중...";
+
+        fetch(`${API_BASE_URL}/user/auth/email-authentication`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: email }),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("인증 번호 전송에 실패했습니다.");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            verificationStatus.innerText = "인증 번호가 이메일로 전송되었습니다.";
+            verificationStatus.style.color = "green";
+            // 인증 번호 입력란 표시
+            document.getElementById("email-verification-group").style.display = "block";
+
+            // 타이머 시작
+            startTimer(3 * 60);
+          })
+          .catch((error) => {
+            verificationStatus.innerText = error.message;
+            verificationStatus.style.color = "red";
+          });
+      }
+
+      // 타이머 시작 함수
+      function startTimer(duration) {
+        const timerDisplay = document.getElementById("timer");
+        let timer = duration;
+        clearInterval(timerInterval); // 기존 타이머가 있다면 정지
+
+        timerInterval = setInterval(() => {
+          const minutes = Math.floor(timer / 60);
+          const seconds = timer % 60;
+          timerDisplay.innerText = `남은 시간: ${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+
+          if (--timer < 0) {
+            clearInterval(timerInterval);
+            timerDisplay.innerText = "인증 시간이 만료되었습니다. 다시 시도해주세요.";
+            document.getElementById("verification-code").readOnly = true;
+          }
+        }, 1000);
+      }
+
+      // 이메일 인증번호 검증
+      function verifyCode() {
+        const email = document.getElementById("email").value.trim();
+        const verificationCode = document.getElementById("verification-code").value.trim();
+        const verificationStatus = document.getElementById("verification-status");
+
+        if (!verificationCode) {
+          verificationStatus.innerText = "인증번호를 입력하세요.";
+          verificationStatus.style.color = "red";
+          return;
+        }
+
+        verificationStatus.innerText = "인증번호 확인 중...";
+
+        fetch(`${API_BASE_URL}/user/auth/check-authentication`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            authenticationCode: verificationCode
+          }),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("인증번호가 일치하지 않습니다.");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            verificationStatus.innerText = "인증이 완료되었습니다.";
+            verificationStatus.style.color = "green";
+            document.getElementById("verification-code").readOnly = true;
+            clearInterval(timerInterval); // 인증 성공 시 타이머 정지
+          })
+          .catch((error) => {
+            verificationStatus.innerText = error.message;
+            verificationStatus.style.color = "red";
+          });
+      }
+
       // 닉네임 중복 확인
       function checkNickname() {
         const nickname = document.getElementById("nickname").value.trim();
