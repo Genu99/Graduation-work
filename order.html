@@ -145,16 +145,16 @@
                       <div class="review-form" id="review-form-${orderDetailId}" style="display: none;">
                         <!-- 별점 선택 -->
                         <div class="rating">
-                          <input type="radio" id="star1-${orderDetailId}" name="rating-${orderDetailId}" value="1" />
-                          <label for="star1-${orderDetailId}">★</label>
-                          <input type="radio" id="star2-${orderDetailId}" name="rating-${orderDetailId}" value="2" />
-                          <label for="star2-${orderDetailId}">★</label>
-                          <input type="radio" id="star3-${orderDetailId}" name="rating-${orderDetailId}" value="3" />
-                          <label for="star3-${orderDetailId}">★</label>
-                          <input type="radio" id="star4-${orderDetailId}" name="rating-${orderDetailId}" value="4" />
-                          <label for="star4-${orderDetailId}">★</label>
                           <input type="radio" id="star5-${orderDetailId}" name="rating-${orderDetailId}" value="5" />
                           <label for="star5-${orderDetailId}">★</label>
+                          <input type="radio" id="star4-${orderDetailId}" name="rating-${orderDetailId}" value="4" />
+                          <label for="star4-${orderDetailId}">★</label>
+                          <input type="radio" id="star3-${orderDetailId}" name="rating-${orderDetailId}" value="3" />
+                          <label for="star3-${orderDetailId}">★</label>
+                          <input type="radio" id="star2-${orderDetailId}" name="rating-${orderDetailId}" value="2" />
+                          <label for="star2-${orderDetailId}">★</label>
+                          <input type="radio" id="star1-${orderDetailId}" name="rating-${orderDetailId}" value="1" />
+                          <label for="star1-${orderDetailId}">★</label>
                         </div>
                         <textarea id="review-text-${orderDetailId}" placeholder="리뷰를 작성하세요..."></textarea>
                         <button onclick="submitReview('${orderDetailId}')">리뷰 제출</button>
