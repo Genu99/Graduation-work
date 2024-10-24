@@ -153,13 +153,13 @@
             const email = document.getElementById('email').value;
             const verificationCode = document.getElementById('verification-code').value;
             const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('checkPassword').value;
+            const checkPassword = document.getElementById('checkPassword').value;
             const name = document.getElementById('name').value;
             const nickname = document.getElementById('nickname').value;
             const gender = document.getElementById('gender').value;
             const birthdate = document.getElementById('birthdate').value;
 
-            if (password !== confirmPassword) {
+            if (password !== checkPassword) {
                 document.getElementById('password-status').innerText = '비밀번호가 일치하지 않습니다.';
                 return;
             }
