@@ -37,9 +37,16 @@
             <p id="release-date">출시일:</p>
             <p id="distributor">배급사:</p>
             <p id="gamePrice">가격: ₩ undefined</p>
-            <button class="cart-btn" onclick="addToCart(window.currentGame.gameId)">
-              장바구니에 담기
-            </button>
+            let actionButton = '';
+               if (game.inCart) {
+                actionButton = `<button class="cart-btn" style="background-color: #6c757d; color: #fff; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer;" onclick="showPopup('이미 장바구니에 담긴 게임입니다.')">장바구니에 담겨진 게임입니다</button>`;
+                } else if (game.purchased) {
+                actionButton = `<button class="buy-btn" style="background-color: #28a745; color: #fff; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer;" onclick="showPopup('이미 구매한 게임입니다.')">이미 구매한 게임입니다</button>`;
+                } else {
+                actionButton = game.discountPrice === 0 ?
+                  `<button class="buy-btn" style="background-color: #28a745; color: #fff; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; transition: background-color 0.3s ease;" onclick="buyGame('${game.gameId}')">구매하기</button>` :
+                  `<button class="cart-btn" style="background-color: #6c757d; color: #fff; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; transition: background-color 0.3s ease;" onclick="addToCart('${game.gameId}')">장바구니</button>`;
+                }
           </div>
         </div>
       </div>
