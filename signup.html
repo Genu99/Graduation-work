@@ -128,8 +128,9 @@
 
     <script>
       const API_BASE_URL = "https://ludorium.store/api"; // 서버 주소
+      let timerInterval; // 타이머 interval 변수
 
-      // 전화번호에 하이피네 자동 추가
+      // 전화번호에 하이픈 자동 추가
       function autoHyphen(target) {
         let tel = target.value.replace(/[^0-9]/g, ""); // 숫자 이외의 값 제거
         if (tel.length < 4) {
