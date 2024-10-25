@@ -202,7 +202,7 @@
 
                     // 등록 날짜
                     const regDate = document.createElement('td');
-                    const dateOnly = new Date(board.updatedDate).toISOString().slice(0, 10);
+                    const dateOnly = new Date(board.createdDate).toISOString().slice(0, 10);
                     regDate.textContent = dateOnly;
                     row.appendChild(regDate);
 
