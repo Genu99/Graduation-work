@@ -11,6 +11,64 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
       rel="stylesheet"
     />
+    <style>
+/* 팝업 버튼 스타일링 */
+        #open-popup-btn,
+        #recent-games-btn {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s, transform 0.3s;
+            z-index: 1000;
+        }
+
+        #open-popup-btn:hover,
+        #recent-games-btn:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+        }
+
+        .circular-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+
+        .circular-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .fixed-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+        }
+
+        .recent-fixed-btn {
+            bottom: 90px;
+            right: 20px;
+        }
+</style>
   </head>
   <body>
     <!-- 헤더 재립 표시자 -->
@@ -34,6 +92,12 @@
     <div class="order-container" id="order-container">
       <!-- 주문 내역이 여기에 표시됩니다 -->
     </div>
+     <!-- 최근 본 게임으로 이동하는 버튼 (돋보기 버튼 위에 고정) -->
+    <button id="recent-games-btn" class="circular-btn fixed-btn recent-fixed-btn">👁</button> <!-- 눈 아이콘을 원형 버튼에 넣음 -->
+
+    <!-- 팝업을 여는 버튼 (오른쪽 아래 고정) -->
+    <button id="open-popup-btn" class="circular-btn fixed-btn">🔎</button> <!-- 돋보기 아이콘을 원형 버튼에 넣음 -->
+
 
     <script src="auth.js"></script>
     <script>
@@ -275,6 +339,28 @@
           alert('주문 취소 중 오류가 발생했습니다.');
         }
       }
+       // 팝업창을 열고 토큰을 전달하는 함수
+        function openPopupWithToken() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.error('토큰이 없습니다. 먼저 로그인하세요.');
+                return;
+            }
+            const popupUrl = `https://gameforge-ai-server.streamlit.app/?token=${token}`;
+            const popupWindow = window.open(popupUrl, 'PopupWindow', 'width=600,height=600');
+            if (!popupWindow || popupWindow.closed || typeof popupWindow.closed === 'undefined') {
+                alert('팝업이 차단되었습니다. 팝업을 허용해주세요.');
+            }
+        }
+
+        // 최근 본 게임 페이지로 이동하는 함수
+        function goToRecentGames() {
+            window.location.href = 'recentGames.html';
+        }
+
+        // 버튼에 이벤트 리스너 추가
+        document.getElementById('open-popup-btn').addEventListener('click', openPopupWithToken);
+        document.getElementById('recent-games-btn').addEventListener('click', goToRecentGames);
     </script>
   </body>
 </html>
