@@ -103,37 +103,43 @@
             }
         }
 
-        // 페이지에 후기를 표시하는 함수
-        function displayReviews(reviews) {
-            const reviewList = document.getElementById('review-list');
-            if (!reviewList) {
-                console.error("리뷰 목록을 표시할 요소를 찾을 수 없습니다.");
-                return;
-            }
-            reviewList.innerHTML = ''; // 이전 후기를 초기화
-            reviews.forEach(review => {
-                const reviewDiv = document.createElement('div');
-                reviewDiv.classList.add('review-item');
-                reviewDiv.innerHTML = `
-                    <h3>${review.gameName}</h3>
-                    <div class="review-content" id="review-content-${review.reviewId}">
-                        <p>${review.content}</p>
-                        <small>평점: ${review.rating}</small><br>
-                        <small>작성일: ${review.updatedDate}</small><br>
-                    </div>
-                    <button onclick="toggleEditMode(${review.reviewId})">수정</button>
-<button onclick="deleteReview(${review.reviewId})">삭제</button>
-                    <div id="edit-section-${review.reviewId}" class="edit-section" style="display: none;">
-                        <textarea id="edit-content-${review.reviewId}">${review.content}</textarea><br>
-                        <label for="edit-rating-${review.reviewId}">평점: </label>
-                        <input type="number" id="edit-rating-${review.reviewId}" value="${review.rating}" min="1" max="5"><br>
-                        <button onclick="updateReview(${review.reviewId})">저장</button>
-                        <button onclick="toggleEditMode(${review.reviewId})">취소</button>
-                    </div>
-                `;
-                reviewList.appendChild(reviewDiv);
-            });
-        }
+       // 페이지에 후기를 표시하는 함수
+function displayReviews(reviews) {
+    const reviewList = document.getElementById('review-list');
+    if (!reviewList) {
+        console.error("리뷰 목록을 표시할 요소를 찾을 수 없습니다.");
+        return;
+    }
+    reviewList.innerHTML = ''; // 이전 후기를 초기화
+    reviews.forEach(review => {
+        const reviewDiv = document.createElement('div');
+        reviewDiv.classList.add('review-item');
+
+        // 이미지 링크 및 이미지 추가
+        reviewDiv.innerHTML = `
+            <a href="https://gameforge.com/game/${review.gameId}" target="_blank">
+                <img src="${review.gameImage}" alt="${review.gameName}" class="game-image" style="width:150px; height:150px;"/>
+            </a>
+            <h3>${review.gameName}</h3>
+            <div class="review-content" id="review-content-${review.reviewId}">
+                <p>${review.content}</p>
+                <small>평점: ${review.rating}</small><br>
+                <small>작성일: ${review.updatedDate}</small><br>
+            </div>
+            <button onclick="toggleEditMode(${review.reviewId})">수정</button>
+            <button onclick="deleteReview(${review.reviewId})">삭제</button>
+            <div id="edit-section-${review.reviewId}" class="edit-section" style="display: none;">
+                <textarea id="edit-content-${review.reviewId}">${review.content}</textarea><br>
+                <label for="edit-rating-${review.reviewId}">평점: </label>
+                <input type="number" id="edit-rating-${review.reviewId}" value="${review.rating}" min="1" max="5"><br>
+                <button onclick="updateReview(${review.reviewId})">저장</button>
+                <button onclick="toggleEditMode(${review.reviewId})">취소</button>
+            </div>
+        `;
+
+        reviewList.appendChild(reviewDiv);
+    });
+}
 
         // 리뷰 삭제 함수
         async function deleteReview(reviewId) {
