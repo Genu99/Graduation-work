@@ -107,33 +107,40 @@
         let currentSearchType = '';
 
         // 링크 클릭 시 active 클래스를 설정하는 함수
-        function setActiveLink(activeLink) {
-            noticeLink.classList.remove('active');
-            freeboardLink.classList.remove('active');
-            activeLink.classList.add('active');
-        }
+    function setActiveLink(activeLink) {
+        noticeLink.classList.remove('active');
+        freeboardLink.classList.remove('active');
+        activeLink.classList.add('active');
+    }
 
-        // 현재 활성화된 카테고리 ID를 가져오는 함수
-        function getActiveCategoryId() {
-            return noticeLink.classList.contains('active') ? 2 : 1; // 공지사항: 2, 자유게시판: 1
-        }
+    // 현재 활성화된 카테고리 ID를 가져오는 함수
+    function getActiveCategoryId() {
+        return noticeLink.classList.contains('active') ? 2 : 1; // 공지사항: 2, 자유게시판: 1
+    }
 
-        // 공지사항 클릭 시
-        noticeLink.addEventListener('click', function(event) {
-            event.preventDefault(); // 기본 동작 막기
-            setActiveLink(noticeLink); // active 클래스 설정
-            fetchBoardList(2); // 공지사항은 categoryId 2번으로 호출
-            checkAdminRole(); // ROLE_ADMIN 여부 체크
-        });
+    // 공지사항 클릭 시
+    noticeLink.addEventListener('click', function(event) {
+        event.preventDefault(); // 기본 동작 막기
+        setActiveLink(noticeLink); // active 클래스 설정
+        fetchBoardList(2); // 공지사항은 categoryId 2번으로 호출
+        writeButton.style.display = 'none'; // 공지사항에서는 글쓰기 버튼 숨기기
+        checkAdminRole(); // ROLE_ADMIN 여부 체크
+    });
 
-        // 자유게시판 클릭 시
-        freeboardLink.addEventListener('click', function(event) {
-            event.preventDefault(); // 기본 동작 막기
-            setActiveLink(freeboardLink); // active 클래스 설정
-            fetchBoardList(1); // 자유게시판은 categoryId 1번으로 호출
-            writeButton.style.display = 'block'; // 자유게시판에서는 글쓰기 버튼 항상 보이기
-        });
+    // 자유게시판 클릭 시
+    freeboardLink.addEventListener('click', function(event) {
+        event.preventDefault(); // 기본 동작 막기
+        setActiveLink(freeboardLink); // active 클래스 설정
+        fetchBoardList(1); // 자유게시판은 categoryId 1번으로 호출
+        writeButton.style.display = 'block'; // 자유게시판에서는 글쓰기 버튼 항상 보이기
+    });
 
+    // 초기 데이터 로드 시 자유게시판을 기본 선택으로 설정
+    window.onload = function () {
+        setActiveLink(freeboardLink); // 자유게시판 링크에 active 클래스 설정
+        fetchBoardList(1); // 자유게시판 리스트 불러오기
+        writeButton.style.display = 'block'; // 자유게시판에서는 글쓰기 버튼 항상 보이기
+    };
         // 정렬 옵션 변경 시 게시판 리스트 업데이트
         orderSelect.addEventListener('change', function() {
             const activeCategory = getActiveCategoryId(); // 현재 활성화된 카테고리 ID
