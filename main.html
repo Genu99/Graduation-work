@@ -58,11 +58,11 @@
             </section>
         </section>
 
-        <!-- 최근 본 게임으로 이동하는 버튼 (오른쪽 아래 고정) -->
-        <button id="recent-games-btn" class="circular-btn fixed-btn">👁 최근 본 게임</button> <!-- 눈 아이콘을 원형 버튼에 넣음 -->
-
         <!-- 팝업을 여는 버튼 (오른쪽 아래 고정) -->
         <button id="open-popup-btn" class="circular-btn fixed-btn">🔎</button> <!-- 돋보기 아이콘을 원형 버튼에 넣음 -->
+
+        <!-- 최근 본 게임으로 이동하는 버튼 (돋보기 버튼 위에 고정) -->
+        <button id="recent-games-btn" class="circular-btn fixed-btn recent-fixed-btn">👁</button> <!-- 눈 아이콘을 원형 버튼에 넣음 -->
     </main>
 
     <footer>
@@ -160,5 +160,7 @@
         // 최근 본 게임 버튼에 이벤트 리스너 추가
         document.getElementById('recent-games-btn').addEventListener('click', goToRecentGames);
     </script>
+
+  
 </body>
 </html>
