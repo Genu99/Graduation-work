@@ -37,9 +37,7 @@
             <p id="release-date">출시일:</p>
             <p id="distributor">배급사:</p>
             <p id="gamePrice">가격: ₩ undefined</p>
-            <button class="cart-btn" onclick="addToCart(window.currentGame.gameId)">
-              장바구니에 담기
-            </button>
+            <button id="action-button" class="cart-btn" onclick="handleAction()">그룹에 담기</button>
           </div>
         </div>
       </div>
@@ -87,14 +85,14 @@
         <div id="reviewsContainer"></div>
       </div>
     </div>
-     <!-- 최근 본 게임으로 이동하는 버튼 (돋보기 버튼 위에 고정) -->
-    <button id="recent-games-btn" class="circular-btn fixed-btn recent-fixed-btn">👁</button> <!-- 눈 아이콘을 원형 버튼에 넣음 -->
+     <!-- 최근 본 게임으로 이동하는 버튼 (돈보기 버튼 위에 고정) -->
+    <button id="recent-games-btn" class="circular-btn fixed-btn recent-fixed-btn">흑</button> <!-- 눈 아이온을 원형 버튼에 넣음 -->
 
-    <!-- 팝업을 여는 버튼 (오른쪽 아래 고정) -->
-    <button id="open-popup-btn" class="circular-btn fixed-btn">🔎</button> <!-- 돋보기 아이콘을 원형 버튼에 넣음 -->
+    <!-- 파프을 연 다는 버튼 (오른쪽 아래 고정) -->
+    <button id="open-popup-btn" class="circular-btn fixed-btn">팡</button> <!-- 돈보기 아이온을 원형 버튼에 넣음 -->
     <footer>
       <div class="footer-content">
-        <p>&copy; 대진대학교 벤처 졸업작품.</p>
+        <p>&copy; 대진대학교 벤처 주로장품.</p>
       </div>
     </footer>
     <script src="gameDetail.js"></script>
@@ -144,13 +142,17 @@
             }
 
             const gamePriceElement = document.getElementById("gamePrice");
-            if (gamePriceElement) {
+            const actionButton = document.getElementById("action-button");
+            if (gamePriceElement && actionButton) {
               if (game.originalPrice !== undefined && game.discountPrice !== undefined) {
                 if (game.originalPrice !== game.discountPrice) {
                   gamePriceElement.innerHTML = `정상가: ₩ ${game.originalPrice}<br>판매가: ₩ ${game.discountPrice}`;
+                  actionButton.innerText = "장바구니에 담기";
+                  actionButton.onclick = () => addToCart(gameId);
                 } else {
-                  gamePriceElement.innerText =
-                    game.discountPrice === 0 ? "무료" : `가격: ₩ ${game.discountPrice}`;
+                  gamePriceElement.innerText = game.discountPrice === 0 ? "무료" : `가격: ₩ ${game.discountPrice}`;
+                  actionButton.innerText = game.discountPrice === 0 ? "무료로 받기" : "장바구니에 담기";
+                  actionButton.onclick = game.discountPrice === 0 ? () => buyGame(gameId) : () => addToCart(gameId);
                 }
               } else {
                 gamePriceElement.innerText = "가격 정보를 사용할 수 없습니다.";
@@ -196,6 +198,35 @@
           }
         } catch (error) {
           console.error("게임 데이터를 불러오는 중 오류 발생:", error);
+        }
+      }
+
+      // 게임을 무료로 구매하는 함수
+      async function buyGame(gameId) {
+        try {
+          const token = localStorage.getItem('token');
+          if (!token) {
+            alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.');
+            window.location.href = 'login.html';
+            return;
+          }
+
+          const response = await fetch(`${serverUrl}/api/user/order/purchase-now/${gameId}`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            }
+          });
+
+          if (!response.ok) {
+            throw new Error('게임 구매 중 오류가 발생했습니다.');
+          }
+
+          alert('게임이 구매되었습니다.');
+        } catch (error) {
+          console.error('게임 구매 중 오류 발생:', error);
+          alert('이미 구매한 게임입니다.');
         }
       }
 
@@ -295,7 +326,7 @@
           if (cartResponse.ok) {
             const cartData = await cartResponse.json();
             if (cartData.some(item => item.gameId === gameId)) {
-              alert('이 게임은 이미 장바구니에 담겨 있습니다.');
+              alert('장바구니에 이미 담긴 게임입니다.');
               return;
             }
           }
