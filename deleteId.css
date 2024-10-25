@@ -101,3 +101,60 @@ footer {
     display: inline-block;
     margin: 10px auto;
 }
+
+/* 팝업 버튼 스타일링 */
+        #open-popup-btn,
+        #recent-games-btn {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s, transform 0.3s;
+            z-index: 1000;
+        }
+
+        #open-popup-btn:hover,
+        #recent-games-btn:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+        }
+
+        .circular-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+
+        .circular-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .fixed-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+        }
+
+        .recent-fixed-btn {
+            bottom: 90px;
+            right: 20px;
+        }
