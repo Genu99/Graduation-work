@@ -52,6 +52,13 @@
         </div>
     </div>
 
+     <!-- 최근 본 게임으로 이동하는 버튼 (돋보기 버튼 위에 고정) -->
+    <button id="recent-games-btn" class="circular-btn fixed-btn recent-fixed-btn">👁</button> <!-- 눈 아이콘을 원형 버튼에 넣음 -->
+
+    <!-- 팝업을 여는 버튼 (오른쪽 아래 고정) -->
+    <button id="open-popup-btn" class="circular-btn fixed-btn">🔎</button> <!-- 돋보기 아이콘을 원형 버튼에 넣음 -->
+
+
     <script>
         // 게시글 ID 가져오기
         const getBoardIdFromUrl = () => {
@@ -415,6 +422,28 @@
             await fetchPostDetails();
             await fetchComments();
         };
+         // 팝업창을 열고 토큰을 전달하는 함수
+        function openPopupWithToken() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.error('토큰이 없습니다. 먼저 로그인하세요.');
+                return;
+            }
+            const popupUrl = `https://gameforge-ai-server.streamlit.app/?token=${token}`;
+            const popupWindow = window.open(popupUrl, 'PopupWindow', 'width=600,height=600');
+            if (!popupWindow || popupWindow.closed || typeof popupWindow.closed === 'undefined') {
+                alert('팝업이 차단되었습니다. 팝업을 허용해주세요.');
+            }
+        }
+
+        // 최근 본 게임 페이지로 이동하는 함수
+        function goToRecentGames() {
+            window.location.href = 'recentGames.html';
+        }
+
+        // 버튼에 이벤트 리스너 추가
+        document.getElementById('open-popup-btn').addEventListener('click', openPopupWithToken);
+        document.getElementById('recent-games-btn').addEventListener('click', goToRecentGames);
     </script>
 </body>
 </html>
