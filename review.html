@@ -117,8 +117,7 @@ function displayReviews(reviews) {
 
         // 이미지 링크 및 이미지 추가
         reviewDiv.innerHTML = ` 
-        const gameLink = document.createElement('a');
-                    gameLink.href = `https://genu99.github.io/Graduation-work/gameDetail.html?gameId=${review.gameId}`;
+                gameLink.href = `https://genu99.github.io/Graduation-work/gameDetail.html?gameId=${review.gameId}`;
                 <img src="${review.gameImage}" alt="${review.gameName}" class="game-image" style="width:150px; height:150px;"/>
             </a>
             <h3>${review.gameName}</h3>
