@@ -254,6 +254,7 @@ footer {
             margin-bottom: 10px;
         }
 
-        #recent-games-btn {
+        .recent-fixed-btn {
             right: 80px; /* 버튼 간의 간격을 위해 조정 */
+            bottom: 80px; /* 돋보기 버튼 위쪽에 위치하도록 조정 */
         }
