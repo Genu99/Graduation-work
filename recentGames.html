@@ -107,57 +107,60 @@
       showRecentGames(); // 최근 본 게임 목록 표시
     });
 
-    async function showRecentGames() {
-      try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.');
-          window.location.href = 'login.html';
-          return;
-        }
-
-        // 서버에 Redis에 저장된 최근 본 게임 리스트 요청
-        const response = await fetch(`${serverUrl}/api/user/mypage/recent-list`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error('최근 본 게임 목록을 가져오는 중 오류가 발생했습니다.');
-        }
-
-        const result = await response.json();
-        const recentGames = result.data; // 데이터 수정: 서버 응답에서 data 필드 사용
-        const recentGamesList = document.getElementById('recent-games-list');
-
-        if (!recentGames || recentGames.length === 0) {
-          recentGamesList.innerHTML = '<p>최근 본 게임이 없습니다.</p>';
-          return;
-        }
-
-        recentGamesList.innerHTML = '';
-        recentGames.forEach(game => {
-          const gamePrice = game.discountPrice !== undefined ? game.discountPrice : game.originalPrice;
-          const gameCard = `
-            <div class="recent-game-card">
-              <img src="${game.gameImageUrl || 'https://via.placeholder.com/150'}" alt="${game.gameName || '게임 이미지'}" class="game-image" />
-              <div class="recent-game-info">
-                <h3 class="recent-game-title">${game.gameName || '제목 없음'}</h3>
-                <p class="recent-game-price">${gamePrice === 0 ? '무료' : '₩ ' + gamePrice}</p>
-                <a href="gameDetail.html?gameId=${game.gameId}" class="recent-game-link">상세 보기</a>
-              </div>
-            </div>
-          `;
-          recentGamesList.innerHTML += gameCard;
-        });
-      } catch (error) {
-        console.error('최근 본 게임을 가져오는 중 오류 발생:', error);
-        alert('최근 본 게임을 불러오는 데 실패했습니다. 다시 시도해주세요.');
-      }
+   async function showRecentGames() {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.');
+      window.location.href = 'login.html';
+      return;
     }
+
+    const response = await fetch(`${serverUrl}/api/user/mypage/recent-list`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      console.error(`HTTP error! Status: ${response.status}`);
+      throw new Error('최근 본 게임 목록을 가져오는 중 오류가 발생했습니다.');
+    }
+
+    const result = await response.json();
+    console.log('서버 응답:', result); // 서버에서 반환된 데이터를 콘솔에 출력
+
+    const recentGames = result.data; // 데이터가 제대로 있는지 확인하세요
+    const recentGamesList = document.getElementById('recent-games-list');
+
+    if (!recentGames || recentGames.length === 0) {
+      recentGamesList.innerHTML = '<p>최근 본 게임이 없습니다.</p>';
+      return;
+    }
+
+    recentGamesList.innerHTML = '';
+    recentGames.forEach(game => {
+      const gamePrice = game.discountPrice !== undefined ? game.discountPrice : game.originalPrice;
+      const gameCard = `
+        <div class="recent-game-card">
+          <img src="${game.gameImageUrl || 'https://via.placeholder.com/150'}" alt="${game.gameName || '게임 이미지'}" class="game-image" />
+          <div class="recent-game-info">
+            <h3 class="recent-game-title">${game.gameName || '제목 없음'}</h3>
+            <p class="recent-game-price">${gamePrice === 0 ? '무료' : '₩ ' + gamePrice}</p>
+            <a href="gameDetail.html?gameId=${game.gameId}" class="recent-game-link">상세 보기</a>
+          </div>
+        </div>
+      `;
+      recentGamesList.innerHTML += gameCard;
+    });
+  } catch (error) {
+    console.error('최근 본 게임을 가져오는 중 오류 발생:', error);
+    alert('최근 본 게임을 불러오는 데 실패했습니다. 다시 시도해주세요.');
+  }
+}
+
      // 팝업창을 열고 토큰을 전달하는 함수
         function openPopupWithToken() {
             const token = localStorage.getItem('token');
