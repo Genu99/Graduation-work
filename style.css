@@ -226,9 +226,9 @@ footer {
     background-color: #0056b3;
     transform: scale(1.1);
 }
-        .circular-btn {
-            width: 50px;
-            height: 50px;
+           .circular-btn {
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             border: none;
             background-color: #007bff;
@@ -250,10 +250,9 @@ footer {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            margin-bottom: 10px;
         }
 
         .recent-fixed-btn {
-            bottom: 80px; /* 돋보기 버튼 바로 위에 위치하도록 조정 */
+            bottom: 90px; /* 돋보기 버튼 바로 위에 위치하도록 조정 */
             right: 20px;
         }
