@@ -13,13 +13,13 @@
     />
   </head>
   <body>
-    <!-- 헤더 자리 표시자 -->
+    <!-- 헤더 재립 표시자 -->
     <div id="header-placeholder"></div>
     
     <nav>
       <ul class="menu">
         <li><a href="mypage.html">내정보</a></li>
-        <li><a href="review.html">내가쓴리뷰</a></li>
+        <li><a href="review.html">내가쓰는리뷰</a></li>
         <li><a href="order.html">주문내역</a></li>
         <li><a href="info.html">정보수정</a></li>
         <li><a href="modpwd.html">비밀번호 수정</a></li>
@@ -75,14 +75,14 @@
           console.log('주문 목록 데이터:', data); // 서버에서 받은 주문 목록 데이터 콘솔에 출력
           const orderList = data.data;
 
-          // 모든 주문 상태 출력 (필터링을 제거하여 테스트)
+          // 모든 주문 상태 출력 (필터링을 제공해서 테스트)
           displayOrders(orderList);
         } catch (error) {
           console.error('주문 목록 불러오기 실패:', error);
         }
       }
 
-      // 리뷰 폼 표시/숨김 처리
+      // 리뷰 폼 표시/숨기기 처리
       function toggleReviewForm(orderDetailId) {
         let reviewForm = document.getElementById(`review-form-${orderDetailId}`);
         if (!reviewForm) {
@@ -95,7 +95,7 @@
       // 주문 내역을 화면에 표시하기
       function displayOrders(orderList) {
         const orderContainer = document.getElementById('order-container');
-        orderContainer.innerHTML = ''; // 기존 내용을 지움
+        orderContainer.innerHTML = ''; // 기존 내용을 지우기
 
         if (!orderList || orderList.length === 0) {
           orderContainer.innerHTML = '<p>주문 내역이 없습니다.</p>';
@@ -136,7 +136,7 @@
                   
                   return `
                     <div class="product-item">
-                      <img src="${imageUrl}" alt="${name}" />
+                      <a href="https://genu99.github.io/Graduation-work/gameDetail.html?gameId=${item.gameId}">$1</a>
                       <div class="product-info">
                         <p class="product-name">${name}</p>
                         <p class="product-price">${price}</p>
@@ -165,7 +165,7 @@
               </div>
             `;
 
-            // 주문 상태에 따른 버튼 표시/숨김 처리
+            // 주문 상태에 따른 버튼 표시/숨기기 처리
             const buttonContainer = document.createElement('div');
             buttonContainer.classList.add('button-container');
             if (order.orderStatus === 'CANCEL_COMPLETED') {
@@ -191,7 +191,7 @@
         const reviewRating = document.querySelector(`input[name="rating-${orderDetailId}"]:checked`);
 
         if (!reviewText || !reviewRating) {
-          alert('리뷰 내용과 별점을 정확히 입력해주세요.');
+          alert('리뷰 내용과 별점을 제대로 입력해주세요.');
           return;
         }
 
