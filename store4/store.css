@@ -1,0 +1,272 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  
+}
+
+.container {
+  display: flex;
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.filters {
+  width: 200px;
+  margin-right: 40px;
+}
+
+.sort select {
+  width: 100%;
+  padding: 10px;
+  margin-top:70px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.genre-filter{
+  margin-top:20px;
+}
+.genre-filter p {
+  font-weight: bold;
+  margin-bottom:15px;
+}
+
+.genre-filter label {
+  display: block;
+}
+
+
+
+.product-list {
+  flex-grow: 1;
+}
+
+.product-list h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  margin-left:15px;
+}
+/* 검색창 스타일링 */
+.product-search-bar {
+  position: absolute;
+  display: flex; 
+  align-items: center; 
+  top: 100px; 
+  right: 60px; 
+  width: 300px; 
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: transparent;
+}
+/* 카테고리 */
+.product-category {
+  margin: 8px 0;
+}
+
+.category-text {
+  display: inline-block;
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  margin-right: 4px;
+}
+
+.product-search-bar input {
+  border: none;
+  outline: none;
+  flex: 1;
+  padding-left: 5px;
+  font-size: 14px;
+  background-color: transparent;
+}
+
+.product-search-bar i {
+  color: #666;
+  font-size: 18px; 
+}
+
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.product-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.product-card img {
+  width: 100%;
+  height: auto;
+  background-color: #ddd;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+.product-card img:hover {
+  transform: scale(1.1);
+}
+
+
+/* .product-card를 inline-block으로 유지하면서 버튼을 하단에 고정 */
+.product-card {
+  display: inline-block;
+  position: relative; 
+  vertical-align: top;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 16px;
+  margin: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  text-align: center;
+  min-height: 450px;
+  width: 220px; 
+}
+
+/* 버튼을 카드 하단에 고정 */
+button.cart-btn, button.buy-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: calc(100% - 32px); 
+  position: absolute; 
+  bottom: 16px; 
+  left: 16px;
+  right: 16px;
+}
+
+button.cart-btn:hover, button.buy-btn:hover {
+  background-color: #0056b3;
+}
+
+/* 카드의 타이틀, 가격 등 다른 요소들 */
+.product-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #007bff;
+  margin: 12px 0;
+}
+
+.product-price {
+  text-decoration: line-through;
+  color: #888;
+  font-size: 1em;
+  margin: 4px 0;
+}
+
+.sale-price {
+  font-size: 1.2em;
+  color: #4865dc;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.discount-percentage {
+  display: inline-block;
+  color: #ffffff;
+  background-color: #ff0000;
+  font-weight: bold;
+  padding: 2px 5px;
+  border-radius: 5px;
+  margin-left: 8px;
+  font-size: 12px;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 20px; 
+}
+
+.rating i {
+  color: #ffcc00;
+  margin-right: 5px;
+}
+
+.rating span {
+  font-size: 14px;
+  color: #333;
+}
+
+/* 페이지네이션 스타일 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px 0;
+  gap: 5px;
+}
+
+.pagination button {
+  padding: 10px 15px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pagination button:hover {
+  background-color: #5a54e8;
+  color: #fff;
+}
+
+.pagination button.active {
+  background-color: #4865dc;
+  color: #fff;
+  font-weight: bold;
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+#recent-game-icon {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s;
+  display: none;
+}
+
+#recent-game-icon:hover {
+  transform: translateY(-5px);
+}
+
+#recent-game-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
