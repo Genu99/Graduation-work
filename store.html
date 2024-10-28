@@ -9,63 +9,63 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Material+Icons&display=swap" rel="stylesheet">
   <style>
-/* 팝업 버튼 스타일링 */
-        #open-popup-btn,
-        #recent-games-btn {
-            position: fixed;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            font-size: 24px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s, transform 0.3s;
-            z-index: 1000;
-        }
+      /* 팝업 버튼 스타일링 */
+      #open-popup-btn,
+      #recent-games-btn {
+          position: fixed;
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background-color: #007BFF;
+          color: white;
+          border: none;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          font-size: 24px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background-color 0.3s, transform 0.3s;
+          z-index: 1000;
+      }
 
-        #open-popup-btn:hover,
-        #recent-games-btn:hover {
-            background-color: #0056b3;
-            transform: scale(1.1);
-        }
+      #open-popup-btn:hover,
+      #recent-games-btn:hover {
+          background-color: #0056b3;
+          transform: scale(1.1);
+      }
 
-        .circular-btn {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: none;
-            background-color: #007bff;
-            color: white;
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s;
-        }
+      .circular-btn {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          border: none;
+          background-color: #007bff;
+          color: white;
+          font-size: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          transition: background-color 0.3s;
+      }
 
-        .circular-btn:hover {
-            background-color: #0056b3;
-        }
+      .circular-btn:hover {
+          background-color: #0056b3;
+      }
 
-        .fixed-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-        }
+      .fixed-btn {
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+      }
 
-        .recent-fixed-btn {
-            bottom: 90px;
-            right: 20px;
-        }
-</style>
+      .recent-fixed-btn {
+          bottom: 90px;
+          right: 20px;
+      }
+  </style>
 </head>
 <body>
   <!-- 헤더 자리 표시자 -->
@@ -99,8 +99,6 @@
         <label><input type="radio" name="genre" value="11"> 캐주얼</label>
       </div>
     </div>
-    
-   
 
     <!-- 상품 목록 섹션 -->
     <div class="product-list">
@@ -128,7 +126,6 @@
 
     <!-- 팝업을 여는 버튼 (오른쪽 아래 고정) -->
     <button id="open-popup-btn" class="circular-btn fixed-btn">🔎</button> <!-- 돋보기 아이콘을 원형 버튼에 넣음 -->
-
 
   <footer>
     <div class="footer-content">
@@ -216,7 +213,7 @@
 
         const gameCard = `
           <div class="product-card" style="border: 1px solid #e0e0e0; border-radius: 10px; padding: 16px; margin: 16px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: box-shadow 0.3s ease;">
-            <a href="gameDetail.html?gameId=${game.gameId}" class="game-title-link" style="text-decoration: none; color: inherit;" onclick="trackRecentGame('${game.gameId}')">
+            <a href="#" class="game-title-link" style="text-decoration: none; color: inherit;" onclick="handleGameClick(event, '${game.gameId}')">
               <img src="${game.gameImageUrl || 'https://via.placeholder.com/150'}" alt="${game.gameName || '게임 이미지'}" style="width: 100%; height: auto; border-radius: 10px; transition: transform 0.3s ease;" />
               <p class="product-title" style="font-size: 1.2em; font-weight: bold; margin: 12px 0;">${game.gameName || '제목 없음'}</p>
             </a>
@@ -233,7 +230,8 @@
         productGrid.innerHTML += gameCard;
       });
     }
-// 게임을 무료로 구매하는 함수
+
+    // 게임을 무료로 구매하는 함수
     async function buyGame(gameId) {
       try {
         const token = localStorage.getItem('token');
