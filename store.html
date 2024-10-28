@@ -210,7 +210,7 @@
           actionButton = `<button class="buy-btn" style="background-color: #28a745; color: #fff; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer;" onclick="showPopup('이미 구매한 게임입니다.')">이미 구매한 게임입니다</button>`;
         } else {
           actionButton = game.discountPrice === 0 ?
-            `<button class="buy-btn" style="background-color: #28a745; color: #fff; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; transition: background-color 0.3s ease;" onclick="buyGame('${game.gameId}')">구매하기</button>` :
+            `<button class="buy-btn" style="background-color: #28a745; color: #fff; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; transition: background-color 0.3s ease;" onclick="buyGame('${game.gameId}')">무료로 받기</button>` :
             `<button class="cart-btn" style="background-color: #6c757d; color: #fff; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; transition: background-color 0.3s ease;" onclick="addToCart('${game.gameId}')">장바구니</button>`;
         }
 
@@ -440,25 +440,31 @@
 
     // 최근 본 게임을 기록하는 함수
     async function trackRecentGame(gameId) {
-      try {
+    try {
         const token = localStorage.getItem('token');
         if (!token) {
-          console.warn('사용자가 로그인되어 있지 않습니다.');
-          return;
+            console.warn('사용자가 로그인되어 있지 않습니다.');
+            return;
         }
 
-        await fetch(`${serverUrl}/api/user/games`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ gameId }),
+        console.log('최근 본 게임 기록 중, gameId:', gameId);
+        const response = await fetch(`${serverUrl}/api/user/games`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ gameId }),
         });
-      } catch (error) {
+
+        if (!response.ok) {
+            throw new Error('최근 본 게임 기록 중 오류 발생.');
+        }
+    } catch (error) {
         console.error('최근 본 게임을 기록하는 중 오류 발생:', error);
-      }
     }
+}
+
      // 팝업창을 열고 토큰을 전달하는 함수
         function openPopupWithToken() {
             const token = localStorage.getItem('token');
