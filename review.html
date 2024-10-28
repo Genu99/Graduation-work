@@ -208,9 +208,7 @@
                     <h3>${review.gameName}</h3>
                     <div class="review-content" id="review-content-${review.reviewId}">
                         <p>${review.content}</p>
-                        <div class="star-rating">
-                            ${createStarRating(review.rating)}
-                        </div>
+                        <small>평점: ${review.rating}</small><br>
                         <small>작성일: ${review.updatedDate}</small><br>
                     </div>
                     <button onclick="toggleEditMode(${review.reviewId})">수정</button>
