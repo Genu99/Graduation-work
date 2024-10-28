@@ -78,8 +78,27 @@
         });
 
         // 장바구니 선택된 게임을 불러옴
+        function fetchGameImages(gameIdList) {
+            fetch('https://ludorium.store/api/games/images', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ gameIds: gameIdList })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const gameImages = data.images;
+                localStorage.setItem('gameImages', JSON.stringify(gameImages));
+                loadCheckoutItems();
+            })
+            .catch(error => console.error('이미지 불러오기 중 오류 발생:', error));
+        }
+
         function loadCheckoutItems() {
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const gameIdList = cart.map(item => item.id);
+            fetchGameImages(gameIdList);
             const checkoutItemsContainer = document.getElementById('checkout-items');
             const totalPriceEl = document.getElementById('total-price');
             let totalPrice = 0;
@@ -94,9 +113,10 @@
             cart.forEach((item) => {
                 const checkoutItem = document.createElement('div');
                 checkoutItem.classList.add('checkout-item');
-                checkoutItem.innerHTML = `
-                    <div class="checkout-item-info">
-                        <img src="${item.imageUrl}" alt="${item.title}" class="checkout-item-image">
+                const gameImages = JSON.parse(localStorage.getItem('gameImages')) || {};
+                const imageUrl = item.gameImageUrl || 'default-image-url.png';
+                checkoutItem.innerHTML = `<div class="checkout-item-info">
+                        <img src="${item.gameImageUrl}" alt="${item.gameName}" class="game-image">
                         <div class="checkout-item-details">
                             <div class="checkout-item-title">${item.title}</div>
                             <div class="checkout-item-price">${item.price}원</div>
