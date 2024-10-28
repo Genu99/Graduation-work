@@ -182,6 +182,10 @@
           dateHeader.textContent = date;
           orderContainer.appendChild(dateHeader);
 
+          const dateHeader = document.createElement('h2');
+          dateHeader.textContent = date;
+          orderContainer.appendChild(dateHeader);
+
           ordersByDate[date].forEach(order => {
             console.log('주문 데이터:', order); // 각 주문의 상태 확인
 
