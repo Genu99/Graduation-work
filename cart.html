@@ -144,7 +144,8 @@
           return {
             id: checkbox.value,
             title: cartItem.querySelector('.game-name').textContent,
-            price: parseFloat(cartItem.querySelector('.game-price').textContent.replace('원', ''))
+            price: parseFloat(cartItem.querySelector('.game-price').textContent.replace('원', '')),
+            image: cartItem.querySelector('.game-image').src
           };
         });
 
