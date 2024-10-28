@@ -86,13 +86,13 @@
       </div>
     </div>
      <!-- 최근 본 게임으로 이동하는 버튼 (돈보기 버튼 위에 고정) -->
-    <button id="recent-games-btn" class="circular-btn fixed-btn recent-fixed-btn">👁</button> <!-- 눈 아이온을 원형 버튼에 넣음 -->
+    <button id="recent-games-btn" class="circular-btn fixed-btn recent-fixed-btn">👁</button> <!-- 눈 아이콘을 원형 버튼에 넣음 -->
 
-    <!-- 파프을 연 다는 버튼 (오른쪽 아래 고정) -->
-    <button id="open-popup-btn" class="circular-btn fixed-btn">🔎</button> <!-- 돈보기 아이온을 원형 버튼에 넣음 -->
+    <!-- 팝업을 여는 버튼 (오른쪽 아래 고정) -->
+    <button id="open-popup-btn" class="circular-btn fixed-btn">🔎</button> <!-- 돋보기 아이콘을 원형 버튼에 넣음 -->
     <footer>
       <div class="footer-content">
-        <p>&copy; 대진대학교 벤처 주로장품.</p>
+        <p>&copy; 대진대학교 벤처 졸업작품.</p>
       </div>
     </footer>
     <script src="gameDetail.js"></script>
@@ -102,7 +102,19 @@
 
       async function fetchGameDetails(gameId) {
         try {
-          const response = await fetch(`${serverUrl}/api/user/game/${gameId}`);
+          const token = localStorage.getItem('token');
+          const headers = {
+            'accept': '*/*',
+          };
+
+          if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+          }
+
+          const response = await fetch(`${serverUrl}/api/user/game/${gameId}`, {
+            headers: headers
+          });
+
           if (!response.ok) {
             throw new Error("네트워크 응답에 문제가 있습니다.");
           }
