@@ -176,80 +176,85 @@
           return acc;
         }, {});
 
-        // 날짜별로 주문 내역을 표시
-        Object.keys(ordersByDate).forEach(date => {
-          const dateHeader = document.createElement('h2');
-          dateHeader.textContent = date;
-          orderContainer.appendChild(dateHeader);
+       // 날짜별로 주문 내역을 표시
+Object.keys(ordersByDate).forEach(date => {
+  // 날짜별 구분선 추가
+  if (orderContainer.children.length > 0) {
+    const dateSeparator = document.createElement('hr');
+    dateSeparator.style.borderTop = "1px solid #ccc";
+    dateSeparator.style.margin = "20px 0";
+    orderContainer.appendChild(dateSeparator);
+  }
 
-          const dateHeader = document.createElement('h2');
-          dateHeader.textContent = date;
-          orderContainer.appendChild(dateHeader);
+  const dateHeader = document.createElement('h2');
+  dateHeader.textContent = date;
+  orderContainer.appendChild(dateHeader);
 
-          ordersByDate[date].forEach(order => {
-            console.log('주문 데이터:', order); // 각 주문의 상태 확인
+  ordersByDate[date].forEach(order => {
+    console.log('주문 데이터:', order); // 각 주문의 상태 확인
 
-            // 주문 아이템을 생성합니다.
-            const orderItem = document.createElement('div');
-            orderItem.classList.add('order-item');
-            orderItem.innerHTML = `
-              <div class="order-header">주문번호 <span class="order-id">${order.orderId}</span></div>
-              <div class="products-container">
-                ${order.items.map(item => {
-                  const name = item.gameName || '알 수 없는 게임';
-                  const price = item.price ? `${item.price} ₩` : '무료';
-                  const imageUrl = item.gameImage && item.gameImage !== 'undefined' ? item.gameImage : './images/default-image.png';
-                  const orderDetailId = item.orderDetailId;
-                  const reviewStatus = item.reviewStatus;
-                  
-                  return `
-                    <div class="product-item">
-                      <a href="https://genu99.github.io/Graduation-work/gameDetail.html?gameId=${item.gameId}"><img src="${imageUrl}" alt="${name}" /></a>
-                      <div class="product-info">
-                        <p class="product-name">${name}</p>
-                        <p class="product-price">${price}</p>
-                      </div>
-                      ${(reviewStatus && order.orderStatus === 'PURCHASE_CONFIRMED') ? `<button class="review-btn" onclick="toggleReviewForm('${orderDetailId}')">리뷰 작성</button>` : ''}
-                      <div class="review-form" id="review-form-${orderDetailId}" style="display: none;">
-                        <!-- 별점 선택 -->
-                        <div class="rating">
-                          <input type="radio" id="star5-${orderDetailId}" name="rating-${orderDetailId}" value="5" />
-                          <label for="star5-${orderDetailId}">★</label>
-                          <input type="radio" id="star4-${orderDetailId}" name="rating-${orderDetailId}" value="4" />
-                          <label for="star4-${orderDetailId}">★</label>
-                          <input type="radio" id="star3-${orderDetailId}" name="rating-${orderDetailId}" value="3" />
-                          <label for="star3-${orderDetailId}">★</label>
-                          <input type="radio" id="star2-${orderDetailId}" name="rating-${orderDetailId}" value="2" />
-                          <label for="star2-${orderDetailId}">★</label>
-                          <input type="radio" id="star1-${orderDetailId}" name="rating-${orderDetailId}" value="1" />
-                          <label for="star1-${orderDetailId}">★</label>
-                        </div>
-                        <textarea id="review-text-${orderDetailId}" placeholder="리뷰를 작성하세요..."></textarea>
-                        <button onclick="submitReview('${orderDetailId}')">리뷰 제출</button>
-                      </div>
-                    </div>
-                  `;
-                }).join('')}
+    // 주문 아이템을 생성합니다.
+    const orderItem = document.createElement('div');
+    orderItem.classList.add('order-item');
+    orderItem.innerHTML = `
+      <div class="order-header">주문번호 <span class="order-id">${order.orderId}</span></div>
+      <div class="products-container">
+        ${order.items.map(item => {
+          const name = item.gameName || '알 수 없는 게임';
+          const price = item.price ? `${item.price} ₩` : '무료';
+          const imageUrl = item.gameImage && item.gameImage !== 'undefined' ? item.gameImage : './images/default-image.png';
+          const orderDetailId = item.orderDetailId;
+          const reviewStatus = item.reviewStatus;
+
+          return `
+            <div class="product-item">
+              <a href="https://genu99.github.io/Graduation-work/gameDetail.html?gameId=${item.gameId}"><img src="${imageUrl}" alt="${name}" /></a>
+              <div class="product-info">
+                <p class="product-name">${name}</p>
+                <p class="product-price">${price}</p>
               </div>
-            `;
+              ${(reviewStatus && order.orderStatus === 'PURCHASE_CONFIRMED') ? `<button class="review-btn" onclick="toggleReviewForm('${orderDetailId}')">리뷰 작성</button>` : ''}
+              <div class="review-form" id="review-form-${orderDetailId}" style="display: none;">
+                <!-- 별점 선택 -->
+                <div class="rating">
+                  <input type="radio" id="star5-${orderDetailId}" name="rating-${orderDetailId}" value="5" />
+                  <label for="star5-${orderDetailId}">★</label>
+                  <input type="radio" id="star4-${orderDetailId}" name="rating-${orderDetailId}" value="4" />
+                  <label for="star4-${orderDetailId}">★</label>
+                  <input type="radio" id="star3-${orderDetailId}" name="rating-${orderDetailId}" value="3" />
+                  <label for="star3-${orderDetailId}">★</label>
+                  <input type="radio" id="star2-${orderDetailId}" name="rating-${orderDetailId}" value="2" />
+                  <label for="star2-${orderDetailId}">★</label>
+                  <input type="radio" id="star1-${orderDetailId}" name="rating-${orderDetailId}" value="1" />
+                  <label for="star1-${orderDetailId}">★</label>
+                </div>
+                <textarea id="review-text-${orderDetailId}" placeholder="리뷰를 작성하세요..."></textarea>
+                <button onclick="submitReview('${orderDetailId}')">리뷰 제출</button>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
 
-            // 주문 상태에 따른 버튼 표시/숨기기 처리
-            const buttonContainer = document.createElement('div');
-            buttonContainer.classList.add('button-container');
-            if (order.orderStatus === 'CANCEL_COMPLETED') {
-              buttonContainer.innerHTML = '<p style="color:red;">취소된 주문입니다.</p>';
-            } else if (order.orderStatus === 'PURCHASE_CONFIRMED') {
-              buttonContainer.innerHTML = '<p style="color: blue">구매 확정된 상품입니다.</p>';
-            } else {
-              buttonContainer.innerHTML = 
-                `<button class="confirm-btn" onclick="confirmOrder('${order.orderId}')">구매확정</button>
-                <button class="cancel-btn" onclick="cancelOrder('${order.orderId}')">주문취소</button>`;
-            }
+    // 주문 상태에 따른 버튼 표시/숨기기 처리
+    const buttonContainer = document.createElement('div');
+    buttonContainer.classList.add('button-container');
+    if (order.orderStatus === 'CANCEL_COMPLETED') {
+      buttonContainer.innerHTML = '<p style="color:red;">취소된 주문입니다.</p>';
+    } else if (order.orderStatus === 'PURCHASE_CONFIRMED') {
+      buttonContainer.innerHTML = '<p style="color: blue">구매 확정된 상품입니다.</p>';
+    } else {
+      buttonContainer.innerHTML = 
+        `<button class="confirm-btn" onclick="confirmOrder('${order.orderId}')">구매확정</button>
+        <button class="cancel-btn" onclick="cancelOrder('${order.orderId}')">주문취소</button>`;
+    }
 
-            orderItem.appendChild(buttonContainer);
-            orderContainer.appendChild(orderItem);
-          });
-        });
+    orderItem.appendChild(buttonContainer);
+    orderContainer.appendChild(orderItem);
+  });
+});
+
       }
 
       // 리뷰 제출
