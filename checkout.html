@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>  
     <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
       rel="stylesheet"
     />
     <link
@@ -78,32 +78,8 @@
         });
 
         // 장바구니 선택된 게임을 불러옴
-        const token = localStorage.getItem('token');
-    if (!token) {
-        console.error('사용자 토큰이 없습니다.');
-        return;
-    }
-
-    fetch('https://ludorium.store/api/games/images', {
-                method: 'POST',
-                $1,
-            'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ gameIds: gameIdList })
-            })
-            .then(response => response.json())
-            .then(data => {
-                const gameImages = data.images;
-                localStorage.setItem('gameImages', JSON.stringify(gameImages));
-                loadCheckoutItems();
-            })
-            .catch(error => console.error('이미지 불러오기 중 오류 발생:', error));
-        }
-
         function loadCheckoutItems() {
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const gameIdList = cart.map(item => item.id);
-            fetchGameImages(gameIdList);
             const checkoutItemsContainer = document.getElementById('checkout-items');
             const totalPriceEl = document.getElementById('total-price');
             let totalPrice = 0;
@@ -118,14 +94,10 @@
             cart.forEach((item) => {
                 const checkoutItem = document.createElement('div');
                 checkoutItem.classList.add('checkout-item');
-                const gameImages = JSON.parse(localStorage.getItem('gameImages')) || {};
-                const imageUrl = item.gameImageUrl || 'default-image-url.png';
-                checkoutItem.innerHTML = `<div class="checkout-item-info">
-                        <img src="${item.gameImageUrl}" alt="${item.gameName}" class="game-image">
-                        <div class="checkout-item-details">
-                            <div class="checkout-item-title">${item.title}</div>
-                            <div class="checkout-item-price">${item.price}원</div>
-                        </div>
+                checkoutItem.innerHTML = `
+                    <div class="checkout-item-info">
+                        <div class="checkout-item-title">${item.title}</div>
+                        <div class="checkout-item-price">${item.price}원</div>
                     </div>
                 `;
                 checkoutItemsContainer.appendChild(checkoutItem);
