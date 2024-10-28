@@ -230,15 +230,16 @@ function displayReviews(reviews) {
         }
 
         // 리뷰 수정 모드 토글 함수
-        function toggleEditMode(reviewId, currentContent, currentRating) {
+        function toggleEditMode(reviewId) {
             const reviewContentDiv = document.getElementById(`review-content-${reviewId}`);
             const editSectionDiv = document.getElementById(`edit-section-${reviewId}`);
+
             if (editSectionDiv.style.display === 'none') {
-                editSectionDiv.style.display = 'block';
-                reviewContentDiv.style.display = 'none';
+                editSectionDiv.style.display = 'block';  // 수정 폼 보이기
+                reviewContentDiv.style.display = 'none'; // 기존 리뷰 내용 숨기기
             } else {
-                editSectionDiv.style.display = 'none';
-                reviewContentDiv.style.display = 'block';
+                editSectionDiv.style.display = 'none';  // 수정 폼 숨기기
+                reviewContentDiv.style.display = 'block'; // 기존 리뷰 내용 다시 보이기
             }
         }
 
@@ -264,7 +265,7 @@ function displayReviews(reviews) {
                 });
                 if (response.ok) {
                     alert('리뷰가 수정되었습니다.');
-                    fetchUserReviews(token); // 리뷰 목록 갱신
+                    fetchUserReviews(token);  // 리뷰 목록 갱신
                 } else {
                     console.error('리뷰 수정 실패. 상태 코드:', response.status);
                 }
