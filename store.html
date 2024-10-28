@@ -438,32 +438,46 @@
       alert(message);
     }
 
+     // 게임 클릭 시 호출되는 함수
+    async function handleGameClick(event, gameId) {
+        event.preventDefault(); // 기본 링크 이동 동작 중지
+
+        try {
+            // 최근 본 게임을 기록하는 함수 호출
+            await trackRecentGame(gameId);
+            // 최근 본 게임 기록이 완료되면 게임 상세 페이지로 이동
+            window.location.href = `gameDetail.html?gameId=${gameId}`;
+        } catch (error) {
+            console.error('게임 클릭 처리 중 오류 발생:', error);
+        }
+    }
+
     // 최근 본 게임을 기록하는 함수
     async function trackRecentGame(gameId) {
-    try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            console.warn('사용자가 로그인되어 있지 않습니다.');
-            return;
-        }
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.warn('사용자가 로그인되어 있지 않습니다.');
+                return;
+            }
 
-        console.log('최근 본 게임 기록 중, gameId:', gameId);
-        const response = await fetch(`${serverUrl}/api/user/games`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ gameId }),
-        });
+            console.log('최근 본 게임 기록 중, gameId:', gameId); // 로그 추가
+            const response = await fetch(`${serverUrl}/api/user/games`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ gameId }),
+            });
 
-        if (!response.ok) {
-            throw new Error('최근 본 게임 기록 중 오류 발생.');
+            if (!response.ok) {
+                throw new Error('최근 본 게임 기록 중 오류 발생.');
+            }
+        } catch (error) {
+            console.error('최근 본 게임을 기록하는 중 오류 발생:', error);
         }
-    } catch (error) {
-        console.error('최근 본 게임을 기록하는 중 오류 발생:', error);
     }
-}
 
      // 팝업창을 열고 토큰을 전달하는 함수
         function openPopupWithToken() {
