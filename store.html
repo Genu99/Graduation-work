@@ -460,7 +460,7 @@
             }
 
             console.log('최근 본 게임 기록 중, gameId:', gameId); // 로그 추가
-            const response = await fetch(`${serverUrl}/api/user/mypage/recent-list`, {
+            const response = await fetch(`${serverUrl}/api/user/mypage/recent`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
