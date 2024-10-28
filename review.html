@@ -6,77 +6,124 @@
     <title>Game Forge - 내 게임 후기</title>
     <link rel="stylesheet" href="review.css">
     <style>
-/* 팝업 버튼 스타일링 */
-        #open-popup-btn,
-        #recent-games-btn {
-            position: fixed;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            font-size: 24px;
-            cursor: pointer;
+        /* 기본 스타일링 */
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .review-section {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 별점 스타일링 */
+        .rating {
             display: flex;
+            justify-content: flex-start;
             align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s, transform 0.3s;
-            z-index: 1000;
+            direction: rtl; /* 오른쪽부터 왼쪽으로 별을 채우기 */
         }
 
-        #open-popup-btn:hover,
-        #recent-games-btn:hover {
-            background-color: #0056b3;
-            transform: scale(1.1);
+        .rating input {
+            display: none; /* 라디오 버튼 숨기기 */
         }
 
-        .circular-btn {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: none;
+        .rating label {
+            font-size: 30px;
+            color: #ddd;
+            cursor: pointer;
+        }
+
+        .rating input:checked ~ label {
+            color: #f5b301; /* 선택된 별의 색상 */
+        }
+
+        .rating label:hover,
+        .rating label:hover ~ label {
+            color: #f5b301; /* 호버 상태의 별 색상 */
+        }
+
+        /* 텍스트 박스 스타일 */
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+        }
+
+        /* 제출 버튼 스타일 */
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
             background-color: #007bff;
             color: white;
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s;
+            font-size: 16px;
         }
 
-        .circular-btn:hover {
+        button:hover {
             background-color: #0056b3;
         }
 
-        .fixed-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
+        /* 리뷰 리스트 스타일 */
+        .review-item {
+            margin-bottom: 20px;
         }
 
-        .recent-fixed-btn {
-            bottom: 90px;
-            right: 20px;
+        .review-item img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 20px;
         }
-</style>
+
+        .review-header {
+            display: flex;
+            align-items: center;
+        }
+
+        .review-header h3 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .review-content {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
+
     <!-- 헤더 자리 표시자 -->
     <div id="header-placeholder"></div>
 
     <nav>
-      <ul class="menu">
-        <li><a href="mypage.html">내정보</a></li>
-        <li><a href="info.html">정보수정</a></li>
-        <li><a href="modpwd.html">비밀번호 변경</a></li>
-        <li><a href="order.html">주문내역</a></li>
-        <li><a href="review.html">내가쓴리뷰</a></li>
-        <li><a href="deleteId.html">회원탈퇴</a></li>
-</ul>
+        <ul class="menu">
+            <li><a href="mypage.html">내정보</a></li>
+            <li><a href="info.html">정보수정</a></li>
+            <li><a href="modpwd.html">비밀번호 변경</a></li>
+            <li><a href="order.html">주문내역</a></li>
+            <li><a href="review.html">내가쓴리뷰</a></li>
+            <li><a href="deleteId.html">회원탈퇴</a></li>
+        </ul>
     </nav>
 
     <main>
@@ -85,13 +132,32 @@
             <div id="review-list">
                 <!-- 게임 후기가 여기에 동적으로 추가될 예정 -->
             </div>
+
+            <!-- 리뷰 작성 폼 -->
+            <div class="review-item">
+                <h3>ANOTHER EDEN</h3>
+                <div class="review-header">
+                    <img src="https://via.placeholder.com/150" alt="ANOTHER EDEN">
+                    <div>
+                        <div class="rating">
+                            <!-- 별점 선택 -->
+                            <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
+                            <input type="radio" id="star4" name="rating" value="4" checked><label for="star4">★</label>
+                            <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+                            <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                            <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+                        </div>
+
+                        <!-- 리뷰 작성 텍스트 박스 -->
+                        <textarea id="review-text" placeholder="리뷰를 작성하세요..."></textarea>
+
+                        <!-- 제출 버튼 -->
+                        <button id="submit-review">리뷰 제출</button>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
-     <!-- 최근 본 게임으로 이동하는 버튼 (돋보기 버튼 위에 고정) -->
-    <button id="recent-games-btn" class="circular-btn fixed-btn recent-fixed-btn">👁</button> <!-- 눈 아이콘을 원형 버튼에 넣음 -->
-
-    <!-- 팝업을 여는 버튼 (오른쪽 아래 고정) -->
-    <button id="open-popup-btn" class="circular-btn fixed-btn">🔎</button> <!-- 돋보기 아이콘을 원형 버튼에 넣음 -->
 
     <footer>
         <div class="footer-content">
@@ -141,6 +207,9 @@
             } catch (error) {
                 console.error("토큰 초기화 중 오류 발생:", error);
             }
+
+            // 리뷰 제출 버튼 이벤트 리스너
+            document.getElementById('submit-review').addEventListener('click', submitReview);
         });
 
         // 서버에서 사용자 리뷰를 가져오는 함수
@@ -166,135 +235,71 @@
             }
         }
 
-       // 페이지에 후기를 표시하는 함수
-function displayReviews(reviews) {
-    const reviewList = document.getElementById('review-list');
-    if (!reviewList) {
-        console.error("리뷰 목록을 표시할 요소를 찾을 수 없습니다.");
-        return;
-    }
-    reviewList.innerHTML = ''; // 이전 후기를 초기화
-    reviews.forEach(review => {
-        const reviewDiv = document.createElement('div');
-        reviewDiv.classList.add('review-item');
-
-        // 이미지 링크 및 이미지 추가
-        reviewDiv.innerHTML = ` 
-               <a href="https://genu99.github.io/Graduation-work/gameDetail.html?gameId=${review.gameId}">
-                <img src="${review.gameImage}" alt="${review.gameName}" class="game-image" style="width:150px; height:150px;"/>
-            </a>
-            <h3>${review.gameName}</h3>
-            <div class="review-content" id="review-content-${review.reviewId}">
-                <p>${review.content}</p>
-                <small>평점: ${review.rating}</small><br>
-                <small>작성일: ${review.updatedDate}</small><br>
-            </div>
-            <button onclick="toggleEditMode(${review.reviewId})">수정</button>
-            <button onclick="deleteReview(${review.reviewId})">삭제</button>
-            <div id="edit-section-${review.reviewId}" class="edit-section" style="display: none;">
-                <textarea id="edit-content-${review.reviewId}">${review.content}</textarea><br>
-                <label for="edit-rating-${review.reviewId}">평점: </label>
-                <input type="number" id="edit-rating-${review.reviewId}" value="${review.rating}" min="1" max="5"><br>
-                <button onclick="updateReview(${review.reviewId})">저장</button>
-                <button onclick="toggleEditMode(${review.reviewId})">취소</button>
-            </div>
-        `;
-
-        reviewList.appendChild(reviewDiv);
-    });
-}
-
-        // 리뷰 삭제 함수
-        async function deleteReview(reviewId) {
+        // 리뷰를 서버에 제출하는 함수
+        async function submitReview() {
             const token = localStorage.getItem('token');
+            const reviewText = document.getElementById('review-text').value;
+            const rating = document.querySelector('input[name="rating"]:checked').value;
+
             if (!token) {
-                console.error("토큰이 없습니다. 로그인이 필요합니다.");
-                return;
-            }
-            try {
-                const response = await fetch(`https://ludorium.store/api/user/review/${reviewId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                if (response.ok) {
-                    alert('리뷰가 삭제되었습니다.');
-                    fetchUserReviews(token); // 리뷰 목록 갱신
-                } else {
-                    console.error('리뷰 삭제 실패. 상태 코드:', response.status);
-                }
-            } catch (error) {
-                console.error('리뷰 삭제 중 오류 발생:', error);
-            }
-        }
-
-        // 리뷰 수정 모드 토글 함수
-        function toggleEditMode(reviewId) {
-            const reviewContentDiv = document.getElementById(`review-content-${reviewId}`);
-            const editSectionDiv = document.getElementById(`edit-section-${reviewId}`);
-
-            if (editSectionDiv.style.display === 'none') {
-                editSectionDiv.style.display = 'block';  // 수정 폼 보이기
-                reviewContentDiv.style.display = 'none'; // 기존 리뷰 내용 숨기기
-            } else {
-                editSectionDiv.style.display = 'none';  // 수정 폼 숨기기
-                reviewContentDiv.style.display = 'block'; // 기존 리뷰 내용 다시 보이기
-            }
-        }
-
-        // 서버에 리뷰 수정 요청 보내는 함수
-        async function updateReview(reviewId) {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                console.error("토큰이 없습니다. 로그인이 필요합니다.");
+                alert("로그인이 필요합니다.");
                 return;
             }
 
-            const newContent = document.getElementById(`edit-content-${reviewId}`).value;
-            const newRating = document.getElementById(`edit-rating-${reviewId}`).value;
+            if (!reviewText) {
+                alert("리뷰 내용을 입력하세요.");
+                return;
+            }
 
             try {
-                const response = await fetch(`https://ludorium.store/api/user/review/${reviewId}`, {
-                    method: 'PATCH',
+                const response = await fetch('https://ludorium.store/api/user/review', {
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify({ content: newContent, rating: newRating })
+                    body: JSON.stringify({
+                        content: reviewText,
+                        rating: rating
+                    })
                 });
+
                 if (response.ok) {
-                    alert('리뷰가 수정되었습니다.');
-                    fetchUserReviews(token);  // 리뷰 목록 갱신
+                    alert('리뷰가 제출되었습니다.');
+                    fetchUserReviews(token); // 리뷰 목록 갱신
                 } else {
-                    console.error('리뷰 수정 실패. 상태 코드:', response.status);
+                    console.error('리뷰 제출 실패. 상태 코드:', response.status);
                 }
             } catch (error) {
-                console.error('리뷰 수정 중 오류 발생:', error);
+                console.error('리뷰 제출 중 오류 발생:', error);
             }
         }
-        // 팝업창을 열고 토큰을 전달하는 함수
-        function openPopupWithToken() {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                console.error('토큰이 없습니다. 먼저 로그인하세요.');
+
+        // 페이지에 후기를 표시하는 함수
+        function displayReviews(reviews) {
+            const reviewList = document.getElementById('review-list');
+            if (!reviewList) {
+                console.error("리뷰 목록을 표시할 요소를 찾을 수 없습니다.");
                 return;
             }
-            const popupUrl = `https://gameforge-ai-server.streamlit.app/?token=${token}`;
-            const popupWindow = window.open(popupUrl, 'PopupWindow', 'width=600,height=600');
-            if (!popupWindow || popupWindow.closed || typeof popupWindow.closed === 'undefined') {
-                alert('팝업이 차단되었습니다. 팝업을 허용해주세요.');
-            }
-        }
+            reviewList.innerHTML = ''; // 이전 후기를 초기화
+            reviews.forEach(review => {
+                const reviewDiv = document.createElement('div');
+                reviewDiv.classList.add('review-item');
 
-        // 최근 본 게임 페이지로 이동하는 함수
-        function goToRecentGames() {
-            window.location.href = 'recentGames.html';
-        }
+                // 이미지 링크 및 이미지 추가
+                reviewDiv.innerHTML = ` 
+                    <h3>${review.gameName}</h3>
+                    <div class="review-content">
+                        <p>${review.content}</p>
+                        <small>평점: ${review.rating}</small><br>
+                        <small>작성일: ${review.updatedDate}</small><br>
+                    </div>
+                `;
 
-        // 버튼에 이벤트 리스너 추가
-        document.getElementById('open-popup-btn').addEventListener('click', openPopupWithToken);
-        document.getElementById('recent-games-btn').addEventListener('click', goToRecentGames);
+                reviewList.appendChild(reviewDiv);
+            });
+        }
     </script>
 </body>
 </html>
