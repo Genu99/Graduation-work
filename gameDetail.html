@@ -275,7 +275,7 @@
                   const reviewDiv = document.createElement("div");
                   reviewDiv.className = "review-item";
                   reviewDiv.innerHTML = `
-                    ${review.profileImage || 'profile.jpg'}
+                    <img src="${review.profileImage || 'profile.jpg'}" alt="User" class="review-image" />
                     <div class="review-content">
                       <p class="review-rating">⭐ ${review.rating}</p>
                       <div class="review-text-container">
