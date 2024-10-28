@@ -78,11 +78,16 @@
         });
 
         // 장바구니 선택된 게임을 불러옴
-        function fetchGameImages(gameIdList) {
-            fetch('https://ludorium.store/api/games/images', {
+        const token = localStorage.getItem('token');
+    if (!token) {
+        console.error('사용자 토큰이 없습니다.');
+        return;
+    }
+
+    fetch('https://ludorium.store/api/games/images', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
+                $1,
+            'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({ gameIds: gameIdList })
             })
